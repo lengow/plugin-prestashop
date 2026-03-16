@@ -81,7 +81,6 @@ class ComposerStaticInit30bb8244360bd03582d49c20c2bea86f
         'LengowToolboxController' => __DIR__ . '/../..' . '/classes/controllers/LengowToolboxController.php',
         'LengowToolboxElement' => __DIR__ . '/../..' . '/classes/models/LengowToolboxElement.php',
         'LengowTranslation' => __DIR__ . '/../..' . '/classes/models/LengowTranslation.php',
-        'PrestaShop\\Module\\Lengow\\Controller\\AdminOrderController' => __DIR__ . '/../..' . '/src/Controller/AdminOrderController.php',
         'PrestaShop\\Module\\Lengow\\Controller\\Admin\\AbstractLengowAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/AbstractLengowAdminController.php',
         'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowDashboardAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/LengowDashboardAdminController.php',
         'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowFeedAdminController' => __DIR__ . '/../..' . '/src/Controller/Admin/LengowFeedAdminController.php',

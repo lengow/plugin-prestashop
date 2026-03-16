@@ -58,7 +58,6 @@ return array(
     'LengowToolboxController' => $baseDir . '/classes/controllers/LengowToolboxController.php',
     'LengowToolboxElement' => $baseDir . '/classes/models/LengowToolboxElement.php',
     'LengowTranslation' => $baseDir . '/classes/models/LengowTranslation.php',
-    'PrestaShop\\Module\\Lengow\\Controller\\AdminOrderController' => $baseDir . '/src/Controller/AdminOrderController.php',
     'PrestaShop\\Module\\Lengow\\Controller\\Admin\\AbstractLengowAdminController' => $baseDir . '/src/Controller/Admin/AbstractLengowAdminController.php',
     'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowDashboardAdminController' => $baseDir . '/src/Controller/Admin/LengowDashboardAdminController.php',
     'PrestaShop\\Module\\Lengow\\Controller\\Admin\\LengowFeedAdminController' => $baseDir . '/src/Controller/Admin/LengowFeedAdminController.php',

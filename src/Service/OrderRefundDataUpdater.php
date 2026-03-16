@@ -24,7 +24,6 @@ declare(strict_types=1);
 namespace PrestaShop\Module\Lengow\Service;
 
 use Db;
-
 if (!defined('_PS_VERSION_')) {
     exit;
 }

@@ -22,6 +22,11 @@
  * modules/lengow/webservice/toolbox.php still works in PS 8.2+/9.0 without
  * any HTTP redirect: bootstraps PS and dispatches to the FO controller.
  */
+
+if (!defined('_PS_VERSION_')) {
+    exit;
+}
+
 $_GET['fc'] = 'module';
 $_GET['module'] = 'lengow';
 $_GET['controller'] = 'toolbox';

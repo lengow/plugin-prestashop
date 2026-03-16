@@ -27,8 +27,8 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-use Context;
-use LengowContext;
+use \Context;
+use \LengowContext;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShopBundle\Controller\Admin\PrestaShopAdminController;
 use Symfony\Component\HttpFoundation\JsonResponse;
