@@ -27,8 +27,6 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-use \Context;
-use \LengowContext;
 use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShopBundle\Controller\Admin\PrestaShopAdminController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -48,14 +46,14 @@ if (
 
 abstract class AbstractLengowAdminController extends PrestaShopAdminController
 {
-    protected Context $legacyContext;
+    protected \Context $legacyContext;
 
     public function __construct(
         LegacyContext $legacyContext,
         protected readonly Environment $twig,
     ) {
         $this->legacyContext = $legacyContext->getContext();
-        LengowContext::setContext($this->legacyContext);
+        \LengowContext::setContext($this->legacyContext);
     }
 
     protected function handleLegacyPostAction(Request $request, object $legacyController): ?Response

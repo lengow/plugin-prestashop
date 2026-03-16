@@ -1,9 +1,5 @@
 <?php
 
-if (!defined('_PS_VERSION_')) {
-    exit;
-}
-
 $finder = PhpCsFixer\Finder::create()->in([
     __DIR__.'/classes',
     __DIR__.'/src',
@@ -46,10 +42,16 @@ return (new PhpCsFixer\Config())
         'no_null_property_initialization' => false,
         'nullable_type_declaration_for_default_null_value' => true,
         'global_namespace_import' => [
-            'import_classes' => true,
+            'import_classes' => false,
             'import_constants' => false,
             'import_functions' => false,
         ],
         'blank_line_after_opening_tag' => false,
+        'no_extra_blank_lines' => [
+            'tokens' => [
+                'extra',
+                'use',
+            ],
+        ],
     ])
     ->setFinder($finder);

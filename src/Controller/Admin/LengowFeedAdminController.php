@@ -27,7 +27,6 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-use \LengowFeedController;
 use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -37,7 +36,7 @@ class LengowFeedAdminController extends AbstractLengowAdminController
     #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))")]
     public function indexAction(Request $request): Response
     {
-        $lengowController = new LengowFeedController($this->legacyContext, $this->twig, true);
+        $lengowController = new \LengowFeedController($this->legacyContext, $this->twig, true);
 
         $response = $this->handleLegacyPostAction($request, $lengowController);
         if ($response instanceof Response) {

@@ -154,9 +154,10 @@ remove_files "$FOLDER_TMP" "dod.md"
 remove_files "$FOLDER_TMP" "README.md"
 # remove .gitignore
 remove_files "$FOLDER_TMP" ".gitignore"
-# remove php-cs-fixer-cache
+# remove php-cs-fixer conf & cache
 remove_files "$FOLDER_TMP" ".php-cs-fixer.cache"
 remove_files "$FOLDER_TMP" ".php_cs.cache"
+remove_files "$FOLDER_TMP" ".php-cs-fixer.dist.php"
 # remove .git
 remove_files "$FOLDER_TMP" ".git"
 rm -Rf "$FOLDER_TMP/.github"

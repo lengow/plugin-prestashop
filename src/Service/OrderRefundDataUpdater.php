@@ -23,7 +23,6 @@ declare(strict_types=1);
 
 namespace PrestaShop\Module\Lengow\Service;
 
-use Db;
 if (!defined('_PS_VERSION_')) {
     exit;
 }
@@ -32,7 +31,7 @@ final class OrderRefundDataUpdater
 {
     public function updateRefundReason(int $orderId, string $reason): bool
     {
-        return Db::getInstance()->update(
+        return \Db::getInstance()->update(
             'lengow_orders',
             ['refund_reason' => pSQL($reason)],
             'id_order = ' . $orderId
@@ -41,7 +40,7 @@ final class OrderRefundDataUpdater
 
     public function updateRefundMode(int $orderId, string $mode): bool
     {
-        return Db::getInstance()->update(
+        return \Db::getInstance()->update(
             'lengow_orders',
             ['refund_mode' => pSQL($mode)],
             'id_order = ' . $orderId

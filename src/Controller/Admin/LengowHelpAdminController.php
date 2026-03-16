@@ -26,7 +26,6 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
-use \LengowHelpController;
 use PrestaShopBundle\Security\Attribute\AdminSecurity;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -36,7 +35,7 @@ class LengowHelpAdminController extends AbstractLengowAdminController
     #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))")]
     public function indexAction(Request $request): Response
     {
-        $lengowController = new LengowHelpController($this->legacyContext, $this->twig, true);
+        $lengowController = new \LengowHelpController($this->legacyContext, $this->twig, true);
         $response = $this->handleLegacyPostAction($request, $lengowController);
         if ($response instanceof Response) {
             return $response;
