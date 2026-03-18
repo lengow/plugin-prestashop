@@ -23,6 +23,9 @@ require_once _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'loader.php';
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+
+use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
+
 /**
  * Lengow
  */
@@ -61,7 +64,7 @@ class Lengow extends Module
 
         LengowContext::setContext($this->context);
 
-        $this->displayName = $this->l('Lengow');
+        $this->displayName = 'Lengow';
         $this->description = $this->l('Lengow allows you to easily export your product catalogue from your PrestaShop store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister. Choose from our 1,800 available marketing channels!');
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall the Lengow module?');
 
@@ -94,9 +97,47 @@ class Lengow extends Module
      */
     public function getContent(): void
     {
-        $link = new LengowLink();
-        $configLink = $link->getAbsoluteAdminLink('AdminLengowHome');
-        Tools::redirect($configLink, '');
+        $sfContainer = SymfonyContainer::getInstance();
+        if ($sfContainer === null) {
+            return;
+        }
+        $router = $sfContainer->get('router');
+        try {
+            Tools::redirectAdmin($router->generate('lengow_home'));
+        } catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
+            // Routing cache was built before this module was registered (race condition on install).
+            // Clear it so the next request rebuilds it with the correct routes.
+            $this->clearCompiledCache();
+            Tools::redirectAdmin(
+                $this->context->link->getAdminLink('AdminModules', true, [], ['configure' => $this->name])
+            );
+        }
+    }
+
+    /**
+     * Deletes Symfony routing and container cache files for all environments so they are
+     * rebuilt fresh on the next request with this module's routes and services included.
+     *
+     * Both the routing cache (UrlGenerator/UrlMatcher) and the compiled DI container entry-point
+     * are deleted because both are built during $kernel->handle() which runs before parent::install()
+     * registers the module in the database.
+     *
+     * @return void
+     */
+    private function clearCompiledCache(): void
+    {
+        $routingFiles = ['UrlGenerator.php', 'UrlGenerator.php.meta', 'UrlMatcher.php', 'UrlMatcher.php.meta'];
+        foreach (['dev', 'prod'] as $env) {
+            $cacheDir = _PS_ROOT_DIR_ . '/var/cache/' . $env . '/';
+            foreach ($routingFiles as $file) {
+                @unlink($cacheDir . $file);
+            }
+            // Remove the compiled container entry-point so the DI container is recompiled
+            // on the next request and module services (controllers) are properly registered.
+            foreach (glob($cacheDir . 'app*Container.php') ?: [] as $containerFile) {
+                @unlink($containerFile);
+            }
+        }
     }
 
     /**
@@ -110,6 +151,10 @@ class Lengow extends Module
         if (!parent::install()) {
             return false;
         }
+        // Routing/container cache was built by the current request's kernel before this module was
+        // registered in the DB, so it lacks lengow routes and services. Delete it now so the next
+        // request rebuilds it fresh.
+        $this->clearCompiledCache();
         $isInstalled = $this->installClass->install();
         $this->installClass->clearCaches();
 

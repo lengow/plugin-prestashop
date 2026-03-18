@@ -3,6 +3,9 @@
 $finder = PhpCsFixer\Finder::create()->in([
     __DIR__.'/classes',
     __DIR__.'/src',
+    __DIR__.'/controllers',
+    __DIR__.'/upgrade',
+    __DIR__.'/webservice',
 ]);
 
 return (new PhpCsFixer\Config())
