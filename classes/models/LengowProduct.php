@@ -333,7 +333,7 @@ class LengowProduct extends Product
             foreach ($combinations as $c) {
                 $attributeId = $c['id_product_attribute'];
                 $priceToConvert = Tools::convertPrice($c['price'], $this->context->currency);
-                $price = $this->context->getCurrentLocale()->formatPrice($priceToConvert, $this->context->currency->iso_code);
+                $price = Tools::getContextLocale($this->context)->formatPrice($priceToConvert, $this->context->currency->iso_code);
                 if (array_key_exists($attributeId, $combArray)) {
                     $combArray[$attributeId]['attributes'][$c['group_name']] = [
                         $c['group_name'],

@@ -191,6 +191,11 @@ class LengowExportModuleFrontController extends ModuleFrontController
             if ($languageId === 0) {
                 $languageId = LengowContext::getContext()->language->id;
             }
+        } elseif (Tools::getIsset(LengowExport::PARAM_LANGUAGE_ID)) {
+            $languageId = (int) Tools::getValue(LengowExport::PARAM_LANGUAGE_ID);
+            if (!Language::getLanguage($languageId)) {
+                $languageId = LengowContext::getContext()->language->id;
+            }
         } else {
             $languageId = LengowContext::getContext()->language->id;
         }

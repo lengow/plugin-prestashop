@@ -226,7 +226,7 @@ class LengowConnector
             if ($accountId === null && $authorizationRequired) {
                 return false;
             }
-            $connector = new LengowConnector($accessToken, $secret);
+            $connector = new LengowConnector($accessToken ?? '', $secret ?? '');
             $type = (string) Tools::strtolower($type);
             $args = $authorizationRequired
                 ? array_merge([LengowImport::ARG_ACCOUNT_ID => $accountId], $args)

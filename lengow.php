@@ -50,7 +50,7 @@ class Lengow extends Module
     {
         $this->name = 'lengow';
         $this->tab = 'export';
-        $this->version = '3.9.4'; // x-release-please-version
+        $this->version = '3.10.0'; // x-release-please-version
         $this->author = 'Lengow';
         $this->module_key = '__LENGOW_PRESTASHOP_PRODUCT_KEY__';
         $this->ps_versions_compliancy = [
@@ -190,6 +190,48 @@ class Lengow extends Module
         $this->installClass->clearCaches();
 
         return $isReset;
+    }
+
+    /**
+     * Register legacy webservice URLs as PS-native routes pointing to the FO controllers.
+     *
+     * Old URLs (modules/lengow/webservice/*.php) still work because:
+     * - The physical PHP files no longer exist, so Apache forwards to index.php
+     * - PS Dispatcher picks up these routes and dispatches to the FO controllers
+     *
+     * @return array<string, array<string, mixed>>
+     */
+    public function hookModuleRoutes(): array
+    {
+        return [
+            'lengow-cron' => [
+                'controller' => 'cron',
+                'rule' => 'modules/lengow/webservice/cron.php',
+                'keywords' => [],
+                'params' => [
+                    'fc' => 'module',
+                    'module' => 'lengow',
+                ],
+            ],
+            'lengow-export' => [
+                'controller' => 'export',
+                'rule' => 'modules/lengow/webservice/export.php',
+                'keywords' => [],
+                'params' => [
+                    'fc' => 'module',
+                    'module' => 'lengow',
+                ],
+            ],
+            'lengow-toolbox' => [
+                'controller' => 'toolbox',
+                'rule' => 'modules/lengow/webservice/toolbox.php',
+                'keywords' => [],
+                'params' => [
+                    'fc' => 'module',
+                    'module' => 'lengow',
+                ],
+            ],
+        ];
     }
 
     /**

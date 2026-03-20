@@ -80,6 +80,8 @@ class LengowHook
             // version 1.7.8 — order page tabs
             'displayAdminOrderTabLink' => '1.7',
             'displayAdminOrderTabContent' => '1.7',
+            // PS routing: maps legacy webservice/*.php URLs to the FO controllers
+            'moduleRoutes' => '1.5',
         ];
 
         foreach ($lengowHooks as $hook => $version) {

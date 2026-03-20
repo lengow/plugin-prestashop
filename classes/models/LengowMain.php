@@ -34,11 +34,6 @@ class LengowMain
     public const FOLDER_TRANSLATION = 'translations';
     public const FOLDER_WEBSERVICE = 'webservice';
 
-    /* Lengow webservices */
-    public const WEBSERVICE_EXPORT = 'export.php';
-    public const WEBSERVICE_CRON = 'cron.php';
-    public const WEBSERVICE_TOOLBOX = 'toolbox.php';
-
     /* Date formats */
     public const DATE_FULL = 'Y-m-d H:i:s';
     public const DATE_DAY = 'Y-m-d';
@@ -352,16 +347,11 @@ class LengowMain
      */
     public static function checkWebservicesAccess(string $token, ?int $idShop = null): bool
     {
-        if (!(bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)
-            && self::checkToken($token, $idShop)
-        ) {
-            return true;
-        }
-        if (self::checkIp()) {
-            return true;
+        if ((bool) LengowConfiguration::get(LengowConfiguration::AUTHORIZED_IP_ENABLED)) {
+            return self::checkToken($token, $idShop) || self::checkIp();
         }
 
-        return false;
+        return self::checkToken($token, $idShop);
     }
 
     /**
