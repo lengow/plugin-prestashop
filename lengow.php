@@ -77,11 +77,12 @@ class Lengow extends Module
             );
             if ($oldVersion !== $this->version) {
                 $this->installClass->clearCaches();
+                LengowInstall::setInstallationStatus(false);
+                $this->installClass->update($oldVersion);
                 LengowConfiguration::updateGlobalValue(
                     LengowConfiguration::PLUGIN_VERSION,
                     $this->version
                 );
-                $this->installClass->update($oldVersion);
                 $this->installClass->clearCaches();
             }
         }
@@ -104,9 +105,7 @@ class Lengow extends Module
         $router = $sfContainer->get('router');
         try {
             Tools::redirectAdmin($router->generate('lengow_home'));
-        } catch (\Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
-            // Routing cache was built before this module was registered (race condition on install).
-            // Clear it so the next request rebuilds it with the correct routes.
+        } catch (Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
             $this->clearCompiledCache();
             Tools::redirectAdmin(
                 $this->context->link->getAdminLink('AdminModules', true, [], ['configure' => $this->name])

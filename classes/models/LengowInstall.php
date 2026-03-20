@@ -203,6 +203,7 @@ class LengowInstall
         );
         $oldVersion = LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_VERSION);
         $oldVersion = $oldVersion ?: false;
+        self::setInstallationStatus(false);
         $this->setDefaultValues();
         $this->update($oldVersion);
         LengowMain::log(
