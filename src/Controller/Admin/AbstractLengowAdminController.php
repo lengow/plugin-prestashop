@@ -46,6 +46,7 @@ if (
 
 abstract class AbstractLengowAdminController extends PrestaShopAdminController
 {
+    abstract protected function getPageTitle(): string;
     protected \Context $legacyContext;
 
     public function __construct(
@@ -97,7 +98,10 @@ abstract class AbstractLengowAdminController extends PrestaShopAdminController
             $template,
             array_merge(
                 $legacyController->getTemplateVars(),
-                ['base_layout' => '@Modules/lengow/views/templates/admin/twig/ps9_base.html.twig']
+                [
+                    'base_layout' => '@Modules/lengow/views/templates/admin/twig/ps9_base.html.twig',
+                    'layoutTitle' => $this->getPageTitle(),
+                ]
             )
         );
     }

@@ -33,6 +33,11 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LengowOrderAdminController extends AbstractLengowAdminController
 {
+    protected function getPageTitle(): string
+    {
+        return (new \LengowTranslation($this->legacyContext))->t('tab.order');
+    }
+
     #[AdminSecurity("is_granted('read', request.get('_legacy_controller'))")]
     public function indexAction(Request $request): Response
     {
