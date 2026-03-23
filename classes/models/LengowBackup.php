@@ -50,7 +50,7 @@ class LengowBackup extends Backup
         $rand = dechex(mt_rand(0, min(0xFFFFFFFF, mt_getrandmax())));
         $date = time();
         $backupFile = $this->getRealBackupPath() . $date . '-lengowbackup' . $rand . '.sql';
-        if (!LengowMain::isPathAllowed($backupFile, _PS_MODULE_LENGOW_DIR_)) {
+        if (!LengowMain::isPathAllowed($backupFile, $this->getRealBackupPath())) {
             return false;
         }
         // figure out what compression is available and open the file
