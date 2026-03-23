@@ -1003,14 +1003,8 @@ class LengowMain
      */
     public static function getExportUrl(?int $idShop = null): string
     {
-        return LengowContext::getContext()->link->getModuleLink(
-            'lengow',
-            'export',
-            [LengowExport::PARAM_TOKEN => self::getToken($idShop)],
-            null,
-            null,
-            $idShop
-        );
+        return self::getLengowBaseUrl($idShop) . 'webservice/export.php?'
+            . LengowExport::PARAM_TOKEN . '=' . self::getToken($idShop);
     }
 
     /**
@@ -1020,11 +1014,8 @@ class LengowMain
      */
     public static function getCronUrl(): string
     {
-        return LengowContext::getContext()->link->getModuleLink(
-            'lengow',
-            'cron',
-            [LengowImport::PARAM_TOKEN => self::getToken()]
-        );
+        return self::getLengowBaseUrl() . 'webservice/cron.php?'
+            . LengowImport::PARAM_TOKEN . '=' . self::getToken();
     }
 
     /**
@@ -1034,11 +1025,8 @@ class LengowMain
      */
     public static function getToolboxUrl(): string
     {
-        return LengowContext::getContext()->link->getModuleLink(
-            'lengow',
-            'toolbox',
-            [LengowToolbox::PARAM_TOKEN => self::getToken()]
-        );
+        return self::getLengowBaseUrl() . 'webservice/toolbox.php?'
+            . LengowToolbox::PARAM_TOKEN . '=' . self::getToken();
     }
 
     /**
