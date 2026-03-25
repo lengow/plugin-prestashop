@@ -24,7 +24,7 @@
 /classes/models/LengowCustomer.php|78579376c21dce9dcea169e642d9802c
 /classes/models/LengowHook.php|60b90ecdb88ea0e7a8c74def8908965a
 /classes/models/LengowOrderDetail.php|a51019c529e83b2f0eda9e8d713dbd3d
-/classes/models/LengowImport.php|ced1800e7e48502445e9d8f2b884e721
+/classes/models/LengowImport.php|9a106938d503900de7807abf00ac9c6f
 /classes/models/LengowInstall.php|7815d2c8b3ed41d4f169df93555d10ac
 /classes/models/LengowConfiguration.php|ad2c80b8f291e56fee5d74f16ab4a958
 /classes/models/LengowMain.php|a00a97e28d7224b4f1cc5677585c3978

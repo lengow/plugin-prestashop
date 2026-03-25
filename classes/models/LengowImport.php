@@ -557,7 +557,6 @@ class LengowImport
         $globalError = false;
         // checks if the process can start
         if (!$this->debugMode && !$this->importOneOrder && self::isInProcess()) {
-            return true; // FIXME
             $globalError = LengowMain::setLogMessage(
                 'lengow_log.error.rest_time_to_import',
                 ['rest_time' => self::restTimeToImport()]
