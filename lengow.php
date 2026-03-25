@@ -54,7 +54,7 @@ class Lengow extends Module
         $this->author = 'Lengow';
         $this->module_key = '__LENGOW_PRESTASHOP_PRODUCT_KEY__';
         $this->ps_versions_compliancy = [
-            'min' => '8.2.0',
+            'min' => '8.0.0',
             'max' => '9.99.99',
         ];
 

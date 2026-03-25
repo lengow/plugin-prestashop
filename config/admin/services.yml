@@ -3,14 +3,44 @@ services:
     public: false
     autowire: true
     autoconfigure: true
+    bind:
+      'PrestaShop\PrestaShop\Adapter\LegacyContext $legacyContext': '@prestashop.adapter.legacy.context'
 
-  PrestaShop\Module\Lengow\Controller\Admin\LengowHomeAdminController: ~
-  PrestaShop\Module\Lengow\Controller\Admin\LengowDashboardAdminController: ~
-  PrestaShop\Module\Lengow\Controller\Admin\LengowFeedAdminController: ~
-  PrestaShop\Module\Lengow\Controller\Admin\LengowOrderAdminController: ~
-  PrestaShop\Module\Lengow\Controller\Admin\LengowOrderSettingAdminController: ~
-  PrestaShop\Module\Lengow\Controller\Admin\LengowMainSettingAdminController: ~
-  PrestaShop\Module\Lengow\Controller\Admin\LengowHelpAdminController: ~
-  PrestaShop\Module\Lengow\Controller\Admin\LengowLegalsAdminController: ~
-  PrestaShop\Module\Lengow\Controller\Admin\LengowToolboxAdminController: ~
-  PrestaShop\Module\Lengow\Service\OrderRefundDataUpdater: ~
+  PrestaShop\Module\Lengow\Controller\Admin\LengowHomeAdminController:
+    class: PrestaShop\Module\Lengow\Controller\Admin\LengowHomeAdminController
+    public: true
+    tags: ['controller.service_arguments']
+  PrestaShop\Module\Lengow\Controller\Admin\LengowDashboardAdminController:
+    class: PrestaShop\Module\Lengow\Controller\Admin\LengowDashboardAdminController
+    public: true
+    tags: ['controller.service_arguments']
+  PrestaShop\Module\Lengow\Controller\Admin\LengowFeedAdminController:
+    class: PrestaShop\Module\Lengow\Controller\Admin\LengowFeedAdminController
+    public: true
+    tags: ['controller.service_arguments']
+  PrestaShop\Module\Lengow\Controller\Admin\LengowOrderAdminController:
+    class: PrestaShop\Module\Lengow\Controller\Admin\LengowOrderAdminController
+    public: true
+    tags: ['controller.service_arguments']
+  PrestaShop\Module\Lengow\Controller\Admin\LengowOrderSettingAdminController:
+    class: PrestaShop\Module\Lengow\Controller\Admin\LengowOrderSettingAdminController
+    public: true
+    tags: ['controller.service_arguments']
+  PrestaShop\Module\Lengow\Controller\Admin\LengowMainSettingAdminController:
+    class: PrestaShop\Module\Lengow\Controller\Admin\LengowMainSettingAdminController
+    public: true
+    tags: ['controller.service_arguments']
+  PrestaShop\Module\Lengow\Controller\Admin\LengowHelpAdminController:
+    class: PrestaShop\Module\Lengow\Controller\Admin\LengowHelpAdminController
+    public: true
+    tags: ['controller.service_arguments']
+  PrestaShop\Module\Lengow\Controller\Admin\LengowLegalsAdminController:
+    class: PrestaShop\Module\Lengow\Controller\Admin\LengowLegalsAdminController
+    public: true
+    tags: ['controller.service_arguments']
+  PrestaShop\Module\Lengow\Controller\Admin\LengowToolboxAdminController:
+    class: PrestaShop\Module\Lengow\Controller\Admin\LengowToolboxAdminController
+    public: true
+    tags: ['controller.service_arguments']
+  PrestaShop\Module\Lengow\Service\OrderRefundDataUpdater:
+    class: PrestaShop\Module\Lengow\Service\OrderRefundDataUpdater

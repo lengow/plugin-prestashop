@@ -551,8 +551,13 @@ class LengowMarketplace
                 case LengowAction::ARG_DELIVERY_DATE:
                     $params[$arg] = date(LengowMain::DATE_ISO_8601);
                     break;
+                case LengowAction::ARG_REFUND_REASON:
                 case LengowAction::ARG_REASON:
                     $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId((int) $lengowOrder->lengowId)
+                        ?? $this->getDefaultValue((string) $arg);
+                    break;
+                case LengowAction::ARG_REFUND_MODE:
+                    $params[$arg] = $lengowOrder->getRefundModeByPrestashopId((int) $lengowOrder->lengowId)
                         ?? $this->getDefaultValue((string) $arg);
                     break;
                 default:
