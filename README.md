@@ -1,8 +1,8 @@
 # Lengow for PrestaShop
 
-- **Requires at least:** 1.7.7
-- **Tested up to:** 8.1.7
-- **Requires PHP:** 7.4
+- **Requires at least:** 8.0.0
+- **Tested up to:** 9.0.0
+- **Requires PHP:** 8.1
 - **Stable tag:** 3.9.4 <!-- x-release-please-version -->
 - **License:** Apache-2.0
 - **License URI:** http://www.apache.org/licenses/LICENSE-2.0
@@ -75,7 +75,7 @@ Translations in the plugin are managed via a key system and associated yaml file
 
 Start by installing Yaml Parser:
 
-    sudo apt-get install php5-dev libyaml-dev
+    sudo apt-get install php-dev libyaml-dev
     sudo pecl install yaml
 
 To translate the project, use specific key in php code and modify the *.yml files in the directory: `lengow/translations/yml/`

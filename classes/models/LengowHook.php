@@ -77,9 +77,9 @@ class LengowHook
             'displayHome' => '8.0',
             'actionOrderStatusPostUpdate' => '8.0',
             'actionProductCancel' => '8.0',
-            // version 1.7.8 — order page tabs
-            'displayAdminOrderTabLink' => '1.7',
-            'displayAdminOrderTabContent' => '1.7',
+            // PS 8.0+ — order page tabs
+            'displayAdminOrderTabLink' => '8.0',
+            'displayAdminOrderTabContent' => '8.0',
             // PS routing: maps legacy webservice/*.php URLs to the FO controllers
             'moduleRoutes' => '1.5',
         ];

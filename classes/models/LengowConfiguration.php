@@ -638,7 +638,7 @@ class LengowConfiguration extends Configuration
      * @param int|null $idLang PrestaShop lang id
      * @param int|null $idShopGroup PrestaShop shop group id
      * @param int|null $idShop PrestaShop shop id
-     * @param bool $default default value (compatibility version 1.7)
+     * @param bool $default default value
      *
      * @return mixed
      */

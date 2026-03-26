@@ -905,8 +905,8 @@ class LengowMain
      */
     public static function isSoColissimoAvailable(): bool
     {
-        $moduleName = _PS_VERSION_ < '1.7' ? 'socolissimo' : 'colissimo_simplicite';
-        $moduleClassName = _PS_VERSION_ < '1.7' ? 'Socolissimo' : 'Colissimo_simplicite';
+        $moduleName = 'colissimo_simplicite';
+        $moduleClassName = 'Colissimo_simplicite';
         $supportedVersion = '2.8.5';
         $sep = DIRECTORY_SEPARATOR;
         $moduleDir = _PS_MODULE_DIR_ . $moduleName . $sep;

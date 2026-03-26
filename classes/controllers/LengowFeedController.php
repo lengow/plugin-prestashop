@@ -572,18 +572,14 @@ class LengowFeedController extends LengowController
         $link = new LengowLink();
         if ($item['id_product']) {
             $controller = 'AdminProducts';
-            if (version_compare(_PS_VERSION_, '1.7', '<')) {
-                $href = $link->getAbsoluteAdminLink($controller) . '&updateproduct&id_product=' . $item['id_product'];
-            } else {
-                $href = $link->getAdminLink(
-                    $controller,
-                    true,
-                    [
-                        'updateproduct' => 1,
-                        'id_product' => $item['id_product'],
-                    ]
-                );
-            }
+            $href = $link->getAdminLink(
+                $controller,
+                true,
+                [
+                    'updateproduct' => 1,
+                    'id_product' => $item['id_product'],
+                ]
+            );
 
             return '<a href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '" target="_blank">' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '</a>';
         }

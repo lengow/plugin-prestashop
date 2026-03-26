@@ -35,16 +35,8 @@ class LengowLink extends LinkCore
      */
     public function getAbsoluteAdminLink(string $controller): string
     {
-        $adminPath = Tools::getShopDomainSsl(true, true) .
-            __PS_BASE_URI__ . Tools::substr(_PS_ADMIN_DIR_, strrpos(_PS_ADMIN_DIR_, '/') + 1);
         try {
-            if (_PS_VERSION_ < '1.6') {
-                $adminPath .= '/index.php?tab=' . $controller . '&token=' . Tools::getAdminTokenLite($controller);
-            } elseif (_PS_VERSION_ < '1.7') {
-                $adminPath .= '/' . $this->getAdminLink($controller);
-            } else {
-                $adminPath = $this->getAdminLink($controller);
-            }
+            $adminPath = $this->getAdminLink($controller);
         } catch (Exception $e) {
             return '';
         }

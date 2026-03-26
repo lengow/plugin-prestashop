@@ -1069,9 +1069,7 @@ class LengowCarrier extends Carrier
     public static function carrierCompatibility(int $idOrder, int $idCustomer, int $idCart, int $idCarrier, LengowAddress $shippingAddress): int
     {
         // get SoColissimo carrier id
-        $soColissimoCarrierId = _PS_VERSION_ < '1.7'
-            ? Configuration::get('SOCOLISSIMO_CARRIER_ID')
-            : Configuration::get('COLISSIMO_CARRIER_ID');
+        $soColissimoCarrierId = Configuration::get('COLISSIMO_CARRIER_ID');
         if ($idCarrier === (int) $soColissimoCarrierId) {
             if (!LengowMain::isSoColissimoAvailable()) {
                 return self::COMPATIBILITY_KO;
@@ -1129,7 +1127,7 @@ class LengowCarrier extends Carrier
     public static function addSoColissimo(int $idCart, int $idCustomer, LengowAddress $shippingAddress): bool
     {
         $sep = DIRECTORY_SEPARATOR;
-        $moduleName = _PS_VERSION_ < '1.7' ? 'socolissimo' : 'colissimo_simplicite';
+        $moduleName = 'colissimo_simplicite';
         $filePath = _PS_MODULE_DIR_ . $moduleName . $sep . 'classes' . $sep . 'SCFields.php';
         $loaded = include_once $filePath;
         if (!$loaded) {
@@ -1170,7 +1168,7 @@ class LengowCarrier extends Carrier
         $params['CEZIPCODE'] = (string) $shippingAddress->postcode;
         $params['CETOWN'] = (string) $shippingAddress->city;
         $params['PRPAYS'] = (string) Country::getIsoById($shippingAddress->id_country);
-        $tableName = _PS_VERSION_ < '1.7' ? 'socolissimo_delivery_info' : 'colissimo_delivery_info';
+        $tableName = 'colissimo_delivery_info';
         $sql = 'INSERT INTO ' . _DB_PREFIX_ . $tableName . '
             (`id_cart`,
             `id_customer`,

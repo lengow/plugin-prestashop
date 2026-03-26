@@ -896,21 +896,16 @@ class LengowOrderController extends LengowController
     {
         $link = new LengowLink();
         try {
-            if (version_compare(_PS_VERSION_, '1.7.7', '<')) {
-                $href = $link->getAbsoluteAdminLink('AdminOrders')
-                    . '&vieworder&id_order=' . $idOrder;
-            } else {
-                $sfParams = [
-                    'orderId' => $idOrder,
-                ];
-                $href = Link::getUrlSmarty(
-                    [
-                        'entity' => 'sf',
-                        'route' => 'admin_orders_view',
-                        'sf-params' => $sfParams,
-                    ]
-                );
-            }
+            $sfParams = [
+                'orderId' => $idOrder,
+            ];
+            $href = Link::getUrlSmarty(
+                [
+                    'entity' => 'sf',
+                    'route' => 'admin_orders_view',
+                    'sf-params' => $sfParams,
+                ]
+            );
         } catch (PrestaShopException $e) {
             $href = '#';
         }
