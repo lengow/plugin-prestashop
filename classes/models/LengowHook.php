@@ -64,7 +64,7 @@ class LengowHook
         $lengowHooks = [
             // common version
             'postUpdateOrderStatus' => '1.4',
-            'paymentTop' => '1.4',
+            'displayPaymentTop' => '1.4',
             'displayAdminOrder' => '1.4',
             'actionOrderStatusUpdate' => '1.4',
             'orderConfirmation' => '1.4',
