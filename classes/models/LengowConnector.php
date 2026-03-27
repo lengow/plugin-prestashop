@@ -636,7 +636,6 @@ class LengowConnector
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $curlError = curl_error($ch);
         $curlErrorNumber = curl_errno($ch);
-        curl_close($ch);
         $this->checkReturnRequest($result, $httpCode, $curlError, $curlErrorNumber);
 
         return $result;
