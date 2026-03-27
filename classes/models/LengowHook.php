@@ -89,7 +89,16 @@ class LengowHook
                 if ($this->module->isRegisteredInHook($hook)) {
                     continue;
                 }
-                if (!$this->module->registerHook($hook)) {
+                try {
+                    $registered = $this->module->registerHook($hook);
+                } catch (PrestaShopDatabaseException $e) {
+                    LengowMain::log(
+                        LengowLog::CODE_INSTALL,
+                        LengowMain::setLogMessage('log.install.registering_hook_success', ['hook' => $hook])
+                    );
+                    continue;
+                }
+                if (!$registered) {
                     LengowMain::log(
                         LengowLog::CODE_INSTALL,
                         LengowMain::setLogMessage('log.install.registering_hook_error', ['hook' => $hook])
