@@ -152,16 +152,18 @@ class LengowOrderController extends LengowController
                     break;
                 case 'save_shipping_method':
                     $idOrder = (int) Tools::getValue('id_order');
-                    $shippingMethod = Tools::getValue('method');
+                    $shippingMethod = Tools::getValue('method', null);
                     $response = ['success' => false, 'message' => ''];
 
-                    if (!$idOrder || !$shippingMethod) {
+                    if (!$idOrder) {
                         $response['message'] = 'Missing parameters';
                     } else {
                         try {
+                            // Allow empty string to clear the shipping method (saves NULL in DB)
+                            $methodValue = ($shippingMethod !== null && $shippingMethod !== '') ? pSQL($shippingMethod) : null;
                             $result = Db::getInstance()->update(
                                 'lengow_orders',
-                                ['method' => pSQL($shippingMethod)],
+                                ['method' => $methodValue],
                                 'id_order = ' . $idOrder
                             );
 

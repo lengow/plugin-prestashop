@@ -23,15 +23,26 @@
         <div class="form-group">
             <label for="lengow_shipping_select">Méthode de livraison envoyée par Lengow :</label>
             <select id="lengow_shipping_select" class="form-control">
+                <option value="">-- Aucune méthode de livraison sélectionnée --</option>
                 {foreach from=$shipping_methods item=method}
-                    {if $method.method_lengow_code}
+                    {if $method.method_lengow_code && $method.method_lengow_code !== 'null' && $method.method_lengow_code !== 'NULL'}
                         <option value="{$method.method_lengow_code|escape:'html':'UTF-8'}"
-                                {if isset($lengowOrder.method) && $lengowOrder.method == $method.method_lengow_code}selected{/if}>
+                                {if isset($lengowOrder.method) && $lengowOrder.method !== '' && $lengowOrder.method !== null && $lengowOrder.method == $method.method_lengow_code}selected{/if}>
                             {$method.method_lengow_code|escape:'html':'UTF-8'}
                         </option>
                     {/if}
                 {/foreach}
             </select>
+        </div>
+        <div class="form-group mt-2">
+            <label for="lengow_shipping_custom">Ou saisissez une valeur personnalisée (ex : ECONOMY) :</label>
+            <input type="text" id="lengow_shipping_custom" class="form-control"
+                   placeholder="Valeur libre (ex : ECONOMY)"
+                   value="{if isset($lengowOrder.method) && $lengowOrder.method !== '' && $lengowOrder.method !== null}{$lengowOrder.method|escape:'html':'UTF-8'}{/if}" />
+            <small class="form-text text-muted">
+                La valeur saisie ici sera prioritaire sur la sélection du menu déroulant ci-dessus.
+                Amazon accepte des valeurs libres pour ce champ.
+            </small>
         </div>
         <button id="save_lengow_method" class="btn btn-primary mt-3">Enregistrer la méthode de livraison</button>
         <div id="lengow_save_result" class="mt-2"></div>
@@ -41,9 +52,23 @@
 <script>
     (function() {
         document.addEventListener('DOMContentLoaded', function() {
+            var selectEl = document.getElementById('lengow_shipping_select');
+            var customEl = document.getElementById('lengow_shipping_custom');
+
+            // When a dropdown option is chosen, copy it to the text field (or clear if empty option)
+            selectEl.addEventListener('change', function() {
+                customEl.value = selectEl.value;
+            });
+
+            // When text field is modified, reset dropdown to empty
+            customEl.addEventListener('input', function() {
+                selectEl.value = '';
+            });
+
             var btn = document.getElementById('save_lengow_method');
             btn.addEventListener('click', function() {
-                var method = document.getElementById('lengow_shipping_select').value;
+                // Text field takes priority; otherwise use dropdown value
+                var method = customEl.value !== '' ? customEl.value : selectEl.value;
                 var idOrder = {$id_order|intval};
                 // URL générée par getAdminLink (inclut token et controller)
                 var url = "{$ajax_url|escape:'javascript':'UTF-8'}";
