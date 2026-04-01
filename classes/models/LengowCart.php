@@ -139,7 +139,7 @@ class LengowCart extends Cart
         if (!empty($idProductAttribute)) {
             $version = defined('_PS_VERSION_') ? _PS_VERSION_ : '';
             // for PrestaShop 8.0 and higher
-            if (version_compare($version, '8.0.0.0', '>=')) {
+            if (version_compare($version, '8.0.0.0', '>=') && !isset($skipAvailabilityCheckOutOfStock)) {
                 $minimalQuantity = (int) ProductAttribute::getAttributeMinimalQty($idProductAttribute);
             } else {
                 $minimalQuantity = (int) Attribute::getAttributeMinimalQty($idProductAttribute);
@@ -156,7 +156,7 @@ class LengowCart extends Cart
         if (isset(self::$_totalWeight[$this->id])) {
             unset(self::$_totalWeight[$this->id]);
         }
-       if (!$product->available_for_order && !$this->forceProduct) {
+        if (!$product->available_for_order && !$this->forceProduct) {
             return false;
         }
         // check if the product is already in the cart
@@ -183,7 +183,8 @@ class LengowCart extends Cart
             $qty = '+ ' . (int) $quantity;
             // force here
             if ($newQty > $productQty
-                && !Product::isAvailableWhenOutOfStock(!$this->forceProduct && (int) $result2['out_of_stock'])
+                && !$this->forceProduct
+                && !Product::isAvailableWhenOutOfStock((int) $result2['out_of_stock'])
             ) {
                 return false;
             }
@@ -320,4 +321,4 @@ class LengowCart extends Cart
             $this->{$fieldName} = Context::getContext()->language->id;
         }
     }
-}
+} 
