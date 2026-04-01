@@ -471,3 +471,11 @@ admin.order.resend_action|Reenvie la accion
 admin.order.check_resend_action|¿Realmente desea enviar la siguiente acción: %{action} ?
 admin.order.customer_shipping_phone|Teléfono de envío al cliente
 admin.order.customer_billing_phone|Teléfono de facturación al cliente
+admin.order.shipping_method_label|Método de envío enviado por Lengow:
+admin.order.shipping_method_empty|-- Ningún método de envío seleccionado --
+admin.order.shipping_method_custom_label|O introduzca un valor personalizado (ej. ECONOMY):
+admin.order.shipping_method_custom_help|El valor introducido aquí tendrá prioridad sobre la selección del menú desplegable. Amazon acepta valores de texto libre para este campo.
+admin.order.shipping_method_save|Guardar método de envío
+admin.order.shipping_method_saved|Método de envío guardado correctamente.
+admin.order.shipping_method_error|Error:
+admin.order.shipping_method_server_error|Error de comunicación con el servidor
