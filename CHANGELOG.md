@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.9.5](https://github.com/lengow/plugin-prestashop/compare/v3.9.4...v3.9.5) (2026-04-02)
+
+
+### Bug Fixes
+
+* **orders:** [PCMT-1475] Remove useless condition ([#78](https://github.com/lengow/plugin-prestashop/issues/78)) ([107c61f](https://github.com/lengow/plugin-prestashop/commit/107c61f6ffdbea404252f035c7e8e71062d0eec0))
+
 ## [3.9.4](https://github.com/lengow/plugin-prestashop/compare/v3.9.3...v3.9.4) (2025-12-08)
 
 
