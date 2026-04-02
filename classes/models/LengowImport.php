@@ -112,17 +112,17 @@ class LengowImport
     /**
      * @var bool import is processing
      */
-    public static $processing;
+    public static bool $processing = false;
 
     /**
-     * @var string order id being imported
+     * @var int|string order id being imported
      */
-    public static $currentOrder = -1;
+    public static int|string $currentOrder = -1;
 
     /**
-     * @var array valid states lengow to create a Lengow order
+     * @var list<string> valid states lengow to create a Lengow order
      */
-    public static $lengowStates = [
+    public static array $lengowStates = [
         LengowOrder::STATE_WAITING_SHIPMENT,
         LengowOrder::STATE_SHIPPED,
         LengowOrder::STATE_CLOSED,
@@ -132,168 +132,168 @@ class LengowImport
     /**
      * @var int PrestaShop lang id
      */
-    private $idLang;
+    private int $idLang;
 
     /**
      * @var int|null PrestaShop shop id
      */
-    private $idShop;
+    private ?int $idShop = null;
 
     /**
      * @var int PrestaShop shop group id
      */
-    private $idShopGroup;
+    private int $idShopGroup;
 
     /**
      * @var bool use debug mode
      */
-    private $debugMode;
+    private bool $debugMode;
 
     /**
      * @var bool display log messages
      */
-    private $logOutput;
+    private bool $logOutput;
 
     /**
      * @var string|null marketplace order sku
      */
-    private $marketplaceSku;
+    private ?string $marketplaceSku = null;
 
     /**
      * @var string|null marketplace name
      */
-    private $marketplaceName;
+    private ?string $marketplaceName = null;
 
     /**
      * @var int|null delivery address id
      */
-    private $deliveryAddressId;
+    private ?int $deliveryAddressId = null;
 
     /**
      * @var int maximum number of new orders created
      */
-    private $limit;
+    private int $limit;
 
     /**
      * @var bool force import order even if there are errors
      */
-    private $forceSync;
+    private bool $forceSync;
 
     /**
      * @var bool import inactive & out of stock products
      */
-    private $forceProduct;
+    private bool $forceProduct;
 
     /**
      * @var int|false imports orders updated since (timestamp)
      */
-    private $updatedFrom = false;
+    private int|false $updatedFrom = false;
 
     /**
      * @var int|false imports orders updated until (timestamp)
      */
-    private $updatedTo = false;
+    private int|false $updatedTo = false;
 
     /**
      * @var int|false imports orders created since (timestamp)
      */
-    private $createdFrom = false;
+    private int|false $createdFrom = false;
 
     /**
      * @var int|false imports orders created until (timestamp)
      */
-    private $createdTo = false;
+    private int|false $createdTo = false;
 
     /**
      * @var string Lengow account id
      */
-    private $accountId;
+    private string $accountId;
 
     /**
      * @var LengowConnector Lengow connector
      */
-    private $connector;
+    private LengowConnector $connector;
 
     /**
-     * @var Context Context for import order
+     * @var Context|null Context for import order
      */
-    private $context;
+    private ?Context $context = null;
 
     /**
      * @var string type import (manual or cron)
      */
-    private $typeImport;
+    private string $typeImport;
 
     /**
      * @var bool import one order
      */
-    private $importOneOrder = false;
+    private bool $importOneOrder = false;
 
     /**
-     * @var array shop catalog ids for import
+     * @var list<mixed> shop catalog ids for import
      */
-    private $shopCatalogIds = [];
+    private array $shopCatalogIds = [];
 
     /**
-     * @var array catalog ids already imported
+     * @var array<string, mixed> catalog ids already imported
      */
-    private $catalogIds = [];
+    private array $catalogIds = [];
 
     /**
-     * @var int id of lengow order record
+     * @var int|null id of lengow order record
      */
-    private $idOrderLengow;
+    private ?int $idOrderLengow = null;
 
     /**
-     * @var array all orders created during the process
+     * @var array<string, mixed> all orders created during the process
      */
-    private $ordersCreated = [];
+    private array $ordersCreated = [];
 
     /**
-     * @var array all orders updated during the process
+     * @var array<string, mixed> all orders updated during the process
      */
-    private $ordersUpdated = [];
+    private array $ordersUpdated = [];
 
     /**
-     * @var array all orders failed during the process
+     * @var array<string, mixed> all orders failed during the process
      */
-    private $ordersFailed = [];
+    private array $ordersFailed = [];
 
     /**
-     * @var array all orders ignored during the process
+     * @var array<string, mixed> all orders ignored during the process
      */
-    private $ordersIgnored = [];
+    private array $ordersIgnored = [];
 
     /**
-     * @var array all incorrectly formatted orders that cannot be processed
+     * @var array<string, mixed> all incorrectly formatted orders that cannot be processed
      */
-    private $ordersNotFormatted = [];
+    private array $ordersNotFormatted = [];
 
     /**
-     * @var array all synchronization error (global or by shop)
+     * @var array<int|string, mixed> all synchronization error (global or by shop)
      */
-    private $errors = [];
+    private array $errors = [];
 
     /**
      * Construct the import manager
      *
-     * @param array $params optional options
-     *                      string  marketplace_sku     Lengow marketplace order id to synchronize
-     *                      string  marketplace_name    Lengow marketplace name to synchronize
-     *                      string  type                Type of current synchronization
-     *                      string  created_from        Synchronization of orders since
-     *                      string  created_to          Synchronization of orders until
-     *                      integer delivery_address_id Lengow delivery address id to synchronize
-     *                      integer id_order_lengow     Lengow order id in PrestaShop
-     *                      integer shop_id             Shop id for current synchronization
-     *                      float   days                Synchronization interval time
-     *                      integer limit               Maximum number of new orders created
-     *                      boolean log_output          Display log messages
-     *                      boolean debug_mode          Activate debug mode
-     *                      boolean force_sync          Force synchronization order even if there are errors
-     *                      boolean force_product       Force import product when quantity is insufficient
+     * @param array<string, mixed> $params optional options
+     *                                     string  marketplace_sku     Lengow marketplace order id to synchronize
+     *                                     string  marketplace_name    Lengow marketplace name to synchronize
+     *                                     string  type                Type of current synchronization
+     *                                     string  created_from        Synchronization of orders since
+     *                                     string  created_to          Synchronization of orders until
+     *                                     integer delivery_address_id Lengow delivery address id to synchronize
+     *                                     integer id_order_lengow     Lengow order id in PrestaShop
+     *                                     integer shop_id             Shop id for current synchronization
+     *                                     float   days                Synchronization interval time
+     *                                     integer limit               Maximum number of new orders created
+     *                                     boolean log_output          Display log messages
+     *                                     boolean debug_mode          Activate debug mode
+     *                                     boolean force_sync          Force synchronization order even if there are errors
+     *                                     boolean force_product       Force import product when quantity is insufficient
      */
-    public function __construct($params = [])
+    public function __construct(array $params = [])
     {
         // get generic params for synchronisation
         $this->debugMode = isset($params[self::PARAM_DEBUG_MODE])
@@ -359,9 +359,9 @@ class LengowImport
     /**
      * Execute import : fetch orders and import them
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public function exec()
+    public function exec(): array
     {
         // checks if a synchronization is not already in progress
         if (!$this->canExecuteSynchronization()) {
@@ -370,7 +370,7 @@ class LengowImport
 
         $syncOk = true;
         // get initial context type
-        $initialContextShop = Context::getContext()->shop;
+        $initialContextShop = LengowContext::getContext()->shop;
         $initialContextType = $initialContextShop::getContext();
         // starts some processes necessary for synchronization
         $this->setupSynchronization();
@@ -406,7 +406,7 @@ class LengowImport
             LengowMain::updateDateImport($this->typeImport);
         }
         // clean Context type with initial type if different
-        $currentContextShop = Context::getContext()->shop;
+        $currentContextShop = LengowContext::getContext()->shop;
         if ($initialContextType !== $currentContextShop::getContext()) {
             try {
                 $currentContextShop::setContext($initialContextType);
@@ -417,7 +417,7 @@ class LengowImport
                     $this->logOutput
                 );
             }
-            Context::getContext()->shop = $currentContextShop;
+            LengowContext::getContext()->shop = $currentContextShop;
         }
         // complete synchronization and start all necessary processes
         $this->releaseLock(self::LOCK_NAME);
@@ -434,7 +434,7 @@ class LengowImport
      *
      * @return bool
      */
-    public static function checkState($orderStateMarketplace, $marketplace)
+    public static function checkState(string $orderStateMarketplace, LengowMarketplace $marketplace): bool
     {
         if (empty($orderStateMarketplace)) {
             return false;
@@ -448,9 +448,9 @@ class LengowImport
      *
      * @return bool
      */
-    public static function isInProcess()
+    public static function isInProcess(): bool
     {
-        $timestamp = LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
+        $timestamp = (int) LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
         if ($timestamp <= 0) {
             return false;
         }
@@ -469,9 +469,9 @@ class LengowImport
      *
      * @return int
      */
-    public static function restTimeToImport()
+    public static function restTimeToImport(): int
     {
-        $timestamp = LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
+        $timestamp = (int) LengowConfiguration::getGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS);
 
         return $timestamp > 0 ? $timestamp + (60 * self::MINUTE_INTERVAL_TIME) - time() : 0;
     }
@@ -483,8 +483,10 @@ class LengowImport
      * @param float|null $days Import period
      * @param string|null $createdFrom Import of orders since
      * @param string|null $createdTo Import of orders until
+     *
+     * @return void
      */
-    private function setIntervalTime($minutes = null, $days = null, $createdFrom = null, $createdTo = null)
+    private function setIntervalTime(?float $minutes = null, ?float $days = null, ?string $createdFrom = null, ?string $createdTo = null): void
     {
         if ($createdFrom && $createdTo) {
             // retrieval of orders created from ... until ...
@@ -505,8 +507,7 @@ class LengowImport
         if ($minutes) {
             $intervalTime = floor($minutes * 60); // convert minutes to seconds
             $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
-        }
-        elseif ($days) {
+        } elseif ($days) {
             $intervalTime = floor($days * self::MIN_INTERVAL_TIME); // convert days to seconds
             $intervalTime = $intervalTime > self::MAX_INTERVAL_TIME ? self::MAX_INTERVAL_TIME : $intervalTime;
         } else {
@@ -540,7 +541,7 @@ class LengowImport
      *
      * @return bool
      */
-    private function canExecuteSynchronization()
+    private function canExecuteSynchronization(): bool
     {
         if (!$this->acquireLock(self::LOCK_NAME)) {
             $message = LengowMain::setLogMessage(
@@ -581,8 +582,10 @@ class LengowImport
 
     /**
      * Starts some processes necessary for synchronization
+     *
+     * @return void
      */
-    private function setupSynchronization()
+    private function setupSynchronization(): void
     {
         // suppress log files when too old
         LengowMain::cleanLog();
@@ -592,6 +595,9 @@ class LengowImport
         // checks Lengow catalogs and carriers for order synchronization
         if (!$this->importOneOrder && $this->typeImport === self::TYPE_MANUAL) {
             LengowSync::syncCatalog();
+        }
+        // sync marketplace/carrier data on every import type so new marketplaces are registered in DB
+        if (!$this->importOneOrder) {
             LengowSync::syncCarrier();
         }
         LengowMain::log(
@@ -615,7 +621,7 @@ class LengowImport
      *
      * @return bool
      */
-    private function checkCredentials()
+    private function checkCredentials(): bool
     {
         if (LengowConnector::isValidAuth($this->logOutput)) {
             list($this->accountId, $accessToken, $secretToken) = LengowConfiguration::getAccessIds();
@@ -630,9 +636,9 @@ class LengowImport
     /**
      * Return the synchronization result
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private function getResult()
+    private function getResult(): array
     {
         $nbOrdersCreated = count($this->ordersCreated);
         $nbOrdersUpdated = count($this->ordersUpdated);
@@ -668,7 +674,7 @@ class LengowImport
      *
      * @return bool
      */
-    private function synchronizeOrdersByShop($shop)
+    private function synchronizeOrdersByShop(LengowShop $shop): bool
     {
         LengowMain::log(
             LengowLog::CODE_IMPORT,
@@ -761,7 +767,7 @@ class LengowImport
      *
      * @return bool
      */
-    private function checkCatalogIds($shop)
+    private function checkCatalogIds(LengowShop $shop): bool
     {
         if ($this->importOneOrder) {
             return true;
@@ -813,15 +819,16 @@ class LengowImport
      *
      * @param int $idShop PrestaShop shop Id
      *
+     * @return void
+     *
      * @throws Exception
      */
-    private function changeContext($idShop)
+    private function changeContext(int $idShop): void
     {
-        $this->context = Context::getContext()->cloneContext();
-        if ($shop = new Shop($idShop)) {
-            $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
-            $this->context->shop = $shop;
-        }
+        $this->context = LengowContext::getContext()->cloneContext();
+        $shop = new Shop($idShop);
+        $shop::setContext(Shop::CONTEXT_SHOP, $shop->id);
+        $this->context->shop = $shop;
         $this->idLang = $this->context->language->id;
         $this->idShopGroup = $this->context->shop->id_shop_group;
     }
@@ -831,11 +838,11 @@ class LengowImport
      *
      * @param LengowShop $shop
      *
-     * @return array
+     * @return array<int|string, mixed>
      *
      * @throws LengowException no connection with the webservice / credentials not valid
      */
-    private function getOrdersFromApi($shop)
+    private function getOrdersFromApi(LengowShop $shop): array
     {
         $page = 1;
         $orders = [];
@@ -943,8 +950,10 @@ class LengowImport
      *
      * @param mixed $orders API orders
      * @param int $idShop PrestaShop shop Id
+     *
+     * @return void
      */
-    private function importOrders($orders, $idShop)
+    private function importOrders(mixed $orders, int $idShop): void
     {
         $importFinished = false;
         foreach ($orders as $orderData) {
@@ -1049,8 +1058,10 @@ class LengowImport
      * @param string $marketplaceSku id lengow of current order
      * @param string $errorMessage Error message
      * @param mixed $orderData API order data
+     *
+     * @return void
      */
-    private function addOrderNotFormatted($marketplaceSku, $errorMessage, $orderData)
+    private function addOrderNotFormatted(string $marketplaceSku, string $errorMessage, mixed $orderData): void
     {
         $messageDecoded = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
         $this->ordersNotFormatted[] = [
@@ -1070,9 +1081,11 @@ class LengowImport
     /**
      * Synchronize the merchant order id with Lengow
      *
-     * @param array $result synchronization order result
+     * @param array<string, mixed> $result synchronization order result
+     *
+     * @return void
      */
-    private function synchronizeMerchantOrderId($result)
+    private function synchronizeMerchantOrderId(array $result): void
     {
         if (!$this->debugMode && $result[LengowImportOrder::RESULT_TYPE] === LengowImportOrder::RESULT_CREATED) {
             $lengowOrder = new LengowOrder((int) $result[LengowImportOrder::MERCHANT_ORDER_ID]);
@@ -1095,9 +1108,11 @@ class LengowImport
     /**
      * Save the result of the order synchronization by type
      *
-     * @param array $result synchronization order result
+     * @param array<string, mixed> $result synchronization order result
+     *
+     * @return void
      */
-    private function saveSynchronizationResult($result)
+    private function saveSynchronizationResult(array $result): void
     {
         $resultType = $result[LengowImportOrder::RESULT_TYPE];
         unset($result[LengowImportOrder::RESULT_TYPE]);
@@ -1119,8 +1134,10 @@ class LengowImport
 
     /**
      * Complete synchronization and start all necessary processes
+     *
+     * @return void
      */
-    private function finishSynchronization()
+    private function finishSynchronization(): void
     {
         // finish synchronization process
         self::setEnd();
@@ -1150,8 +1167,10 @@ class LengowImport
 
     /**
      * Set import to "in process" state
+     *
+     * @return void
      */
-    private static function setInProcess()
+    private static function setInProcess(): void
     {
         self::$processing = true;
         LengowConfiguration::updateGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS, time());
@@ -1159,8 +1178,10 @@ class LengowImport
 
     /**
      * Set import to finished
+     *
+     * @return void
      */
-    private static function setEnd()
+    private static function setEnd(): void
     {
         self::$processing = false;
         LengowConfiguration::updateGlobalValue(LengowConfiguration::SYNCHRONIZATION_IN_PROGRESS, -1);
@@ -1169,22 +1190,21 @@ class LengowImport
     /**
      * Acquire a named lock
      *
-     * @param string    $lockName   Name of the lock
-     * @param int       $timeout    Timeout in seconds
+     * @param string $lockName Name of the lock
+     * @param int $timeout Timeout in seconds
      *
      * @return bool True if the lock was acquired, false otherwise
      */
     private function acquireLock(string $lockName, int $timeout = 0): bool
     {
         try {
-            $db = \Db::getInstance();
+            $db = Db::getInstance();
             $result = $db->getValue(
                 'SELECT GET_LOCK("' . pSQL($lockName) . '", ' . (int) $timeout . ')'
             );
 
             return (bool) $result;
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(
@@ -1201,21 +1221,20 @@ class LengowImport
     /**
      * Release a named lock
      *
-     * @param string    $lockName   Name of the lock
+     * @param string $lockName Name of the lock
      *
      * @return bool True if the lock was released, false otherwise
      */
     private function releaseLock(string $lockName): bool
     {
         try {
-            $db = \Db::getInstance();
+            $db = Db::getInstance();
             $result = $db->getValue(
                 'SELECT RELEASE_LOCK("' . pSQL($lockName) . '")'
             );
 
             return (bool) $result;
-
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
                 LengowMain::setLogMessage(

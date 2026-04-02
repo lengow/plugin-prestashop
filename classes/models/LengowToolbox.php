@@ -192,9 +192,9 @@ class LengowToolbox
     public const FILE_TEST = 'test.txt';
 
     /**
-     * @var array valid toolbox actions
+     * @var list<string> valid toolbox actions
      */
-    public static $toolboxActions = [
+    public static array $toolboxActions = [
         self::ACTION_DATA,
         self::ACTION_LOG,
         self::ACTION_ORDER,
@@ -205,9 +205,9 @@ class LengowToolbox
      *
      * @param string $type Toolbox data type
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getData($type = self::DATA_TYPE_CMS)
+    public static function getData(string $type = self::DATA_TYPE_CMS): array
     {
         switch ($type) {
             case self::DATA_TYPE_ALL:
@@ -240,8 +240,10 @@ class LengowToolbox
      * Download log file individually or globally
      *
      * @param string|null $date name of file to download
+     *
+     * @return void
      */
-    public static function downloadLog($date = null)
+    public static function downloadLog(?string $date = null): void
     {
         LengowLog::download($date);
     }
@@ -249,11 +251,11 @@ class LengowToolbox
     /**
      * Start order synchronization based on specific parameters
      *
-     * @param array $params synchronization parameters
+     * @param array<string, mixed> $params synchronization parameters
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function syncOrders($params = [])
+    public static function syncOrders(array $params = []): array
     {
         // get all params for order synchronization
         $params = self::filterParamsForSync($params);
@@ -275,9 +277,9 @@ class LengowToolbox
      * @param string|null $marketplaceName marketplace code
      * @param string $type Toolbox order data type
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getOrderData($marketplaceSku = null, $marketplaceName = null, $type = self::DATA_TYPE_ORDER)
+    public static function getOrderData(?string $marketplaceSku = null, ?string $marketplaceName = null, string $type = self::DATA_TYPE_ORDER): array
     {
         $lengowOrders = $marketplaceSku && $marketplaceName
             ? LengowOrder::getAllLengowOrders($marketplaceSku, $marketplaceName)
@@ -319,7 +321,7 @@ class LengowToolbox
      *
      * @return bool
      */
-    public static function isCurlActivated()
+    public static function isCurlActivated(): bool
     {
         return function_exists(self::PHP_EXTENSION_CURL);
     }
@@ -327,9 +329,9 @@ class LengowToolbox
     /**
      * Get all data
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getAllData()
+    private static function getAllData(): array
     {
         return [
             self::CHECKLIST => self::getChecklistData(),
@@ -345,9 +347,9 @@ class LengowToolbox
     /**
      * Get cms data
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getCmsData()
+    private static function getCmsData(): array
     {
         return [
             self::CHECKLIST => self::getChecklistData(),
@@ -360,9 +362,9 @@ class LengowToolbox
     /**
      * Get array of requirements
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getChecklistData()
+    private static function getChecklistData(): array
     {
         $checksumData = self::getChecksumData();
 
@@ -377,9 +379,9 @@ class LengowToolbox
     /**
      * Get array of plugin data
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getPluginData()
+    private static function getPluginData(): array
     {
         return [
             self::PLUGIN_CMS_VERSION => _PS_VERSION_,
@@ -399,9 +401,9 @@ class LengowToolbox
     /**
      * Get array of synchronization data
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getSynchronizationData()
+    private static function getSynchronizationData(): array
     {
         $lastImport = LengowMain::getLastImport();
 
@@ -420,9 +422,9 @@ class LengowToolbox
     /**
      * Get array of export data
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getShopData()
+    private static function getShopData(): array
     {
         $exportData = [];
         $shops = LengowShop::getActiveShops();
@@ -454,9 +456,9 @@ class LengowToolbox
     /**
      * Get array of export data
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getOptionData()
+    private static function getOptionData(): array
     {
         $optionData = [
             self::CMS_OPTIONS => LengowConfiguration::getAllValues(),
@@ -473,9 +475,9 @@ class LengowToolbox
     /**
      * Get files checksum
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getChecksumData()
+    private static function getChecksumData(): array
     {
         $fileCounter = 0;
         $fileModified = [];
@@ -484,11 +486,23 @@ class LengowToolbox
         $fileName = LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_CHECKMD5;
         if (file_exists($fileName)) {
             $md5Available = true;
+            if (!LengowMain::isPathAllowed($fileName, _PS_MODULE_LENGOW_DIR_)) {
+                return [
+                    self::CHECKSUM_AVAILABLE => false,
+                    self::CHECKSUM_SUCCESS => false,
+                    self::CHECKSUM_NUMBER_FILES_CHECKED => 0,
+                    self::CHECKSUM_FILE_MODIFIED => [],
+                    self::CHECKSUM_FILE_DELETED => [],
+                ];
+            }
             if (($file = fopen($fileName, 'rb')) !== false) {
-                while (($data = fgetcsv($file, 1000, '|')) !== false) {
+                while (($data = fgetcsv($file, 1000, '|', '"', '')) !== false) {
                     ++$fileCounter;
                     $shortPath = $data[0];
                     $filePath = LengowMain::getLengowFolder() . $data[0];
+                    if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+                        continue;
+                    }
                     if (file_exists($filePath)) {
                         $fileMd = md5_file($filePath);
                         if ($fileMd !== $data[1]) {
@@ -524,9 +538,11 @@ class LengowToolbox
      *
      * @string $shortPathParam the file short path
      *
-     * @return array
+     * @param mixed $shortPathParam
+     *
+     * @return array<string, mixed>
      */
-    private static function getModifiedFilesData($shortPathParam)
+    private static function getModifiedFilesData(mixed $shortPathParam): array
     {
         $fileCounter = 0;
         $fileModified = [];
@@ -536,11 +552,23 @@ class LengowToolbox
 
         if (file_exists($fileName)) {
             $md5Available = true;
+            if (!LengowMain::isPathAllowed($fileName, _PS_MODULE_LENGOW_DIR_)) {
+                return [
+                    self::CHECKSUM_AVAILABLE => false,
+                    self::CHECKSUM_SUCCESS => false,
+                    self::CHECKSUM_NUMBER_FILES_CHECKED => 0,
+                    self::CHECKSUM_FILE_MODIFIED => [],
+                    self::CHECKSUM_FILE_DELETED => [],
+                ];
+            }
             if (($file = fopen($fileName, 'rb')) !== false) {
-                while (($data = fgetcsv($file, 1000, '|')) !== false) {
+                while (($data = fgetcsv($file, 1000, '|', '"', '')) !== false) {
                     ++$fileCounter;
                     $shortPath = $data[0];
                     $filePath = LengowMain::getLengowFolder() . $data[0];
+                    if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+                        continue;
+                    }
                     if (file_exists($filePath)) {
                         $fileMd = md5_file($filePath);
                         if ($fileMd !== $data[1]) {
@@ -572,9 +600,9 @@ class LengowToolbox
     /**
      * Get all log files available
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getLogData()
+    private static function getLogData(): array
     {
         $logs = LengowLog::getPaths();
         if (!empty($logs)) {
@@ -593,7 +621,7 @@ class LengowToolbox
      *
      * @return bool
      */
-    private static function isSimpleXMLActivated()
+    private static function isSimpleXMLActivated(): bool
     {
         return function_exists(self::PHP_EXTENSION_SIMPLEXML);
     }
@@ -603,7 +631,7 @@ class LengowToolbox
      *
      * @return bool
      */
-    private static function isJsonActivated()
+    private static function isJsonActivated(): bool
     {
         return function_exists(self::PHP_EXTENSION_JSON);
     }
@@ -613,10 +641,13 @@ class LengowToolbox
      *
      * @return bool
      */
-    private static function testWritePermission()
+    private static function testWritePermission(): bool
     {
         $sep = DIRECTORY_SEPARATOR;
         $filePath = LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_TEST;
+        if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+            return false;
+        }
         try {
             $file = fopen($filePath, 'wb+');
             if (!$file) {
@@ -633,11 +664,11 @@ class LengowToolbox
     /**
      * Filter parameters for order synchronization
      *
-     * @param array $params synchronization params
+     * @param array<string, mixed> $params synchronization params
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function filterParamsForSync($params = [])
+    private static function filterParamsForSync(array $params = []): array
     {
         $paramsFiltered = [LengowImport::PARAM_TYPE => LengowImport::TYPE_TOOLBOX];
         if (isset(
@@ -669,12 +700,12 @@ class LengowToolbox
      * Get array of all the data of the order
      *
      * @param string $type Toolbox order data type
-     * @param array $data All Lengow order data
+     * @param array<string, mixed> $data All Lengow order data
      * @param LengowOrder|null $lengowOrder Lengow order instance
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getOrderDataByType($type, $data, $lengowOrder = null)
+    private static function getOrderDataByType(string $type, array $data, ?LengowOrder $lengowOrder = null): array
     {
         $orderReferences = [
             self::ID => (int) $data[LengowOrder::FIELD_ID],
@@ -709,12 +740,12 @@ class LengowToolbox
     /**
      * Get array of all the data of the order
      *
-     * @param array $data All Lengow order data
+     * @param array<string, mixed> $data All Lengow order data
      * @param LengowOrder|null $lengowOrder Lengow order instance
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getAllOrderData($data, $lengowOrder = null)
+    private static function getAllOrderData(array $data, ?LengowOrder $lengowOrder = null): array
     {
         $orderTypes = json_decode($data[LengowOrder::FIELD_ORDER_TYPES], true);
 
@@ -786,9 +817,9 @@ class LengowToolbox
      *
      * @param int $idOrderLengow Lengow order id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getOrderErrorsData($idOrderLengow)
+    private static function getOrderErrorsData(int $idOrderLengow): array
     {
         $orderErrors = [];
         $errors = LengowOrderError::getOrderLogs($idOrderLengow);
@@ -820,9 +851,9 @@ class LengowToolbox
      *
      * @param int $idOrder PrestaShop order id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getOrderActionData($idOrder)
+    private static function getOrderActionData(int $idOrder): array
     {
         $orderActions = [];
         $actions = LengowAction::getActionsByOrderId($idOrder);
@@ -849,9 +880,9 @@ class LengowToolbox
      *
      * @param LengowOrder $lengowOrder Lengow order instance
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getOrderStatusesData($lengowOrder)
+    private static function getOrderStatusesData(LengowOrder $lengowOrder): array
     {
         $orderStatuses = [];
         $idLang = Language::getIdByIso(LengowTranslation::ISO_CODE_EN);
@@ -871,12 +902,12 @@ class LengowToolbox
     /**
      * Get all the data of the order at the time of import
      *
-     * @param array $data All Lengow order data
+     * @param array<string, mixed> $data All Lengow order data
      * @param LengowOrder|null $lengowOrder Lengow order instance
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function getOrderExtraData($data, $lengowOrder = null)
+    private static function getOrderExtraData(array $data, ?LengowOrder $lengowOrder = null): array
     {
         $orderData = json_decode($data[LengowOrder::FIELD_EXTRA], true);
         $orderData[self::EXTRA_UPDATED_AT] = $lengowOrder
@@ -893,7 +924,7 @@ class LengowToolbox
      *
      * @return string
      */
-    private static function getOrderProcessLabel($orderProcess)
+    private static function getOrderProcessLabel(int $orderProcess): string
     {
         switch ($orderProcess) {
             case LengowOrder::PROCESS_STATE_NEW:
@@ -913,7 +944,7 @@ class LengowToolbox
      *
      * @return string|null
      */
-    private static function getOrderStatusCorrespondence($idOrderState)
+    private static function getOrderStatusCorrespondence(int $idOrderState): ?string
     {
         $idStatusWaitingShipment = LengowMain::getOrderState(LengowOrder::STATE_WAITING_SHIPMENT);
         $idStatusShipped = LengowMain::getOrderState(LengowOrder::STATE_SHIPPED);
@@ -936,9 +967,9 @@ class LengowToolbox
      * @param int $httpCode request http code
      * @param string $error error message
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private static function generateErrorReturn($httpCode, $error)
+    private static function generateErrorReturn(int $httpCode, string $error): array
     {
         return [
             self::ERRORS => [

@@ -34,7 +34,7 @@ class LengowOrderDetail extends OrderDetail
      *
      * @return int
      */
-    public static function findByOrderIdProductId($idOrder, $idProduct)
+    public static function findByOrderIdProductId(int $idOrder, $idProduct): int
     {
         $whereArr = [
             '`id_order`=' . (int) $idOrder,
@@ -59,43 +59,39 @@ class LengowOrderDetail extends OrderDetail
     /**
      * @param string $returnTrackingNumber
      * @param int $orderId
+     *
+     * @return void
      */
-    public static function updateOrderReturnTrackingNumber($returnTrackingNumber, $orderId)
+    public static function updateOrderReturnTrackingNumber(string $returnTrackingNumber, int $orderId): void
     {
-        try {
-            $returnTrackingNumber = pSQL($returnTrackingNumber);
-            $order = new Order($orderId);
-            $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
-            $orderCarrier->return_tracking_number = $returnTrackingNumber;
-            $orderCarrier->update();
-        } catch (Exception $e) {
-            LengowOrderError::addOrderLog(
-                $orderId,
-                '[PrestaShop error]: ' . $e->getMessage(),
-                LengowOrderError::TYPE_ERROR_SEND
-            );
+        $idOrderCarrier = self::getIdOrderCarrier($orderId);
+        if (!$idOrderCarrier) {
+            return;
         }
+        Db::getInstance()->update(
+            'order_carrier',
+            ['return_tracking_number' => pSQL($returnTrackingNumber)],
+            'id_order_carrier = ' . $idOrderCarrier
+        );
     }
 
     /**
-     * @param string $returnTrackingNumber
+     * @param string $returnCarrier
      * @param int $orderId
+     *
+     * @return void
      */
-    public static function updateOrderReturnCarrier($returnCarrier, $orderId)
+    public static function updateOrderReturnCarrier(string $returnCarrier, int $orderId): void
     {
-        try {
-            $returnCarrier = pSQL($returnCarrier);
-            $order = new Order($orderId);
-            $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
-            $orderCarrier->return_carrier = $returnCarrier;
-            $orderCarrier->update();
-        } catch (Exception $e) {
-            LengowOrderError::addOrderLog(
-                $orderId,
-                '[PrestaShop error]: ' . $e->getMessage(),
-                LengowOrderError::TYPE_ERROR_SEND
-            );
+        $idOrderCarrier = self::getIdOrderCarrier($orderId);
+        if (!$idOrderCarrier) {
+            return;
         }
+        Db::getInstance()->update(
+            'order_carrier',
+            ['return_carrier' => pSQL($returnCarrier)],
+            'id_order_carrier = ' . $idOrderCarrier
+        );
     }
 
     /**
@@ -103,22 +99,17 @@ class LengowOrderDetail extends OrderDetail
      *
      * @return string
      */
-    public static function getOrderReturnTrackingNumber($orderId)
+    public static function getOrderReturnTrackingNumber(int $orderId): string
     {
-        try {
-            $order = new Order($orderId);
-            $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
-
-            return (string) $orderCarrier->return_tracking_number;
-        } catch (Exception $e) {
-            LengowOrderError::addOrderLog(
-                $orderId,
-                '[PrestaShop error]: ' . $e->getMessage(),
-                LengowOrderError::TYPE_ERROR_SEND
-            );
+        $idOrderCarrier = self::getIdOrderCarrier($orderId);
+        if (!$idOrderCarrier) {
+            return '';
         }
+        $result = Db::getInstance()->getValue(
+            'SELECT return_tracking_number FROM ' . _DB_PREFIX_ . 'order_carrier WHERE id_order_carrier = ' . $idOrderCarrier
+        );
 
-        return '';
+        return $result !== false ? (string) $result : '';
     }
 
     /**
@@ -126,22 +117,31 @@ class LengowOrderDetail extends OrderDetail
      *
      * @return string
      */
-    public static function getOrderReturnCarrier($orderId)
+    public static function getOrderReturnCarrier(int $orderId): string
     {
-        try {
-            $order = new Order($orderId);
-            $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
-
-            return (string) $orderCarrier->return_carrier;
-        } catch (Exception $e) {
-            LengowOrderError::addOrderLog(
-                $orderId,
-                '[PrestaShop error]: ' . $e->getMessage(),
-                LengowOrderError::TYPE_ERROR_SEND
-            );
+        $idOrderCarrier = self::getIdOrderCarrier($orderId);
+        if (!$idOrderCarrier) {
+            return '';
         }
+        $result = Db::getInstance()->getValue(
+            'SELECT return_carrier FROM ' . _DB_PREFIX_ . 'order_carrier WHERE id_order_carrier = ' . $idOrderCarrier
+        );
 
-        return '';
+        return $result !== false ? (string) $result : '';
+    }
+
+    /**
+     * @param int $orderId
+     *
+     * @return int
+     */
+    private static function getIdOrderCarrier(int $orderId): int
+    {
+        $result = Db::getInstance()->getValue(
+            'SELECT id_order_carrier FROM ' . _DB_PREFIX_ . 'order_carrier WHERE id_order = ' . $orderId . ' ORDER BY id_order_carrier DESC'
+        );
+
+        return $result !== false ? (int) $result : 0;
     }
 
     /**
@@ -149,12 +149,12 @@ class LengowOrderDetail extends OrderDetail
      *
      * @return string
      */
-    public static function getOrderReturnCarrierName($orderId)
+    public static function getOrderReturnCarrierName(int $orderId): string
     {
         try {
             $order = new Order($orderId);
             $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
-            $carrier = new LengowCarrier($orderCarrier->return_carrier);
+            $carrier = new LengowCarrier((int) $orderCarrier->return_carrier);
 
             return (string) $carrier->name;
         } catch (Exception $e) {

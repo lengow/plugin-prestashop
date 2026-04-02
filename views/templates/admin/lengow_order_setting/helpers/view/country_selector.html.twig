@@ -1,0 +1,31 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+<h2>
+    {{ locale.t('order_setting.screen.carrier_management_title') }}
+</h2>
+<p>{{ locale.t('order_setting.screen.carrier_management_description') }}</p>
+<div class="lgw-row text-center" id="country-list">
+    {% if countries is defined %}
+        {% for country in countries %}
+            <div class="lgw-col-3">
+                <a href="#" class="js-lengow-open-matching lgw-box-link-matching"
+                   data-href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowOrderSetting') }}"
+                   data-id-country="{{ country['id_country'] }}">
+                    <div class="lgw-box">
+                        {% if defaultCarrierNotMatched is defined and defaultCarrierNotMatched[country['id_country']] is defined and defaultCarrierNotMatched[country['id_country']]|length > 0 %}
+                            <span class="alert-matching"></span>
+                        {% endif %}
+                        <img src="{{ lengowPathUri }}views/img/flag/{{ country['iso_code'] }}.png"
+                             alt="{{ country['name'] }}">
+                        <p>{{ country['name']|upper }}</p>
+                        <p class="small light">
+                            {% if marketplaceCounters is defined and marketplaceCounters[country['id_country']] is defined %}{{ marketplaceCounters[country['id_country']] }}{% endif %} {{ locale.t('order_setting.screen.marketplace') }}
+                        </p>
+                    </div>
+                </a>
+            </div>
+        {% endfor %}
+    {% endif %}
+</div>

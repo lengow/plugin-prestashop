@@ -30,12 +30,14 @@ class LengowFeedController extends LengowController
     /**
      * @var LengowList Lengow list instance
      */
-    protected $list;
+    protected LengowList $list;
 
     /**
      * Process Post Parameters
+     *
+     * @return void
      */
-    public function postProcess()
+    public function postProcess(): void
     {
         $action = isset($_REQUEST['action']) ? $_REQUEST['action'] : false;
         if ($action) {
@@ -47,7 +49,7 @@ class LengowFeedController extends LengowController
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::SELECTION_ENABLED,
                             $state,
-                            null,
+                            false,
                             null,
                             $idShop
                         );
@@ -60,21 +62,21 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::OUT_OF_STOCK_ENABLED,
                                 1,
-                                null,
+                                false,
                                 null,
                                 $idShop
                             );
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::VARIATION_ENABLED,
                                 1,
-                                null,
+                                false,
                                 null,
                                 $idShop
                             );
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::INACTIVE_ENABLED,
                                 0,
-                                null,
+                                false,
                                 null,
                                 $idShop
                             );
@@ -83,7 +85,7 @@ class LengowFeedController extends LengowController
                         }
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
-                        echo json_encode($result);
+                        $this->respondJson($result);
                     }
                     break;
                 case 'change_option_selected__out_of_stock':
@@ -93,7 +95,7 @@ class LengowFeedController extends LengowController
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::OUT_OF_STOCK_ENABLED,
                             $state,
-                            null,
+                            false,
                             null,
                             $idShop
                         );
@@ -106,14 +108,14 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
                                 0,
-                                null,
+                                false,
                                 null,
                                 $idShop
                             );
                         }
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
-                        echo json_encode($result);
+                        $this->respondJson($result);
                     }
                     break;
                 case 'change_option_selected__variation':
@@ -123,7 +125,7 @@ class LengowFeedController extends LengowController
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::VARIATION_ENABLED,
                             $state,
-                            null,
+                            false,
                             null,
                             $idShop
                         );
@@ -136,14 +138,14 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
                                 0,
-                                null,
+                                false,
                                 null,
                                 $idShop
                             );
                         }
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
-                        echo json_encode($result);
+                        $this->respondJson($result);
                     }
                     break;
                 case 'change_option_selected__inactive':
@@ -153,7 +155,7 @@ class LengowFeedController extends LengowController
                         LengowConfiguration::updatevalue(
                             LengowConfiguration::INACTIVE_ENABLED,
                             $state,
-                            null,
+                            false,
                             null,
                             $idShop
                         );
@@ -166,14 +168,14 @@ class LengowFeedController extends LengowController
                             LengowConfiguration::updatevalue(
                                 LengowConfiguration::SELECTION_ENABLED,
                                 0,
-                                null,
+                                false,
                                 null,
                                 $idShop
                             );
                         }
 
                         $result = array_merge($data, $this->reloadTotal($idShop));
-                        echo json_encode($result);
+                        $this->respondJson($result);
                     }
                     break;
                 case 'select_product':
@@ -182,7 +184,7 @@ class LengowFeedController extends LengowController
                     $productId = isset($_REQUEST['id_product']) ? $_REQUEST['id_product'] : null;
                     if ($state !== null) {
                         LengowProduct::publish($productId, $state, $idShop);
-                        echo json_encode($this->reloadTotal($idShop));
+                        $this->respondJson($this->reloadTotal($idShop));
                     }
                     break;
                 case 'load_table':
@@ -190,7 +192,7 @@ class LengowFeedController extends LengowController
                     $data = [];
                     $data['shop_id'] = $idShop;
                     $data['footer_content'] = preg_replace('/\r|\n/', '', $this->buildTable($idShop));
-                    echo json_encode($data);
+                    $this->respondJson($data);
                     break;
                 case 'lengow_export_action':
                     $idShop = isset($_REQUEST['id_shop']) ? (int) $_REQUEST['id_shop'] : null;
@@ -234,17 +236,19 @@ class LengowFeedController extends LengowController
                     } else {
                         $data['message'] = $this->locale->t('product.screen.no_product_selected');
                     }
-                    echo json_encode($data);
+                    $this->respondJson($data);
                     break;
             }
-            exit;
+            $this->finishPostProcess();
         }
     }
 
     /**
      * Display data page
+     *
+     * @return void
      */
-    public function display()
+    public function display(): void
     {
         $shopCollection = [];
         if ($currentShop = Shop::getContextShopID()) {
@@ -292,7 +296,7 @@ class LengowFeedController extends LengowController
                 'list' => $this->buildTable($shop->id),
             ];
         }
-        $this->context->smarty->assign('shopCollection', $shopCollection);
+        $this->templateVars['shopCollection'] = $shopCollection;
         parent::display();
     }
 
@@ -301,9 +305,9 @@ class LengowFeedController extends LengowController
      *
      * @param int $idShop PrestaShop shop id
      *
-     * @return array Number of product exported/total for this shop
+     * @return array<int|string, mixed> Number of product exported/total for this shop
      */
-    public function reloadTotal($idShop)
+    public function reloadTotal(int $idShop): array
     {
         $lengowExport = new LengowExport([LengowExport::PARAM_SHOP_ID => $idShop]);
         $result = [];
@@ -320,7 +324,7 @@ class LengowFeedController extends LengowController
      *
      * @return string
      */
-    public function buildTable($idShop)
+    public function buildTable(int $idShop): string
     {
         $fieldsList = [];
 
@@ -453,7 +457,8 @@ class LengowFeedController extends LengowController
                     'where' => $where,
                     'order' => 'p.id_product ASC',
                 ],
-            ]
+            ],
+            $this->context
         );
 
         $collection = $this->list->executeQuery();
@@ -468,7 +473,7 @@ class LengowFeedController extends LengowController
         if ($collection) {
             for ($i = 0; $i < $nb; ++$i) {
                 $productId = $collection[$i]['id_product'];
-                $nothing = '';
+                $nothing = null;
                 $collection[$i]['price_final'] = Product::getPriceStatic(
                     $productId,
                     true,
@@ -554,33 +559,29 @@ class LengowFeedController extends LengowController
      *
      * @param string $key row key
      * @param string $value row value
-     * @param array $item item values
+     * @param array<string, mixed> $item item values
      *
      * @return string
      *
      * @throws Exception
      */
-    public static function displayLink($key, $value, $item)
+    public static function displayLink(string $key, string $value, array $item): string
     {
         // this line is useless, but PrestaShop validator require it
         $key = $key;
         $link = new LengowLink();
         if ($item['id_product']) {
             $controller = 'AdminProducts';
-            if (version_compare(_PS_VERSION_, '1.7', '<')) {
-                $href = $link->getAbsoluteAdminLink($controller) . '&updateproduct&id_product=' . $item['id_product'];
-            } else {
-                $href = $link->getAdminLink(
-                    $controller,
-                    true,
-                    [
-                        'updateproduct' => 1,
-                        'id_product' => $item['id_product'],
-                    ]
-                );
-            }
+            $href = $link->getAdminLink(
+                $controller,
+                true,
+                [
+                    'updateproduct' => 1,
+                    'id_product' => $item['id_product'],
+                ]
+            );
 
-            return '<a href="' . $href . '" target="_blank">' . $value . '</a>';
+            return '<a href="' . htmlspecialchars($href, ENT_QUOTES, 'UTF-8') . '" target="_blank">' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '</a>';
         }
 
         return $value;

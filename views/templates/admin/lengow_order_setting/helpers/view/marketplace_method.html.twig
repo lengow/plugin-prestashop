@@ -1,0 +1,37 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+<li>
+    <div class="lgw-row">
+        <span class="matching-subtitle">
+            {{ locale.t('order_setting.screen.matching_method_marketplace') }}
+        </span>
+    </div>
+</li>
+{% for method in marketplace['methods'] %}
+    <li>
+        <div class="lgw-row">
+            <div class="lgw-col-5 text-right carrier-name">
+                {{ method['method_marketplace_label'] }}
+            </div>
+            <div class="lgw-col-1">
+                <div class="lgw-arrow-right"></div>
+            </div>
+            <div class="lgw-col-6">
+                <select name="method_marketplaces[{{ marketplace['id'] }}][{{ method['id_method_marketplace'] }}]"
+                        class="carrier lengow_select"
+                        data-marketplace="{{ marketplace['id'] }}">
+                    <option value="">{{ locale.t('order_setting.screen.please_select_carrier_prestashop') }}</option>
+                    {% for idCarrier, carrier in carriers %}
+                        {% if marketplace['method_matched'] is defined and marketplace['method_matched'][method['id_method_marketplace']] is defined and marketplace['method_matched'][method['id_method_marketplace']] == idCarrier %}
+                            <option value="{{ idCarrier }}" selected="selected">{{ carrier['name'] }}</option>
+                        {% else %}
+                            <option value="{{ idCarrier }}">{{ carrier['name'] }}</option>
+                        {% endif %}
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </li>
+{% endfor %}

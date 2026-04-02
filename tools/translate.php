@@ -1,5 +1,4 @@
 <?php
-
 /*
  * New Translation system base on YAML files
  * We need to edit yml file for each languages
@@ -41,7 +40,14 @@ foreach ($listFiles as $list) {
     fclose($fp);
 }
 
-function writeCsv($fp, $text, &$frontKey = [])
+/**
+ * @param resource $fp
+ * @param string|array<string, mixed> $text
+ * @param list<string> $frontKey
+ *
+ * @return void
+ */
+function writeCsv($fp, $text, array &$frontKey = []): void
 {
     if (is_array($text)) {
         foreach ($text as $k => $v) {

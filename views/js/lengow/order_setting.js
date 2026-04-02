@@ -36,7 +36,7 @@ function addScoreCarrier() {
             }
 
         });
-        $(this).parents('li.lengow_marketplace').find('.score').html(nbs+' / '+total);
+        $(this).parents('li.lengow_marketplace').find('.score').text(nbs+' / '+total);
         if (nbs == total){
             $(this).parents('li.lengow_marketplace')
                 .find('.score')

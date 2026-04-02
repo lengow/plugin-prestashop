@@ -1,0 +1,76 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+<a href="#" class="js-lengow-back-country ">
+    <i class="fa fa-angle-left"></i>
+    {{ locale.t('order_setting.screen.see_delivery_countries') }}
+</a>
+<h2>
+    <img src="{{ lengowPathUri }}views/img/flag/{{ country['iso_code'] }}.png" alt="{{ country['name'] }}" class="flag">
+    {{ locale.t('order_setting.screen.marketplace_matching_title', {'country_name': country['name']}) }}
+</h2>
+<p>
+    {{ locale.t('order_setting.screen.marketplace_matching_description', {'country_name': country['name']}) }}
+    {% if carriers is defined and carriers|length > 0 %}
+        {{ locale.t('order_setting.screen.country_wt_carrier') }}
+        <a href="{{ lengow_link.getAbsoluteAdminLink('AdminCarriers') }}">
+            {{ locale.t('order_setting.screen.please_setup_then') }}
+        </a>
+    {% endif %}
+</p>
+<input type="hidden" name="id_country" value="{{ country['id_country'] }}">
+{% if carriers is defined and carriers|length > 0 %}
+    <div id="marketplace-list" data-tooltip-carrier="{{ locale.t('order_setting.screen.tooltip_default_carrier') }}">
+        <ul class="accordion">
+            {% if marketplaces is defined %}
+                {% for marketplace in marketplaces %}
+                    <li class="has-sub lengow_marketplace" data-marketplace="{{ marketplace['id'] }}">
+                        <div class="js-marketplace marketplace">
+                            <span class="marketplace-name">{{ marketplace['label'] }}</span>
+                            {% if not marketplace['id_carrier'] %}
+                                <span class="alert-matching"></span>
+                            {% endif %}
+                            <span class="score lgw-label"></span>
+                        </div>
+                        <ul class="sub" style="display:none">
+                            <li>
+                                {% include '@Modules/lengow/views/templates/admin/lengow_order_setting/helpers/view/default_carrier.html.twig' %}
+                            </li>
+                            {% if carriers is defined and marketplace['methods'] is defined and marketplace['methods']|length > 0 %}
+                                {% include '@Modules/lengow/views/templates/admin/lengow_order_setting/helpers/view/marketplace_method.html.twig' %}
+                            {% endif %}
+                            {% if carriers is defined and marketplace['carriers'] is defined and marketplace['carriers']|length > 0 %}
+                                {% include '@Modules/lengow/views/templates/admin/lengow_order_setting/helpers/view/marketplace_carrier.html.twig' %}
+                            {% endif %}
+                        </ul>
+                        <div class="clearfix"></div>
+                    </li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+    <button type="submit" class="lgw-btn lgw-btn-progression lengow_submit_order_setting">
+        <div class="btn-inner">
+            <div class="btn-step default">
+                {{ locale.t('global_setting.screen.button_save') }}
+            </div>
+            <div class="btn-step loading">
+                {{ locale.t('global_setting.screen.setting_saving') }}
+            </div>
+            <div class="btn-step done" data-success="Saved!" data-error="Error">
+                {{ locale.t('global_setting.screen.setting_saved') }}
+            </div>
+        </div>
+    </button>
+    <a href="#" class="js-lengow-back-country cancel">
+        {{ locale.t('order_setting.screen.button_cancel') }}
+    </a>
+{% else %}
+    <div class="legend blue-frame alert-carrier">
+        {{ locale.t('order_setting.screen.no_carrier_enabled', {'country_name': country['name']}) }}
+        <a href="{{ lengow_link.getAbsoluteAdminLink('AdminCarriers') }}">
+            {{ locale.t('order_setting.screen.please_setup_then') }}
+        </a>
+    </div>
+{% endif %}

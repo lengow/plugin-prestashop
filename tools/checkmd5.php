@@ -1,5 +1,4 @@
 <?php
-
 /*
  * Check MD5
  */
@@ -47,7 +46,12 @@ foreach ($filePaths as $filePath) {
 }
 fclose($fp);
 
-function explorer($path)
+/**
+ * @param string $path
+ *
+ * @return list<string>
+ */
+function explorer(string $path): array
 {
     $paths = [];
     if (is_dir($path)) {
@@ -65,7 +69,14 @@ function explorer($path)
     return $paths;
 }
 
-function writeCsv($fp, $text, &$frontKey = [])
+/**
+ * @param resource $fp
+ * @param string|array<string, mixed> $text
+ * @param list<string> $frontKey
+ *
+ * @return void
+ */
+function writeCsv($fp, $text, array &$frontKey = []): void
 {
     if (is_array($text)) {
         foreach ($text as $k => $v) {

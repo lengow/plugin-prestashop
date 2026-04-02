@@ -29,20 +29,20 @@ class LengowFile
     /**
      * @var string file name
      */
-    public $fileName;
+    public string $fileName;
 
     /**
      * @var string folder name that contains the file
      */
-    public $folderName;
+    public string $folderName;
 
     /**
-     * @var string file link
+     * @var string|null file link
      */
-    public $link;
+    public ?string $link = null;
 
     /**
-     * @var resource a file pointer resource
+     * @var resource|null a file pointer resource
      */
     public $instance;
 
@@ -55,7 +55,7 @@ class LengowFile
      *
      * @throws LengowException unable to create file
      */
-    public function __construct($folderName, $fileName = null, $mode = 'a+')
+    public function __construct(string $folderName, ?string $fileName = null, string $mode = 'a+')
     {
         $this->fileName = $fileName;
         $this->folderName = $folderName;
@@ -77,8 +77,10 @@ class LengowFile
      * Write content in file
      *
      * @param string $txt text to be written
+     *
+     * @return void
      */
-    public function write($txt)
+    public function write(string $txt): void
     {
         if (!$this->instance) {
             $this->instance = fopen($this->getPath(), 'a+');
@@ -88,8 +90,10 @@ class LengowFile
 
     /**
      * Delete file
+     *
+     * @return void
      */
-    public function delete()
+    public function delete(): void
     {
         if ($this->exists()) {
             if ($this->instance) {
@@ -105,10 +109,14 @@ class LengowFile
      * @param string $path path to the file
      * @param string $mode type of access
      *
-     * @return resource
+     * @return resource|false
      */
-    public static function getResource($path, $mode = 'a+')
+    public static function getResource(string $path, string $mode = 'a+'): mixed
     {
+        if (!LengowMain::isPathAllowed($path, _PS_MODULE_LENGOW_DIR_)) {
+            return false;
+        }
+
         return fopen($path, $mode);
     }
 
@@ -117,7 +125,7 @@ class LengowFile
      *
      * @return string
      */
-    public function getLink()
+    public function getLink(): string
     {
         if (empty($this->link)) {
             if (!$this->exists()) {
@@ -135,7 +143,7 @@ class LengowFile
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         $sep = DIRECTORY_SEPARATOR;
 
@@ -147,7 +155,7 @@ class LengowFile
      *
      * @return string
      */
-    public function getFolderPath()
+    public function getFolderPath(): string
     {
         $sep = DIRECTORY_SEPARATOR;
 
@@ -161,15 +169,17 @@ class LengowFile
      *
      * @return bool
      */
-    public function rename($newName)
+    public function rename(string $newName): bool
     {
         return rename($this->getPath(), $newName);
     }
 
     /**
      * Close file handle
+     *
+     * @return void
      */
-    public function close()
+    public function close(): void
     {
         if (is_resource($this->instance)) {
             fclose($this->instance);
@@ -181,7 +191,7 @@ class LengowFile
      *
      * @return bool
      */
-    public function exists()
+    public function exists(): bool
     {
         return file_exists($this->getPath());
     }
@@ -191,9 +201,9 @@ class LengowFile
      *
      * @param string $folder folder name
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
-    public static function getFilesFromFolder($folder)
+    public static function getFilesFromFolder(string $folder): array|false
     {
         $sep = DIRECTORY_SEPARATOR;
         $folderPath = LengowMain::getLengowFolder() . $sep . $folder;

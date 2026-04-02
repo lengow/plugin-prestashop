@@ -44,7 +44,7 @@ class LengowLog extends LengowFile
     /**
      * @var LengowFile Lengow file instance
      */
-    protected $file;
+    protected LengowFile $file;
 
     /**
      * Construct
@@ -53,7 +53,7 @@ class LengowLog extends LengowFile
      *
      * @throws LengowException
      */
-    public function __construct($fileName = null)
+    public function __construct(?string $fileName = null)
     {
         if (empty($fileName)) {
             $this->fileName = 'logs-' . date(LengowMain::DATE_DAY) . '.txt';
@@ -70,8 +70,10 @@ class LengowLog extends LengowFile
      * @param string $message log message
      * @param bool $logOutput display on screen
      * @param string|null $marketplaceSku Lengow order id
+     *
+     * @return void
      */
-    public function write($category, $message = '', $logOutput = false, $marketplaceSku = null)
+    public function write(string $category, string $message = '', bool $logOutput = false, ?string $marketplaceSku = null): void
     {
         $decodedMessage = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
         $log = date(LengowMain::DATE_FULL);
@@ -88,9 +90,9 @@ class LengowLog extends LengowFile
     /**
      * Get log files path
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getPaths()
+    public static function getPaths(): array
     {
         $logs = [];
         $files = self::getFiles();
@@ -116,7 +118,7 @@ class LengowLog extends LengowFile
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         $sep = DIRECTORY_SEPARATOR;
 
@@ -126,9 +128,9 @@ class LengowLog extends LengowFile
     /**
      * Get log files
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getFiles()
+    public static function getFiles(): array
     {
         return LengowFile::getFilesFromFolder(LengowMain::FOLDER_LOG);
     }
@@ -137,8 +139,10 @@ class LengowLog extends LengowFile
      * Download log file
      *
      * @param string|null $date date for a specific log file
+     *
+     * @return void
      */
-    public static function download($date = null)
+    public static function download(?string $date = null): void
     {
         /* @var LengowFile[] $logFiles */
         if ($date && preg_match('/^(\d{4}-\d{2}-\d{2})$/', $date, $match)) {
@@ -172,6 +176,9 @@ class LengowLog extends LengowFile
                 if (strrpos($fileInfo['basename'], 'logs') === false) {
                     continue;
                 }
+                if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+                    continue;
+                }
                 $handle = fopen($filePath, 'rb');
                 $fileSize = filesize($filePath);
                 if ($fileSize > 0) {
@@ -180,7 +187,8 @@ class LengowLog extends LengowFile
             }
         }
         header('Content-type: text/plain');
-        header('Content-Disposition: attachment; filename="' . $fileName . '"');
+        $safeFileName = preg_replace('/[^a-zA-Z0-9._\-]/', '', str_replace(["\r", "\n"], '', $fileName));
+        header('Content-Disposition: attachment; filename="' . $safeFileName . '"');
         echo $contents;
         exit;
     }
@@ -188,8 +196,10 @@ class LengowLog extends LengowFile
     /**
      * Logs potential PHP fatal error on shutdown.
      * Can be useful when the script crash silently
+     *
+     * @return void
      */
-    public static function registerShutdownFunction()
+    public static function registerShutdownFunction(): void
     {
         ini_set('log_errors_max_len', 10240);
         register_shutdown_function(
@@ -208,7 +218,7 @@ class LengowLog extends LengowFile
                         E_USER_ERROR => 'E_USER_ERROR',
                         E_USER_WARNING => 'E_USER_WARNING',
                         E_USER_NOTICE => 'E_USER_NOTICE',
-                        E_STRICT => 'E_STRICT',
+                        // E_STRICT is deprecated in PHP 8.4
                         E_RECOVERABLE_ERROR => 'E_RECOVERABLE_ERROR',
                         E_DEPRECATED => 'E_DEPRECATED',
                         E_USER_DEPRECATED => 'E_USER_DEPRECATED',

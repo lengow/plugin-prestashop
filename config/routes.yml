@@ -1,36 +1,71 @@
-admin_orders_view:
-  path: /sell/orders/{orderId}/view
+lengow_home:
+  path: /lengow/home
   methods: [ GET, POST ]
   defaults:
-    _disable_module_prefix: true
-    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::viewAction'
-    _legacy_controller: AdminOrders
-    _legacy_link: AdminOrders:vieworder
-    _legacy_parameters:
-      id_order: orderId
-  options:
-    expose: true
-  requirements:
-    orderId: \d+
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowHomeAdminController::indexAction'
+    _legacy_controller: AdminLengowHome
+    _legacy_link: AdminLengowHome
 
-admin_orders_update_shipping:
-  path: /sell/orders/{orderId}/shipping
-  methods: [ POST ]
+lengow_dashboard:
+  path: /lengow/dashboard
+  methods: [ GET, POST ]
   defaults:
-    _disable_module_prefix: true
-    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::updateShippingAction'
-    _legacy_controller: AdminOrders
-  requirements:
-    orderId: \d+
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowDashboardAdminController::indexAction'
+    _legacy_controller: AdminLengowDashboard
+    _legacy_link: AdminLengowDashboard
 
-lengow_save_refund_reason:
-  path: /admin/lengow/refund-reason/save
-  methods: [ POST ]
+lengow_feed:
+  path: /lengow/feed
+  methods: [ GET, POST ]
   defaults:
-    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::saveRefundReason'
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowFeedAdminController::indexAction'
+    _legacy_controller: AdminLengowFeed
+    _legacy_link: AdminLengowFeed
 
-lengow_save_refund_mode:
-  path: /admin/lengow/refund-mode/save
-  methods: [ POST ]
+lengow_order:
+  path: /lengow/order
+  methods: [ GET, POST ]
   defaults:
-    _controller: 'PrestaShop\Module\Lengow\Controller\AdminOrderController::saveRefundMode'
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowOrderAdminController::indexAction'
+    _legacy_controller: AdminLengowOrder
+    _legacy_link: AdminLengowOrder
+
+lengow_order_setting:
+  path: /lengow/order-setting
+  methods: [ GET, POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowOrderSettingAdminController::indexAction'
+    _legacy_controller: AdminLengowOrderSetting
+    _legacy_link: AdminLengowOrderSetting
+
+lengow_main_setting:
+  path: /lengow/main-setting
+  methods: [ GET, POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowMainSettingAdminController::indexAction'
+    _legacy_controller: AdminLengowMainSetting
+    _legacy_link: AdminLengowMainSetting
+
+lengow_help:
+  path: /lengow/help
+  methods: [ GET, POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowHelpAdminController::indexAction'
+    _legacy_controller: AdminLengowHelp
+    _legacy_link: AdminLengowHelp
+
+lengow_legals:
+  path: /lengow/legals
+  methods: [ GET, POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowLegalsAdminController::indexAction'
+    _legacy_controller: AdminLengowLegals
+    _legacy_link: AdminLengowLegals
+
+lengow_toolbox:
+  path: /lengow/toolbox
+  methods: [ GET, POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowToolboxAdminController::indexAction'
+    _legacy_controller: AdminLengowToolbox
+    _legacy_link: AdminLengowToolbox

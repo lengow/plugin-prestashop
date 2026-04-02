@@ -55,42 +55,42 @@ class LengowFeed
     /**
      * @var LengowFile Lengow file instance
      */
-    protected $file;
+    protected LengowFile $file;
 
     /**
      * @var string feed content
      */
-    protected $content = '';
+    protected string $content = '';
 
     /**
      * @var bool stream or file
      */
-    protected $stream;
+    protected bool $stream;
 
     /**
      * @var string feed format
      */
-    protected $format;
+    protected string $format;
 
     /**
      * @var bool Use legacy fields
      */
-    protected $legacy;
+    protected bool $legacy;
 
     /**
      * @var string|null export shop folder
      */
-    protected $shopFolder;
+    protected ?string $shopFolder = null;
 
     /**
      * @var string full export folder
      */
-    protected $exportFolder;
+    protected string $exportFolder;
 
     /**
-     * @var array formats available for export
+     * @var list<string> formats available for export
      */
-    public static $availableFormats = [
+    public static array $availableFormats = [
         self::FORMAT_CSV,
         self::FORMAT_YAML,
         self::FORMAT_XML,
@@ -107,13 +107,13 @@ class LengowFeed
      *
      * @throws LengowException unable to create folder
      */
-    public function __construct($stream, $format, $legacy, $shopName = null)
+    public function __construct(bool $stream, string $format, bool $legacy, ?string $shopName = null)
     {
         $this->stream = $stream;
         $this->format = $format;
         $this->legacy = $legacy;
         if ($shopName === null) {
-            $shopName = Context::getContext()->shop->name;
+            $shopName = LengowContext::getContext()->shop->name;
         }
         $this->shopFolder = LengowMain::getShopNameCleaned($shopName);
         if (!$this->stream) {
@@ -124,9 +124,11 @@ class LengowFeed
     /**
      * Create export file
      *
+     * @return void
+     *
      * @throws LengowException unable to create folder
      */
-    public function initExportFile()
+    public function initExportFile(): void
     {
         $sep = DIRECTORY_SEPARATOR;
         $this->exportFolder = LengowMain::FOLDER_EXPORT . $sep . $this->shopFolder;
@@ -134,7 +136,7 @@ class LengowFeed
         if (!file_exists($folderPath) && !mkdir($folderPath) && !is_dir($folderPath)) {
             throw new LengowException(LengowMain::setLogMessage('log.export.error_unable_to_create_folder', ['folder_path' => $folderPath]));
         }
-        $fileName = 'flux-' . Context::getContext()->language->iso_code . '-' . time() . '.' . $this->format;
+        $fileName = 'flux-' . LengowContext::getContext()->language->iso_code . '-' . time() . '.' . $this->format;
         $this->file = new LengowFile($this->exportFolder, $fileName);
     }
 
@@ -142,11 +144,13 @@ class LengowFeed
      * Write feed
      *
      * @param string $type data type (header, body or footer)
-     * @param array $data export data
+     * @param array<int|string, mixed> $data export data
      * @param bool|null $isFirst is first product
-     * @param bool|null $maxCharacter max characters for yaml format
+     * @param int|null $maxCharacter max characters for yaml format
+     *
+     * @return void
      */
-    public function write($type, $data = [], $isFirst = null, $maxCharacter = null)
+    public function write(string $type, array $data = [], ?bool $isFirst = null, ?int $maxCharacter = null): void
     {
         switch ($type) {
             case self::HEADER:
@@ -173,11 +177,11 @@ class LengowFeed
     /**
      * Return feed header
      *
-     * @param array $data export data
+     * @param array<string, mixed> $data export data
      *
      * @return string
      */
-    protected function getHeader($data)
+    protected function getHeader(array $data): string
     {
         switch ($this->format) {
             case self::FORMAT_CSV:
@@ -202,13 +206,13 @@ class LengowFeed
     /**
      * Get feed body
      *
-     * @param array $data feed data
+     * @param array<string, mixed> $data feed data
      * @param bool $isFirst is first product
      * @param int $maxCharacter max characters for yaml format
      *
      * @return string
      */
-    protected function getBody($data, $isFirst, $maxCharacter)
+    protected function getBody(array $data, bool $isFirst, int $maxCharacter): string
     {
         switch ($this->format) {
             case self::FORMAT_CSV:
@@ -260,7 +264,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected function getFooter()
+    protected function getFooter(): string
     {
         switch ($this->format) {
             case self::FORMAT_XML:
@@ -276,8 +280,10 @@ class LengowFeed
      * Flush feed content
      *
      * @param string $content feed content to be flushed
+     *
+     * @return void
      */
-    public function flush($content)
+    public function flush(string $content): void
     {
         if ($this->stream) {
             echo $content;
@@ -294,11 +300,11 @@ class LengowFeed
      *
      * @throws LengowException
      */
-    public function end()
+    public function end(): bool
     {
         $this->write(self::FOOTER);
         if (!$this->stream) {
-            $oldFileName = 'flux-' . Context::getContext()->language->iso_code . '.' . $this->format;
+            $oldFileName = 'flux-' . LengowContext::getContext()->language->iso_code . '.' . $this->format;
             $oldFile = new LengowFile($this->exportFolder, $oldFileName);
             if ($oldFile->exists()) {
                 $oldFilePath = $oldFile->getPath();
@@ -324,7 +330,7 @@ class LengowFeed
      *
      * @return string
      */
-    public function getUrl()
+    public function getUrl(): string
     {
         return $this->file->getLink();
     }
@@ -334,7 +340,7 @@ class LengowFeed
      *
      * @return string
      */
-    public function getFileName()
+    public function getFileName(): string
     {
         return $this->file->getPath();
     }
@@ -344,7 +350,7 @@ class LengowFeed
      *
      * @return string
      */
-    protected function getHtmlHeader()
+    protected function getHtmlHeader(): string
     {
         switch ($this->format) {
             case self::FORMAT_CSV:
@@ -368,7 +374,7 @@ class LengowFeed
      *
      * @return string
      */
-    public static function formatFields($str, $format, $legacy = false)
+    public static function formatFields(string $str, string $format, bool $legacy = false): string
     {
         switch ($format) {
             case self::FORMAT_CSV:
@@ -412,13 +418,13 @@ class LengowFeed
      * For YAML, add spaces to have good indentation
      *
      * @param string $name the field name
-     * @param string $maxSize space limit
+     * @param int $maxSize space limit
      *
      * @return string
      */
-    protected function indentYaml($name, $maxSize)
+    protected function indentYaml(string $name, int $maxSize): string
     {
-        $strlen = Tools::strlen($name);
+        $strlen = mb_strlen((string) $name);
         $spaces = '';
         for ($i = $strlen; $i < $maxSize; ++$i) {
             $spaces .= ' ';

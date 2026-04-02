@@ -21,6 +21,15 @@
 (function ($) {
     $(document).ready(function () {
 
+        function lengowIsValidUrl(url) {
+            try {
+                var parsed = new URL(url, window.location.origin);
+                return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+            } catch (e) {
+                return false;
+            }
+        }
+
         $('#lengow_order_wrapper').on('click', '.lgw-pagination a', function () {
             if ($(this).parent().hasClass('disabled')) {
                 return false;
@@ -173,7 +182,7 @@
 
         $('#lengow_order_wrapper').on('click', '#table_order td.link', function() {
             var link = $(this).parents('tr').find('td.reference a');
-            if (link.length > 0){
+            if (link.length > 0 && lengowIsValidUrl(link.attr('href'))){
                 window.open(link.attr('href'));
             }
             return false;
@@ -199,7 +208,7 @@
 
         $('.lengow_table').on('click', '.table_row td:not(.no-link)', function(){
             var url = $(this).closest('.table_row').find('.reference a').attr('href');
-            if (url) {
+            if (url && lengowIsValidUrl(url)) {
                window.open(url, '_blank'); 
             };
             return false;

@@ -1,0 +1,18 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+
+<ul class="nav nav-pills lengow-nav lengow-nav-bottom {% if multiShop %}multi-shop{% endif %}">
+    <li role="presentation" class="{{ current_controller == 'LengowOrderController' ? 'active' : '' }}">
+        <a href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowOrder') }}">
+            {{ locale.t('menu.order_overview') }}
+        </a>
+    </li>
+    <li role="presentation" class="{{ current_controller == 'LengowOrderSettingController' ? 'active' : '' }}">
+        <a href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowOrderSetting') }}">
+            {{ locale.t('menu.order_parameter') }}
+            <span class="js-alert-matching {% if showCarrierNotification is defined and showCarrierNotification %}alert-matching{% endif %}"></span>
+        </a>
+    </li>
+</ul>

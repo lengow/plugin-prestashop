@@ -31,7 +31,7 @@ class LengowCatalog
      *
      * @return bool
      */
-    public static function hasCatalogNotLinked()
+    public static function hasCatalogNotLinked(): bool
     {
         $lengowCatalogs = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS_CATALOG);
         if (!$lengowCatalogs) {
@@ -51,9 +51,9 @@ class LengowCatalog
     /**
      * Get all catalogs available in Lengow
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getCatalogList()
+    public static function getCatalogList(): array
     {
         $catalogList = [];
         $lengowCatalogs = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_CMS_CATALOG);
@@ -94,11 +94,11 @@ class LengowCatalog
     /**
      * Link all catalogs by API
      *
-     * @param array $catalogsByShops all catalog ids organised by shops
+     * @param array<string, mixed> $catalogsByShops all catalog ids organised by shops
      *
      * @return bool
      */
-    public static function linkCatalogs(array $catalogsByShops)
+    public static function linkCatalogs(array $catalogsByShops): bool
     {
         $catalogsLinked = false;
         $hasCatalogToLink = false;
@@ -114,7 +114,7 @@ class LengowCatalog
                 continue;
             }
             $hasCatalogToLink = true;
-            $shopToken = LengowMain::getToken($idShop);
+            $shopToken = LengowMain::getToken((int) $idShop);
             $linkCatalogData['shops'][] = [
                 'shop_token' => $shopToken,
                 'catalogs_id' => $catalogIds,

@@ -27,18 +27,18 @@ if (!defined('_PS_VERSION_')) {
 class LengowOrderCarrier extends OrderCarrier
 {
     /** @var string */
-    public $return_tracking_number;
+    public string $return_tracking_number = '';
 
     /** @var string */
-    public $return_carrier;
+    public string $return_carrier = '';
 
     /**
-     * @param type $id
-     * @param type $id_lang
-     * @param type $id_shop
-     * @param type $translator
+     * @param int|null $id
+     * @param int|null $id_lang
+     * @param int|null $id_shop
+     * @param mixed $translator
      */
-    public function __construct($id = null, $id_lang = null, $id_shop = null, $translator = null)
+    public function __construct(?int $id = null, ?int $id_lang = null, ?int $id_shop = null, mixed $translator = null)
     {
         parent::__construct($id, $id_lang, $id_shop, $translator);
 

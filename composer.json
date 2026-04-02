@@ -2,9 +2,13 @@
   "name": "prestashop/lengow",
   "description": "Lengow",
   "version": "3.9.4",
+  "require": {
+    "php": ">=8.1"
+  },
   "autoload": {
     "psr-4": {
-      "Lengow\\": "src/"
+      "Lengow\\": "src/",
+      "PrestaShop\\Module\\Lengow\\Controller\\Admin\\": "src/Controller/Admin/"
     },
     "classmap": [
       "lengow.php",

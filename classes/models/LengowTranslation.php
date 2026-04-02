@@ -38,38 +38,42 @@ class LengowTranslation
     public const DEFAULT_ISO_CODE = self::ISO_CODE_EN;
 
     /**
-     * @var array|null all translations
+     * @var array<string, mixed>|null all translations
      */
-    protected static $translation;
+    protected static ?array $translation = null;
 
     /**
      * @var string|null iso code
      */
-    protected $isoCode;
+    protected ?string $isoCode = null;
 
     /**
      * @var string|null force iso code for log and toolbox
      */
-    public static $forceIsoCode;
+    public static ?string $forceIsoCode = null;
 
     /**
      * Construct
+     *
+     * @param Context|null $context PrestaShop context (injected where available,
+     *                              falls back to LengowContext for legacy callers)
      */
-    public function __construct()
+    public function __construct(?Context $context = null)
     {
-        $this->isoCode = Context::getContext()->language->iso_code;
+        $ctx = $context ?? LengowContext::getContext();
+        $this->isoCode = $ctx->language->iso_code;
     }
 
     /**
      * Translate message
      *
      * @param string $message localization key
-     * @param array $args arguments to replace word in string
+     * @param array<string, mixed> $args arguments to replace word in string
      * @param string|null $isoCode translation iso code
      *
      * @return string
      */
-    public function t($message, $args = [], $isoCode = null)
+    public function t(string $message, array $args = [], ?string $isoCode = null): string
     {
         if (self::$forceIsoCode !== null) {
             $isoCode = self::$forceIsoCode;
@@ -97,11 +101,11 @@ class LengowTranslation
      * Translate string
      *
      * @param string $text localization key
-     * @param array $args arguments to replace word in string
+     * @param array<string, mixed> $args arguments to replace word in string
      *
      * @return string
      */
-    protected function translateFinal($text, $args)
+    protected function translateFinal(string $text, array $args): string
     {
         if ($args) {
             $params = [];
@@ -125,7 +129,7 @@ class LengowTranslation
      *
      * @return bool
      */
-    public function loadFile($isoCode, $filename = null)
+    public function loadFile(string $isoCode, ?string $filename = null): bool
     {
         $validCodes = [
             self::ISO_CODE_EN,
@@ -142,9 +146,12 @@ class LengowTranslation
                 . $sep . LengowMain::FOLDER_TRANSLATION . $sep . $isoCode . '.csv';
         }
         $translation = [];
+        if (!LengowMain::isPathAllowed($filename, _PS_MODULE_LENGOW_DIR_)) {
+            return false;
+        }
         if (file_exists($filename)) {
             if (($handle = fopen($filename, 'rb')) !== false) {
-                while (($data = fgetcsv($handle, 1000, '|')) !== false) {
+                while (($data = fgetcsv($handle, 1000, '|', '"', '\\')) !== false) {
                     if (isset($data[1])) {
                         $translation[$data[0]] = $data[1];
                     }

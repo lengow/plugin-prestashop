@@ -36,21 +36,21 @@ class LengowConfigurationForm
     public const TYPE_OPTIONS = 'options';
 
     /**
-     * @var array checkbox keys
+     * @var array<string, mixed> checkbox keys
      */
-    public $fields;
+    public array $fields;
 
     /**
      * @var LengowTranslation Lengow translation instance
      */
-    protected $locale;
+    protected LengowTranslation $locale;
 
     /**
      * Construct
      *
-     * @param array $params construct parameters
+     * @param array<string, mixed> $params construct parameters
      */
-    public function __construct($params)
+    public function __construct(array $params)
     {
         $this->fields = isset($params['fields']) ? $params['fields'] : false;
         $this->locale = new LengowTranslation();
@@ -60,11 +60,11 @@ class LengowConfigurationForm
      * Construct Lengow setting input for shop
      *
      * @param int $idShop PrestaShop shop id
-     * @param array $displayKeys names of Lengow setting
+     * @param list<string> $displayKeys names of Lengow setting
      *
      * @return string
      */
-    public function buildShopInputs($idShop, $displayKeys)
+    public function buildShopInputs(int $idShop, array $displayKeys): string
     {
         $html = '';
         foreach ($displayKeys as $key) {
@@ -81,11 +81,11 @@ class LengowConfigurationForm
     /**
      * Construct Lengow setting input
      *
-     * @param array $displayKeys names of Lengow setting
+     * @param list<string> $displayKeys names of Lengow setting
      *
      * @return string
      */
-    public function buildInputs($displayKeys)
+    public function buildInputs(array $displayKeys): string
     {
         $html = '';
         foreach ($displayKeys as $key) {
@@ -105,12 +105,12 @@ class LengowConfigurationForm
      * Get lengow input
      *
      * @param string $key name of Lengow setting
-     * @param array $input all Lengow settings
+     * @param array<string, mixed> $input all Lengow settings
      * @param int|null $idShop PrestaShop shop id
      *
      * @return string
      */
-    public function input($key, $input, $idShop = null)
+    public function input(string $key, array $input, ?int $idShop = null): string
     {
         $html = '';
         if ($idShop) {
@@ -128,50 +128,50 @@ class LengowConfigurationForm
         $placeholder = isset($input[LengowConfiguration::PARAM_PLACEHOLDER])
             ? $input[LengowConfiguration::PARAM_PLACEHOLDER]
             : '';
-        $html .= '<div class="form-group ' . Tools::strtolower($key) . '"'
-            . ($idShop ? ' data-id_shop="' . $idShop . '"' : '') . '>';
+        $html .= '<div class="form-group ' . htmlspecialchars(Tools::strtolower($key), ENT_QUOTES, 'UTF-8') . '"'
+            . ($idShop ? ' data-id_shop="' . (int) $idShop . '"' : '') . '>';
         switch ($inputType) {
             case self::TYPE_CHECKBOX:
                 $checked = $value ? 'checked' : '';
                 $html .= '<div class="lgw-switch ' . $checked . '"><label><div><span></span>';
-                $html .= '<input name="' . $name . '" type="checkbox" ' . $checked . ' >';
-                $html .= '</div>' . $label;
+                $html .= '<input name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '" type="checkbox" ' . $checked . ' >';
+                $html .= '</div>' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8');
                 $html .= '</label></div></div>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . htmlspecialchars($legend, ENT_QUOTES, 'UTF-8') . '</span>';
                 }
                 break;
             case self::TYPE_TEXT:
-                $html .= '<label class="control-label">' . $label . '</label>
+                $html .= '<label class="control-label">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</label>
                     <input type="text"
-                           name="' . $name . '"
-                           class="form-control" placeholder="' . $placeholder . '"
-                           value="' . $value . '">
+                           name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '"
+                           class="form-control" placeholder="' . htmlspecialchars($placeholder, ENT_QUOTES, 'UTF-8') . '"
+                           value="' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '">
                     </div>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . htmlspecialchars($legend, ENT_QUOTES, 'UTF-8') . '</span>';
                 }
                 break;
             case self::TYPE_SELECT:
-                $html .= '<label class="control-label">' . $label . '</label>
-                    <select class="form-control lengow_select" name="' . $name . '">';
+                $html .= '<label class="control-label">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</label>
+                    <select class="form-control lengow_select" name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '">';
                 foreach ($input[LengowConfiguration::PARAM_COLLECTION] as $row) {
                     $selected = $row['id'] == $value ? 'selected' : '';
-                    $html .= '<option value="' . $row['id'] . '" ' . $selected . '>' . $row['text'] . '</option>';
+                    $html .= '<option value="' . htmlspecialchars($row['id'], ENT_QUOTES, 'UTF-8') . '" ' . $selected . '>' . htmlspecialchars($row['text'], ENT_QUOTES, 'UTF-8') . '</option>';
                 }
                 $html .= '</select>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . htmlspecialchars($legend, ENT_QUOTES, 'UTF-8') . '</span>';
                 }
                 $html .= '</div>';
                 break;
             case self::TYPE_DAY:
-                $html .= '<label class="control-label">' . $label . '</label>
+                $html .= '<label class="control-label">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</label>
                         <div class="input-group">
                             <input type="number"
-                                   name="' . $name . '"
+                                   name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '"
                                    class="form-control"
-                                   value="' . $value . '"
+                                   value="' . htmlspecialchars($value, ENT_QUOTES, 'UTF-8') . '"
                                    min="' . (LengowImport::MIN_INTERVAL_TIME / 86400) . '"
                                    max="' . (LengowImport::MAX_INTERVAL_TIME / 86400) . '">
                             <div class="input-group-addon">
@@ -180,18 +180,18 @@ class LengowConfigurationForm
                             <div class="clearfix"></div>
                         </div>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . htmlspecialchars($legend, ENT_QUOTES, 'UTF-8') . '</span>';
                 }
                 $html .= '</div>';
                 break;
             case self::TYPE_OPTIONS:
-                $html .= '<label class="control-label">' . $label . '</label>
-                                  <select class="form-control lengow_select" name="' . $name . '">
+                $html .= '<label class="control-label">' . htmlspecialchars($label, ENT_QUOTES, 'UTF-8') . '</label>
+                                  <select class="form-control lengow_select" name="' . htmlspecialchars($name, ENT_QUOTES, 'UTF-8') . '">
                                     <option value="prod" ' . ($value == 'prod' ? 'selected' : '') . '>Prod</option>
                                     <option value="pre-prod" ' . ($value == 'pre-prod' ? 'selected' : '') . '>Sandbox</option>
                                   </select>';
                 if (!empty($legend)) {
-                    $html .= '<span class="legend blue-frame" style="display:block;">' . $legend . '</span>';
+                    $html .= '<span class="legend blue-frame" style="display:block;">' . htmlspecialchars($legend, ENT_QUOTES, 'UTF-8') . '</span>';
                 }
 
                 $html .= '</div>';
@@ -205,9 +205,11 @@ class LengowConfigurationForm
     /**
      * Save Lengow settings
      *
-     * @param array $checkboxKeys Lengow checkbox
+     * @param list<string> $checkboxKeys Lengow checkbox
+     *
+     * @return void
      */
-    public function postProcess($checkboxKeys)
+    public function postProcess(array $checkboxKeys): void
     {
         try {
             $sql = 'SELECT id_shop FROM ' . _DB_PREFIX_ . 'shop WHERE active = 1';
@@ -283,8 +285,10 @@ class LengowConfigurationForm
      * @param string $key name of Lengow setting
      * @param mixed $value setting value
      * @param int $idShop PrestaShop shop id
+     *
+     * @return void
      */
-    public function checkAndLog($key, $value, $idShop = null)
+    public function checkAndLog(string $key, mixed $value, ?int $idShop = null): void
     {
         if (array_key_exists($key, $this->fields)) {
             $setting = $this->fields[$key];

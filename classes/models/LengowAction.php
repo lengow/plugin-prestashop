@@ -87,9 +87,9 @@ class LengowAction
     public const SECURITY_INTERVAL_TIME = 7200;
 
     /**
-     * @var array Parameters to delete for Get call
+     * @var list<string> Parameters to delete for Get call
      */
-    public static $getParamsToDelete = [
+    public static array $getParamsToDelete = [
         self::ARG_SHIPPING_DATE,
         self::ARG_DELIVERY_DATE,
     ];
@@ -97,54 +97,56 @@ class LengowAction
     /**
      * @var int Lengow action record id
      */
-    public $id;
+    public int $id;
 
     /**
      * @var int PrestaShop order id
      */
-    public $idOrder;
+    public int $idOrder;
 
     /**
      * @var int Lengow action id
      */
-    public $actionId;
+    public int $actionId;
 
     /**
      * @var string action type (ship or cancel)
      */
-    public $actionType;
+    public string $actionType;
 
     /**
      * @var int Lengow order record id
      */
-    public $retry;
+    public int $retry;
 
     /**
      * @var string all parameters in json format
      */
-    public $parameters;
+    public string $parameters;
 
     /**
      * @var int action state
      */
-    public $state;
+    public int $state;
 
     /**
      * @var string action created at
      */
-    public $createdAt;
+    public string $createdAt;
 
     /**
-     * @var string updated at
+     * @var string|null updated at
      */
-    public $updatedAt;
+    public ?string $updatedAt = null;
 
     /**
      * Load action data
      *
-     * @param array $row All action data
+     * @param array<string, mixed> $row All action data
+     *
+     * @return void
      */
-    public function load($row)
+    public function load(array $row): void
     {
         $this->id = (int) $row[self::FIELD_ID];
         $this->idOrder = (int) $row[self::FIELD_ORDER_ID];
@@ -164,7 +166,7 @@ class LengowAction
      *
      * @return bool
      */
-    public function findByActionId($actionId)
+    public function findByActionId(int $actionId): bool
     {
         $row = Db::getInstance()->getRow(
             'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la WHERE action_id = ' . (int) $actionId
@@ -185,7 +187,7 @@ class LengowAction
      *
      * @return int|false
      */
-    public static function getActionByActionId($actionId)
+    public static function getActionByActionId(int $actionId): int|false
     {
         $row = Db::getInstance()->getRow(
             'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_actions WHERE action_id = ' . (int) $actionId
@@ -205,9 +207,9 @@ class LengowAction
      * @param string|null $actionType action type (ship or cancel)
      * @param bool $load load LengowAction or not
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
-    public static function getActionsByOrderId($idOrder, $onlyActive = false, $actionType = null, $load = true)
+    public static function getActionsByOrderId(int $idOrder, bool $onlyActive = false, ?string $actionType = null, bool $load = true): array|false
     {
         try {
             $sqlOnlyActive = $onlyActive ? ' AND  state = ' . self::STATE_NEW : '';
@@ -242,9 +244,9 @@ class LengowAction
      *
      * @param bool $load load LengowAction or not
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
-    public static function getActiveActions($load = true)
+    public static function getActiveActions(bool $load = true): array|false
     {
         try {
             $rows = Db::getInstance()->executeS(
@@ -278,7 +280,7 @@ class LengowAction
      *
      * @return string|false
      */
-    public static function getLastOrderActionType($idOrder)
+    public static function getLastOrderActionType(int $idOrder): string|false
     {
         try {
             $rows = Db::getInstance()->executeS(
@@ -304,7 +306,7 @@ class LengowAction
      *
      * @return bool
      */
-    public function find($id)
+    public function find(int $id): bool
     {
         $row = Db::getInstance()->getRow('SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions la WHERE id = ' . (int) $id);
         if ($row) {
@@ -319,14 +321,14 @@ class LengowAction
     /**
      * Indicates whether an action can be created if it does not already exist
      *
-     * @param array $params all available values
+     * @param array<string, mixed> $params all available values
      * @param LengowOrder $lengowOrder Lengow order instance
      *
      * @return bool
      *
      * @throws LengowException
      */
-    public static function canSendAction($params, $lengowOrder)
+    public static function canSendAction(array $params, LengowOrder $lengowOrder): bool
     {
         $sendAction = true;
         $getParams = array_merge($params, ['queued' => 'True']);
@@ -337,11 +339,18 @@ class LengowAction
             }
         }
         $result = LengowConnector::queryApi(LengowConnector::GET, LengowConnector::API_ORDER_ACTION, $getParams);
-        if (isset($result->error, $result->error->message)) {
-            throw new LengowException($result->error->message);
+        $resultData = is_object($result) ? (array) $result : [];
+        $resultError = $resultData['error'] ?? null;
+        if (is_object($resultError) && isset($resultError->message)) {
+            throw new LengowException($resultError->message);
         }
-        if (isset($result->count) && $result->count > 0) {
-            foreach ($result->results as $row) {
+        $resultCount = isset($resultData['count']) ? (int) $resultData['count'] : 0;
+        $resultRows = isset($resultData['results']) && is_iterable($resultData['results']) ? $resultData['results'] : [];
+        if ($resultCount > 0) {
+            foreach ($resultRows as $row) {
+                if (!is_object($row) || !isset($row->id)) {
+                    continue;
+                }
                 $orderActionId = self::getActionByActionId($row->id);
                 if ($orderActionId) {
                     $update = self::updateAction(
@@ -377,12 +386,14 @@ class LengowAction
     /**
      * Send a new action on the order via the Lengow API
      *
-     * @param array $params all available values
+     * @param array<string, mixed> $params all available values
      * @param LengowOrder $lengowOrder Lengow order instance
+     *
+     * @return void
      *
      * @throws LengowException
      */
-    public static function sendAction($params, $lengowOrder)
+    public static function sendAction(array $params, LengowOrder $lengowOrder): void
     {
         if (!LengowConfiguration::debugModeIsActive()) {
             $result = LengowConnector::queryApi(LengowConnector::POST, LengowConnector::API_ORDER_ACTION, $params);
@@ -428,11 +439,11 @@ class LengowAction
     /**
      * Create action
      *
-     * @param array $params action params
+     * @param array<string, mixed> $params action params
      *
      * @return bool
      */
-    public static function createAction($params)
+    public static function createAction(array $params): bool
     {
         $insertParams = [
             self::FIELD_PARAMETERS => pSQL(json_encode($params[self::FIELD_PARAMETERS])),
@@ -463,11 +474,11 @@ class LengowAction
     /**
      * Update action
      *
-     * @param array $params action params
+     * @param array<string, mixed> $params action params
      *
      * @return bool
      */
-    public static function updateAction($params)
+    public static function updateAction(array $params): bool
     {
         $action = new LengowAction();
         // findByActionId method can update the action state
@@ -492,7 +503,7 @@ class LengowAction
      *
      * @return bool
      */
-    public static function finishAction($id)
+    public static function finishAction(int $id): bool
     {
         return Db::getInstance()->update(
             self::TABLE_ACTION,
@@ -512,7 +523,7 @@ class LengowAction
      *
      * @return bool
      */
-    public static function finishAllActions($idOrder, $actionType = null)
+    public static function finishAllActions(int $idOrder, ?string $actionType = null): bool
     {
         try {
             $sqlActionType = $actionType === null ? '' : ' AND action_type = "' . pSQL($actionType) . '"';
@@ -539,7 +550,7 @@ class LengowAction
      *
      * @return int
      */
-    public static function getIntervalTime()
+    public static function getIntervalTime(): int
     {
         $intervalTime = self::MAX_INTERVAL_TIME;
         $lastActionSynchronisation = LengowConfiguration::getGlobalValue(
@@ -561,7 +572,7 @@ class LengowAction
      *
      * @return bool
      */
-    public static function checkFinishAction($logOutput = false)
+    public static function checkFinishAction(bool $logOutput = false): bool
     {
         if (LengowConfiguration::debugModeIsActive()) {
             return false;
@@ -605,12 +616,16 @@ class LengowAction
                 '',
                 $logOutput
             );
-            if (!is_object($results) || isset($results->error)) {
+            if (!is_object($results)) {
                 break;
             }
-            if (isset($results->results)) {
+            $resultsData = (array) $results;
+            if (isset($resultsData['error'])) {
+                break;
+            }
+            if (isset($resultsData['results']) && is_iterable($resultsData['results'])) {
                 // construct array actions
-                foreach ($results->results as $action) {
+                foreach ($resultsData['results'] as $action) {
                     if (isset($action->id)) {
                         $apiActions[$action->id] = $action;
                     }
@@ -618,7 +633,7 @@ class LengowAction
             }
 
             ++$page;
-        } while (!empty($results->next));
+        } while (!empty($resultsData['next']));
         // check foreach action if is complete
         foreach ($activeActions as $action) {
             if (!isset($apiActions[$action[self::FIELD_ACTION_ID]])) {
@@ -634,19 +649,19 @@ class LengowAction
                 self::finishAction($action[self::FIELD_ID]);
                 $orderLengow = new LengowOrder($action[self::FIELD_ORDER_ID]);
                 // finish all order logs send
-                LengowOrderError::finishOrderLogs($orderLengow->lengowId, LengowOrderError::TYPE_ERROR_SEND);
+                LengowOrderError::finishOrderLogs((int) $orderLengow->lengowId, LengowOrderError::TYPE_ERROR_SEND);
                 if ($orderLengow->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
                     // if action is accepted -> close order and finish all order actions
                     if ($apiAction->processed == true && empty($apiAction->errors)) {
                         LengowOrder::updateOrderLengow(
-                            $orderLengow->lengowId,
+                            (int) $orderLengow->lengowId,
                             [LengowOrder::FIELD_ORDER_PROCESS_STATE => LengowOrder::PROCESS_STATE_FINISH]
                         );
                         self::finishAllActions($orderLengow->id);
                     } else {
                         // if action is denied -> create order logs and finish all order actions
                         LengowOrderError::addOrderLog(
-                            $orderLengow->lengowId,
+                            (int) $orderLengow->lengowId,
                             $apiAction->errors,
                             LengowOrderError::TYPE_ERROR_SEND
                         );
@@ -676,7 +691,7 @@ class LengowAction
      *
      * @return bool
      */
-    public static function checkOldAction($logOutput = false)
+    public static function checkOldAction(bool $logOutput = false): bool
     {
         if (LengowConfiguration::debugModeIsActive()) {
             return false;
@@ -697,7 +712,7 @@ class LengowAction
                     // if action is denied -> create order error
                     $errorMessage = LengowMain::setLogMessage('lengow_log.exception.action_is_too_old');
                     LengowOrderError::addOrderLog(
-                        $orderLengow->lengowId,
+                        (int) $orderLengow->lengowId,
                         $errorMessage,
                         LengowOrderError::TYPE_ERROR_SEND
                     );
@@ -724,9 +739,9 @@ class LengowAction
     /**
      * Get old untreated actions of more than 3 days
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
-    public static function getOldActions()
+    public static function getOldActions(): array|false
     {
         $date = date(LengowMain::DATE_FULL, time() - self::MAX_INTERVAL_TIME);
         $query = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
@@ -748,7 +763,7 @@ class LengowAction
      *
      * @return bool
      */
-    public static function checkActionNotSent($logOutput = false)
+    public static function checkActionNotSent(bool $logOutput = false): bool
     {
         if (LengowConfiguration::debugModeIsActive()) {
             return false;

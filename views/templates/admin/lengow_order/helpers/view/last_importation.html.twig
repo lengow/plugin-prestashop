@@ -1,0 +1,18 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+{% if orderCollection is defined and orderCollection['last_import_type'] != 'none' %}
+    <p>
+        {{ locale.t('order.screen.last_order_importation') }}
+        : <b>{{ orderCollection['last_import_date'] }}</b>
+{% else %}
+    {{ locale.t('order.screen.no_order_importation') }}
+{% endif %}
+</p>
+{% if reportMailEnabled is defined and reportMailEnabled %}
+    <p>
+        {{ locale.t('order.screen.all_order_will_be_sent_to') }} {{ report_mail_address|join(', ') }}
+        (<a href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowMainSetting') }}">{{ locale.t('order.screen.change_this') }}</a>)
+    </p>
+{% endif %}
