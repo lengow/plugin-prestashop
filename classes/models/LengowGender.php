@@ -27,9 +27,9 @@ if (!defined('_PS_VERSION_')) {
 class LengowGender extends Gender
 {
     /**
-     * @var array current alias of mister
+     * @var list<string> current alias of mister
      */
-    public static $currentMale = [
+    public static array $currentMale = [
         'M',
         'M.',
         'Mr',
@@ -46,9 +46,9 @@ class LengowGender extends Gender
     ];
 
     /**
-     * @var array current alias of miss
+     * @var list<string> current alias of miss
      */
-    public static $currentFemale = [
+    public static array $currentFemale = [
         'Mme',
         'MME',
         'mme',
@@ -83,7 +83,7 @@ class LengowGender extends Gender
      *
      * @return string
      */
-    public static function getGender($name)
+    public static function getGender(string $name): string
     {
         if (empty($name)) {
             return '';
@@ -99,7 +99,7 @@ class LengowGender extends Gender
         $result = Db::getInstance()->ExecuteS($query);
 
         if ($result && is_array($result)) {
-            return (string) $result[0]['id_gender'] ?? '';
+            return (string) ($result[0]['id_gender'] ?? '');
         }
 
         return '';

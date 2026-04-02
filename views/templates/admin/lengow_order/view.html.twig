@@ -1,0 +1,64 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+{% extends base_layout %}
+
+{% block lengow_header %}
+    {% include '@Modules/lengow/views/templates/admin/twig/header.html.twig' %}
+    {% include '@Modules/lengow/views/templates/admin/twig/header_order.html.twig' %}
+{% endblock %}
+
+{% block lengow_content %}
+<div id="lengow_order_wrapper" class="cms-global">
+    <div class="lgw-container">
+        {% if debugMode %}
+            <div id="lgw-debug" class="adminlengoworder {% if multiShop %}multi-shop{% endif %}">
+                {{ locale.t('menu.debug_active') }}
+            </div>
+        {% endif %}
+        <div class="lgw-box">
+            <div id="lengow_warning_message">
+                {% include '@Modules/lengow/views/templates/admin/lengow_order/helpers/view/warning_message.html.twig' %}
+            </div>
+            <div class="lgw-col-8" style="padding:0;">
+                <div id="lengow_last_importation">
+                    {% include '@Modules/lengow/views/templates/admin/lengow_order/helpers/view/last_importation.html.twig' %}
+                </div>
+                <div id="lengow_wrapper_messages" class="blue-frame mod-order-notification" style="display:none;"></div>
+            </div>
+            <div class="pull-right text-right lgw-col-3">
+                <a id="lengow_import_orders" class="lgw-btn btn no-margin-top"
+                    data-href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowOrder') }}">
+                    {{ locale.t('order.screen.button_update_orders') }}
+                </a>
+            </div>
+            <!-- UPDATE ORDERS -->
+            <div id="lengow_charge_import_order" style="display:none">
+                <div class="ajax-loading mod-synchronise-order">
+                    <div class="ajax-loading-ball1"></div>
+                    <div class="ajax-loading-ball2"></div>
+                </div>
+                <p id="lengow_charge_lign1">{{ locale.t('order.screen.import_charge_first') }}</p>
+                <p id="lengow_charge_lign2">{{ locale.t('order.screen.import_charge_second') }}</p>
+            </div>
+            <!-- /UPDATE ORDERS -->
+            <!-- TABLE -->
+            <div class="clearfix"></div>
+            <div id="lengow_order_table_wrapper">
+                {% if nb_order_imported is defined and nb_order_imported == 0 %}
+                    {% include '@Modules/lengow/views/templates/admin/lengow_order/helpers/view/no_order.html.twig' %}
+                {% else %}
+                    {{ lengow_table|raw }}
+                {% endif %}
+            </div>
+            <!-- /TABLE -->
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="{{ lengowPathUri }}views/js/lengow/order.js"></script>
+{% endblock %}
+
+{% block lengow_footer %}
+    {% include '@Modules/lengow/views/templates/admin/twig/footer.html.twig' %}
+{% endblock %}

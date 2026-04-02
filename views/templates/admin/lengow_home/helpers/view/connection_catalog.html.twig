@@ -1,0 +1,45 @@
+{#
+ * Copyright 2021 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+<div class="lgw-content-section">
+    <h2>{{ locale.t('connection.catalog.link_title') }}</h2>
+    <p>{{ locale.t('connection.catalog.link_description') }}</p>
+    <p>
+        <span>{{ catalogList|length }}</span>
+        {{ locale.t('connection.catalog.link_catalog_avalaible') }}
+    </p>
+</div>
+<div>
+    {% for shop in shopCollection %}
+        <div class="lgw-catalog-select">
+            <label class="control-label" for="select_catalog_{{ shop.id }}">
+                {{ shop.name }}
+            </label>
+            <select class="form-control lengow_select js-catalog-linked"
+                    id="select_catalog_{{ shop.id }}"
+                    name="{{ shop.id }}"
+                    multiple="multiple"
+                    data-placeholder="{{ locale.t('connection.catalog.link_placeholder_catalog') }}"
+                    data-allow-clear="true">
+                {% for catalog in catalogList %}
+                    <option value="{{ catalog['value'] }}">
+                        {{ catalog['label'] }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+    {% endfor %}
+</div>
+<div>
+    <button class="lgw-btn lgw-btn-green lgw-btn-progression js-link-catalog">
+        <div class="btn-inner">
+            <div class="btn-step default">
+                {{ locale.t('connection.catalog.link_button') }}
+            </div>
+            <div class="btn-step loading">
+                {{ locale.t('global_setting.screen.setting_saving') }}
+            </div>
+        </div>
+    </button>
+</div>

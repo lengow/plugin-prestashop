@@ -23,6 +23,9 @@ require_once _PS_MODULE_DIR_ . 'lengow' . DIRECTORY_SEPARATOR . 'loader.php';
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+
+use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
+
 /**
  * Lengow
  */
@@ -31,12 +34,14 @@ class Lengow extends Module
     /**
      * Lengow Install Class
      */
-    private $installClass;
+    /** @var LengowInstall */
+    private LengowInstall $installClass;
 
     /**
      * Lengow Hook Class
      */
-    private $hookClass;
+    /** @var LengowHook */
+    private LengowHook $hookClass;
 
     /**
      * Construct
@@ -49,20 +54,22 @@ class Lengow extends Module
         $this->author = 'Lengow';
         $this->module_key = '__LENGOW_PRESTASHOP_PRODUCT_KEY__';
         $this->ps_versions_compliancy = [
-            'min' => '1.7.8',
-            'max' => '8.99.99',
+            'min' => '8.0.0',
+            'max' => '9.99.99',
         ];
 
         $this->bootstrap = true;
 
         parent::__construct();
 
-        $this->displayName = $this->l('Lengow');
+        LengowContext::setContext($this->context);
+
+        $this->displayName = 'Lengow';
         $this->description = $this->l('Lengow allows you to easily export your product catalogue from your PrestaShop store and sell on Amazon, Cdiscount, Google Shopping, Criteo, LeGuide.com, Ebay, Rakuten, Priceminister. Choose from our 1,800 available marketing channels!');
         $this->confirmUninstall = $this->l('Are you sure you want to uninstall the Lengow module?');
 
-        $this->installClass = new LengowInstall($this);
-        $this->hookClass = new LengowHook($this);
+        $this->installClass = new LengowInstall($this, $this->context);
+        $this->hookClass = new LengowHook($this, $this->context);
 
         if (self::isInstalled($this->name)) {
             $oldVersion = LengowConfiguration::getGlobalValue(
@@ -70,28 +77,66 @@ class Lengow extends Module
             );
             if ($oldVersion !== $this->version) {
                 $this->installClass->clearCaches();
+                LengowInstall::setInstallationStatus(false);
+                $this->installClass->update($oldVersion);
                 LengowConfiguration::updateGlobalValue(
                     LengowConfiguration::PLUGIN_VERSION,
                     $this->version
                 );
-                $this->installClass->update($oldVersion);
                 $this->installClass->clearCaches();
             }
         }
 
-        $this->context = Context::getContext();
         $this->context->smarty->assign('lengow_link', new LengowLink());
     }
 
     /**
      * Configure Link
      * Redirect on lengow configure page
+     *
+     * @return void
      */
-    public function getContent()
+    public function getContent(): void
     {
-        $link = new LengowLink();
-        $configLink = $link->getAbsoluteAdminLink('AdminLengowHome');
-        Tools::redirect($configLink, '');
+        $sfContainer = SymfonyContainer::getInstance();
+        if ($sfContainer === null) {
+            return;
+        }
+        $router = $sfContainer->get('router');
+        try {
+            Tools::redirectAdmin($router->generate('lengow_home'));
+        } catch (Symfony\Component\Routing\Exception\RouteNotFoundException $e) {
+            $this->clearCompiledCache();
+            Tools::redirectAdmin(
+                $this->context->link->getAdminLink('AdminModules', true, [], ['configure' => $this->name])
+            );
+        }
+    }
+
+    /**
+     * Deletes Symfony routing and container cache files for all environments so they are
+     * rebuilt fresh on the next request with this module's routes and services included.
+     *
+     * Both the routing cache (UrlGenerator/UrlMatcher) and the compiled DI container entry-point
+     * are deleted because both are built during $kernel->handle() which runs before parent::install()
+     * registers the module in the database.
+     *
+     * @return void
+     */
+    private function clearCompiledCache(): void
+    {
+        $routingFiles = ['UrlGenerator.php', 'UrlGenerator.php.meta', 'UrlMatcher.php', 'UrlMatcher.php.meta'];
+        foreach (['dev', 'prod'] as $env) {
+            $cacheDir = _PS_ROOT_DIR_ . '/var/cache/' . $env . '/';
+            foreach ($routingFiles as $file) {
+                @unlink($cacheDir . $file);
+            }
+            // Remove the compiled container entry-point so the DI container is recompiled
+            // on the next request and module services (controllers) are properly registered.
+            foreach (glob($cacheDir . 'app*Container.php') ?: [] as $containerFile) {
+                @unlink($containerFile);
+            }
+        }
     }
 
     /**
@@ -99,12 +144,16 @@ class Lengow extends Module
      *
      * @return bool
      */
-    public function install()
+    public function install(): bool
     {
         $this->installClass->clearCaches();
         if (!parent::install()) {
             return false;
         }
+        // Routing/container cache was built by the current request's kernel before this module was
+        // registered in the DB, so it lacks lengow routes and services. Delete it now so the next
+        // request rebuilds it fresh.
+        $this->clearCompiledCache();
         $isInstalled = $this->installClass->install();
         $this->installClass->clearCaches();
 
@@ -116,7 +165,7 @@ class Lengow extends Module
      *
      * @return bool
      */
-    public function uninstall()
+    public function uninstall(): bool
     {
         $this->installClass->clearCaches();
         if (!parent::uninstall()) {
@@ -133,7 +182,7 @@ class Lengow extends Module
      *
      * @return bool
      */
-    public function reset()
+    public function reset(): bool
     {
         $this->installClass->clearCaches();
         $isReset = $this->installClass->reset();
@@ -143,34 +192,73 @@ class Lengow extends Module
     }
 
     /**
-     * Hook to display the icon
+     * Register legacy webservice URLs as PS-native routes pointing to the FO controllers.
+     *
+     * Old URLs (modules/lengow/webservice/*.php) still work because:
+     * - The physical PHP files no longer exist, so Apache forwards to index.php
+     * - PS Dispatcher picks up these routes and dispatches to the FO controllers
+     *
+     * @return array<string, array<string, mixed>>
      */
-    public function hookDisplayBackOfficeHeader()
+    public function hookModuleRoutes(): array
+    {
+        return [
+            'lengow-cron' => [
+                'controller' => 'cron',
+                'rule' => 'modules/lengow/webservice/cron.php',
+                'keywords' => [],
+                'params' => [
+                    'fc' => 'module',
+                    'module' => 'lengow',
+                ],
+            ],
+            'lengow-export' => [
+                'controller' => 'export',
+                'rule' => 'modules/lengow/webservice/export.php',
+                'keywords' => [],
+                'params' => [
+                    'fc' => 'module',
+                    'module' => 'lengow',
+                ],
+            ],
+            'lengow-toolbox' => [
+                'controller' => 'toolbox',
+                'rule' => 'modules/lengow/webservice/toolbox.php',
+                'keywords' => [],
+                'params' => [
+                    'fc' => 'module',
+                    'module' => 'lengow',
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * Hook to display the icon
+     *
+     * @return void
+     */
+    public function hookDisplayBackOfficeHeader(): void
     {
         $this->hookClass->hookDisplayBackOfficeHeader();
     }
 
     /**
      * Hook on Home page
-     * @depercated Use hookDisplayHome instead
+     *
+     * @return void
      */
-    public function hookHome()
-    {
-        $this->hookClass->hookDisplayHome();
-    }
-
-    /**
-     * Hook on Home page
-     */
-    public function hookDisplayHome()
+    public function hookDisplayHome(): void
     {
         $this->hookClass->hookDisplayHome();
     }
 
     /**
      * Hook on Payment page
+     *
+     * @return void
      */
-    public function hookDisplayPaymentTop()
+    public function hookDisplayPaymentTop(): void
     {
         $this->hookClass->hookPaymentTop();
     }
@@ -180,7 +268,7 @@ class Lengow extends Module
      *
      * @return mixed
      */
-    public function hookDisplayFooter()
+    public function hookDisplayFooter(): mixed
     {
         return $this->hookClass->hookFooter();
     }
@@ -188,9 +276,11 @@ class Lengow extends Module
     /**
      * Hook on order confirmation page to init order's product list
      *
-     * @param array $args Arguments of hook
+     * @param array<string, mixed> $args Arguments of hook
+     *
+     * @return void
      */
-    public function hookDisplayOrderConfirmation($args)
+    public function hookDisplayOrderConfirmation(array $args): void
     {
         $this->hookClass->hookOrderConfirmation($args);
     }
@@ -198,8 +288,12 @@ class Lengow extends Module
     /**
      * Order status update
      * Event This hook launches modules when the status of an order changes
+     *
+     * @param array<string, mixed> $args
+     *
+     * @return void
      */
-    public function hookActionOrderStatusUpdate($args)
+    public function hookActionOrderStatusUpdate(array $args): void
     {
         $this->hookClass->hookUpdateOrderStatus($args);
     }
@@ -207,19 +301,23 @@ class Lengow extends Module
     /**
      * Order status post update
      *
-     * @param array $args Arguments of hook
+     * @param array<string, mixed> $args Arguments of hook
+     *
+     * @return void
      */
-    public function hookActionOrderStatusPostUpdate($args)
+    public function hookActionOrderStatusPostUpdate(array $args): void
     {
-       $this->hookClass->hookActionOrderStatusPostUpdate($args);
+        $this->hookClass->hookActionOrderStatusPostUpdate($args);
     }
 
     /**
      * Hook for update order if isset tracking number
      *
-     * @param array $args Arguments of hook
+     * @param array<string, mixed> $args Arguments of hook
+     *
+     * @return void
      */
-    public function hookActionObjectUpdateAfter($args)
+    public function hookActionObjectUpdateAfter(array $args): void
     {
         $this->hookClass->hookActionObjectUpdateAfter($args);
     }
@@ -227,11 +325,11 @@ class Lengow extends Module
     /**
      * Hook on admin page's order
      *
-     * @param array $args Arguments of hook
+     * @param array<string, mixed> $args Arguments of hook
      *
      * @return mixed
      */
-    public function hookDisplayAdminOrder($args)
+    public function hookDisplayAdminOrder(array $args): mixed
     {
         return $this->hookClass->hookAdminOrder($args);
     }
@@ -239,19 +337,47 @@ class Lengow extends Module
     /**
      * Hook on admin page's order side
      *
-     * @param array $args Arguments of hook
+     * @param array<string, mixed> $args Arguments of hook
      *
      * @return mixed
      */
-    public function hookDisplayAdminOrderSide($args)
+    public function hookDisplayAdminOrderSide(array $args): mixed
     {
         return $this->hookClass->hookAdminOrderSide($args);
     }
 
     /**
-     * Hook when a product line is refunded
+     * Hook to add a Lengow tab link in the order detail tabs
+     *
+     * @param array<string, mixed> $params
+     *
+     * @return string
      */
-    public function hookActionProductCancel($args)
+    public function hookDisplayAdminOrderTabLink(array $params): string
+    {
+        return $this->hookClass->hookDisplayAdminOrderTabLink($params);
+    }
+
+    /**
+     * Hook to add Lengow tab content in the order detail tabs
+     *
+     * @param array<string, mixed> $params
+     *
+     * @return string
+     */
+    public function hookDisplayAdminOrderTabContent(array $params): string
+    {
+        return $this->hookClass->hookDisplayAdminOrderTabContent($params);
+    }
+
+    /**
+     * Hook when a product line is refunded
+     *
+     * @param array<string, mixed> $args
+     *
+     * @return void
+     */
+    public function hookActionProductCancel(array $args): void
     {
         $this->hookClass->hookActionProductCancel($args);
     }

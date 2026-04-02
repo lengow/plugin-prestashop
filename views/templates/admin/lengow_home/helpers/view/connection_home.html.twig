@@ -1,0 +1,35 @@
+{#
+ * Copyright 2021 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+<div id="lgw-connection-home">
+    <div class="lgw-content-section">
+        <p>{{ locale.t('connection.home.description_first') }}</p>
+        <p>{{ locale.t('connection.home.description_second') }}</p>
+        <p>{{ locale.t('connection.home.description_third') }}</p>
+    </div>
+    <div class="lgw-module-illu">
+        <img src="{{ lengowPathUri }}views/img/connected-prestashop.png"
+             class="lgw-module-illu-module"
+             alt="prestashop">
+        <img src="{{ lengowPathUri }}views/img/connected-lengow.png"
+             class="lgw-module-illu-lengow"
+             alt="lengow">
+        <img src="{{ lengowPathUri }}views/img/plug-grey.png"
+             class="lgw-module-illu-plug"
+             alt="plug">
+    </div>
+    <p>{{ locale.t('connection.home.description_fourth') }}</p>
+    <div>
+        <button class="lgw-btn lgw-btn-green js-go-to-credentials">
+            {{ locale.t('connection.home.button') }}
+        </button>
+        <br/>
+        <p>
+            {{ locale.t('connection.home.no_account') }}
+            <a href="https://my.{{ lengowUrl }}" target="_blank">
+                {{ locale.t('connection.home.no_account_sign_up') }}
+            </a>
+        </p>
+    </div>
+</div>

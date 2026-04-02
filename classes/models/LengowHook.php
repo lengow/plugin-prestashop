@@ -26,78 +26,31 @@ if (!defined('_PS_VERSION_')) {
 }
 class LengowHook
 {
-    /* PrestaShop track pages */
-    public const LENGOW_TRACK_HOMEPAGE = 'homepage';
-    public const LENGOW_TRACK_PAGE = 'page';
-    public const LENGOW_TRACK_PAGE_LIST = 'listepage';
-    public const LENGOW_TRACK_PAGE_PAYMENT = 'payment';
-    public const LENGOW_TRACK_PAGE_CART = 'basket';
-    public const LENGOW_TRACK_PAGE_CONFIRMATION = 'confirmation';
-
     /**
-     * @var string PrestaShop current page type
+     * @var array<string, mixed> order is already shipped
      */
-    private static $currentPageType = 'page';
-
-    /**
-     * @var string PrestaShop order id
-     */
-    private static $idOrder = '';
-
-    /**
-     * @var string PrestaShop cart id
-     */
-    private static $idCart = '';
-
-    /**
-     * @var string order payment
-     */
-    private static $orderPayment = '';
-
-    /**
-     * @var string order currency
-     */
-    private static $orderCurrency = '';
-
-    /**
-     * @var string total order
-     */
-    private static $orderTotal = '';
-
-    /**
-     * @var string product cart ids
-     */
-    private static $idsProductCart = '';
-
-    /**
-     * @var string PrestaShop category id
-     */
-    private static $idCategory = '';
-
-    /**
-     * @var array order is already shipped
-     */
-    protected $alreadyShipped = [];
+    protected array $alreadyShipped = [];
 
     /**
      * @var Lengow Lengow module instance
      */
-    private $module;
+    private Lengow $module;
 
     /**
      * @var Context PrestaShop context
      */
-    private $context;
+    private Context $context;
 
     /**
      * Construct
      *
      * @param Lengow $module Lengow module instance
+     * @param Context $context PrestaShop context
      */
-    public function __construct($module)
+    public function __construct(Lengow $module, Context $context)
     {
         $this->module = $module;
-        $this->context = Context::getContext();
+        $this->context = $context;
     }
 
     /**
@@ -105,15 +58,14 @@ class LengowHook
      *
      * @return bool
      */
-    public function registerHooks()
+    public function registerHooks(): bool
     {
         $error = false;
         $lengowHooks = [
             // common version
             'postUpdateOrderStatus' => '1.4',
-            'paymentTop' => '1.4',
+            'displayPaymentTop' => '1.4',
             'displayAdminOrder' => '1.4',
-            'home' => '1.4',
             'actionOrderStatusUpdate' => '1.4',
             'orderConfirmation' => '1.4',
             // version 1.5
@@ -123,14 +75,30 @@ class LengowHook
             'displayAdminOrderSide' => '1.6',
             // version 8.0
             'displayHome' => '8.0',
-            'actionOrderStatusPostUpdate' => '8.0'
+            'actionOrderStatusPostUpdate' => '8.0',
+            'actionProductCancel' => '8.0',
+            // PS 8.0+ — order page tabs
+            'displayAdminOrderTabLink' => '8.0',
+            'displayAdminOrderTabContent' => '8.0',
+            // PS routing: maps legacy webservice/*.php URLs to the FO controllers
+            'moduleRoutes' => '1.5',
         ];
+
         foreach ($lengowHooks as $hook => $version) {
             if ((float) $version <= (float) Tools::substr(_PS_VERSION_, 0, 3)) {
                 if ($this->module->isRegisteredInHook($hook)) {
                     continue;
                 }
-                if (!$this->module->registerHook($hook)) {
+                try {
+                    $registered = $this->module->registerHook($hook);
+                } catch (PrestaShopDatabaseException $e) {
+                    LengowMain::log(
+                        LengowLog::CODE_INSTALL,
+                        LengowMain::setLogMessage('log.install.registering_hook_success', ['hook' => $hook])
+                    );
+                    continue;
+                }
+                if (!$registered) {
                     LengowMain::log(
                         LengowLog::CODE_INSTALL,
                         LengowMain::setLogMessage('log.install.registering_hook_error', ['hook' => $hook])
@@ -145,31 +113,47 @@ class LengowHook
             }
         }
 
+        // Cleanup: If the deprecated 'home' hook is registered, unregister it to avoid
+        // PrestaShop deprecation warnings. New hook name is 'displayHome'.
+        if ($this->module->isRegisteredInHook('home')) {
+            $this->module->unregisterHook('home');
+            LengowMain::log(
+                LengowLog::CODE_INSTALL,
+                LengowMain::setLogMessage('log.install.unregistering_deprecated_hook', ['hook' => 'home'])
+            );
+        }
+
         return !$error;
     }
 
     /**
      * Hook to display the icon
+     *
+     * @return void
      */
-    public function hookDisplayBackOfficeHeader()
+    public function hookDisplayBackOfficeHeader(): void
     {
         $this->context->controller->addCss(_PS_MODULE_LENGOW_DIR_ . 'views/css/lengow-tab.css');
     }
 
     /**
      * Hook on Home page
+     *
+     * @return void
      */
-    public function hookDisplayHome()
+    public function hookDisplayHome(): void
     {
-        self::$currentPageType = self::LENGOW_TRACK_HOMEPAGE;
+        // tracker is disabled now
     }
 
     /**
      * Hook on Payment page
+     *
+     * @return void
      */
-    public function hookPaymentTop()
+    public function hookPaymentTop(): void
     {
-        self::$currentPageType = self::LENGOW_TRACK_PAGE;
+        // tracker is disabled now
     }
 
     /**
@@ -177,7 +161,7 @@ class LengowHook
      *
      * @return mixed
      */
-    public function hookFooter()
+    public function hookFooter(): mixed
     {
         // tracker is disabled now
         return '';
@@ -186,70 +170,26 @@ class LengowHook
     /**
      * Hook on order confirmation page to init order's product list
      *
-     * @param array $args arguments of hook
+     * @param array<string, mixed> $args arguments of hook
      *
-     * @return mixed null|void
+     * @return void
      */
-    public function hookOrderConfirmation($args)
+    public function hookOrderConfirmation(array $args): void
     {
-        if (!isset($args['objOrder']) && !isset($args['order'])) {
-            return;
-        }
-        $i = 0;
-        $productsCart = [];
-        $order = isset($args['objOrder']) ? $args['objOrder'] : $args['order'];
-        $orderTotal = Tools::ps_round($order->total_paid, 2);
-        $paymentMethod = LengowMain::replaceAccentedChars(Tools::strtolower(str_replace(' ', '_', $order->payment)));
-        $currency = new Currency($order->id_currency);
-        $productsList = $order->getProducts();
-        foreach ($productsList as $p) {
-            ++$i;
-            switch (LengowConfiguration::get(LengowConfiguration::TRACKING_ID)) {
-                case 'upc':
-                    $idProduct = $p['upc'];
-                    break;
-                case 'ean':
-                    $idProduct = $p['ean13'];
-                    break;
-                case 'ref':
-                    $idProduct = $p['reference'];
-                    break;
-                default:
-                    if ($p['product_attribute_id']) {
-                        $idProduct = $p['product_id'] . '_' . $p['product_attribute_id'];
-                    } else {
-                        $idProduct = $p['product_id'];
-                    }
-                    break;
-            }
-            $price = isset($p['product_price_wt']) ? $p['product_price_wt'] : $p['unit_price_tax_incl'];
-            // basket product
-            $productsCart[] = [
-                'product_id' => $idProduct,
-                'price' => Tools::ps_round($price, 2),
-                'quantity' => $p['product_quantity'],
-            ];
-        }
-        self::$idsProductCart = json_encode($productsCart);
-        self::$currentPageType = self::LENGOW_TRACK_PAGE_CONFIRMATION;
-        self::$idOrder = $order->id;
-        self::$idCart = $order->id_cart;
-        self::$orderTotal = $orderTotal;
-        self::$orderPayment = $paymentMethod;
-        self::$orderCurrency = $currency->iso_code;
+        // tracker is disabled now
     }
 
     /**
      * Hook on admin page's order
      *
-     * @param array $args arguments of hook
+     * @param array<string, mixed> $args arguments of hook
      *
      * @return mixed
      */
-    public function hookAdminOrder($args)
+    public function hookAdminOrder(array $args): mixed
     {
         if (!isset($args['id_order'])) {
-            return;
+            return null;
         }
         if (LengowOrder::isFromLengow($args['id_order'])) {
             $lengowLink = new LengowLink();
@@ -317,11 +257,11 @@ class LengowHook
     /**
      * Hook on admin page's order side
      *
-     * @param array $args Arguments of hook
+     * @param array<string, mixed> $params Arguments of hook
      *
      * @return mixed
      */
-    public function hookAdminOrderSide($params)
+    public function hookAdminOrderSide(array $params): mixed
     {
         $id_order = (int) $params['id_order'];
         $lengowOrder = LengowOrder::getLengowOrderByPrestashopId($id_order);
@@ -349,11 +289,11 @@ class LengowHook
     /**
      * Hook before an status' update to synchronize status with lengow
      *
-     * @param array $args arguments of hook
+     * @param array<string, mixed> $args arguments of hook
      *
-     * @return mixed null|void
+     * @return void
      */
-    public function hookUpdateOrderStatus($args)
+    public function hookUpdateOrderStatus(array $args): void
     {
         if (!isset($args['id_order']) || !(bool) LengowConfiguration::get(LengowConfiguration::SEND_EMAIL_DISABLED)) {
             return;
@@ -371,11 +311,11 @@ class LengowHook
     /**
      * Hook after an status' update to synchronize status with lengow
      *
-     * @param array $args arguments of hook
+     * @param array<string, mixed> $args arguments of hook
      *
-     * @return mixed null|void
+     * @return void
      */
-    public function hookActionOrderStatusPostUpdate($args)
+    public function hookActionOrderStatusPostUpdate(array $args): void
     {
         if (!isset($args['id_order'])) {
             return;
@@ -420,17 +360,17 @@ class LengowHook
     /**
      * Update, if isset tracking number
      *
-     * @param array $args arguments of hook
+     * @param array<string, mixed> $args arguments of hook
      *
-     * @return mixed null|void
+     * @return void
      */
-    public function hookActionObjectUpdateAfter($args)
+    public function hookActionObjectUpdateAfter(array $args): void
     {
         if (!isset($args['object']->id) || !$args['object'] instanceof Order) {
             return;
         }
 
-        if (($args['object'] instanceof Order) && LengowOrder::isFromLengow($args['object']->id)) {
+        if (LengowOrder::isFromLengow($args['object']->id)) {
             $lengowOrder = new LengowOrder($args['object']->id);
 
             // Check if the tracking field has been updated
@@ -450,21 +390,108 @@ class LengowHook
     }
 
     /**
-     * Hook on product cancel
+     * Hook to add a Lengow tab link in the order detail tabs
+     *
+     * @param array<string, mixed> $params arguments of hook
+     *
+     * @return string
      */
-    public function hookActionProductCancel(array $args)
+    public function hookDisplayAdminOrderTabLink(array $params): string
+    {
+        $idOrder = (int) ($params['id_order'] ?? 0);
+        if (!$idOrder || !LengowOrder::isFromLengow($idOrder)) {
+            return '';
+        }
+
+        $lengowOrder = new LengowOrder($idOrder);
+        $marketplace = $lengowOrder->getMarketplace();
+        if (!$marketplace) {
+            return '';
+        }
+
+        $hasContent = $marketplace->hasReturnTrackingNumber()
+            || $marketplace->hasReturnTrackingCarrier()
+            || !empty($marketplace->getRefundReasons())
+            || !empty($marketplace->getRefundModes());
+
+        if (!$hasContent) {
+            return '';
+        }
+
+        return '<li class="nav-item">
+            <a class="nav-link" id="lengow-tab" data-toggle="tab" href="#lengow-tab-content" role="tab">
+                Lengow
+            </a>
+        </li>';
+    }
+
+    /**
+     * Hook to add a Lengow tab content (return tracking, refund reason/mode) in the order detail tabs
+     *
+     * @param array<string, mixed> $params arguments of hook
+     *
+     * @return string
+     */
+    public function hookDisplayAdminOrderTabContent(array $params): string
+    {
+        $idOrder = (int) ($params['id_order'] ?? 0);
+        if (!$idOrder || !LengowOrder::isFromLengow($idOrder)) {
+            return '';
+        }
+
+        $lengowOrder = new LengowOrder($idOrder);
+        $marketplace = $lengowOrder->getMarketPlace();
+        if (!$marketplace) {
+            return '';
+        }
+
+        $isActiveReturnTrackingNumber = $marketplace->hasReturnTrackingNumber();
+        $isActiveReturnCarrier = $marketplace->hasReturnTrackingCarrier();
+        $refundReasons = $marketplace->getRefundReasons();
+        $refundModes = $marketplace->getRefundModes();
+        $refundSelectedDatas = $lengowOrder->getRefundDataFromLengowOrder($idOrder, $marketplace->name);
+
+        $locale = new LengowTranslation();
+
+        $this->context->smarty->assign([
+            'orderId' => $idOrder,
+            'ajax_url' => $this->context->link->getAdminLink('AdminLengowOrder', true),
+            'isActiveReturnTrackingNumber' => $isActiveReturnTrackingNumber,
+            'isActiveReturnCarrier' => $isActiveReturnCarrier,
+            'returnTrackingNumber' => $isActiveReturnTrackingNumber ? LengowOrderDetail::getOrderReturnTrackingNumber($idOrder) : '',
+            'returnCarrier' => $isActiveReturnCarrier ? LengowOrderDetail::getOrderReturnCarrier($idOrder) : '',
+            'returnTrackingNumberLabel' => $locale->t('order.screen.return_tracking_number_label'),
+            'returnCarrierLabel' => $locale->t('order.screen.return_carrier_label'),
+            'carriers' => $isActiveReturnCarrier ? LengowCarrier::getCarriersChoices($this->context->language->id) : [],
+            'refundReasons' => $refundReasons,
+            'refundModes' => $refundModes,
+            'refundReasonSelected' => $refundSelectedDatas['refund_reason'] ?? '',
+            'refundModeSelected' => $refundSelectedDatas['refund_mode'] ?? '',
+        ]);
+
+        return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/hook/order/admin_order_tab.tpl');
+    }
+
+    /**
+     * Hook on product cancel
+     *
+     * @param array<string, mixed> $args
+     *
+     * @return void
+     */
+    public function hookActionProductCancel(array $args): void
     {
         if (!isset($args['order'])) {
             return;
         }
         $order = $args['order'];
         $lengowOrder = new LengowOrder($order->id);
-        if ($lengowOrder instanceof LengowOrder && LengowOrder::isFromLengow($order->id)) {
+        if (LengowOrder::isFromLengow($order->id)) {
             $idOrderDetail = (int) $args['id_order_detail'];
             $cancelQuantity = (int) $args['cancel_quantity'];
 
             $orderDetail = new OrderDetail($idOrderDetail);
-            if (!$orderDetail instanceof OrderDetail) {
+            if (!Validate::isLoadedObject($orderDetail)) {
                 return;
             }
             $lengowOrderLine = LengowOrderLine::findOrderLineByOrderDetailId($orderDetail->id);

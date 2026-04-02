@@ -28,81 +28,74 @@ if (!defined('_PS_VERSION_')) {
 class LengowNameParser
 {
     /**
-     * Array of possible name languages.
-     *
-     * @var array
-     */
-    private $languages;
-
-    /**
      * Array of possible name titles.
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    private $titles;
+    private array $titles;
 
     /**
      * Array of possible last name prefixes.
      *
-     * @var array
+     * @var array<string, mixed>
      */
-    private $prefices;
+    private array $prefices;
 
     /**
      * Array of possible name suffices.
      *
-     * @var array;
+     * @var array<string, mixed>
      */
-    private $suffices;
+    private array $suffices;
 
     /**
      * The TITLE ie. Dr., Mr. Mrs., etc...
      *
      * @var string
      */
-    private $title;
+    private string $title;
 
     /**
      * The FIRST Name
      *
      * @var string
      */
-    private $first;
+    private string $first;
 
     /**
      * The MIDDLE Name
      *
      * @var string
      */
-    private $middle;
+    private string $middle;
 
     /**
      * The LAST Name
      *
      * @var string
      */
-    private $last;
+    private string $last;
 
     /**
      * Name addendum ie. III, Sr., etc...
      *
      * @var string
      */
-    private $suffix;
+    private string $suffix;
 
     /**
      * Full name string passed to class
      *
      * @var string
      */
-    private $fullName;
+    private string $fullName;
 
     /**
      * Set to false by default, but set to true if parse() is executed on a name that is not parseable
      *
      * @var bool
      */
-    private $notParseable;
+    private bool $notParseable;
 
     /**
      * File name for config parser
@@ -126,11 +119,13 @@ class LengowNameParser
         $this->suffix = '';
 
         $filePath = self::getParserFilePath();
+        if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+            return;
+        }
         $paramsJson = Tools::file_get_contents($filePath);
         $params = json_decode($paramsJson, true);
 
         // added Military Titles
-        $this->languages = $params['language'];
         $this->titles = $params['titles'];
 
         $this->prefices = $params['prefices'];
@@ -214,9 +209,9 @@ class LengowNameParser
      * Determine if the needle is in the haystack.
      *
      * @param mixed $needle the needle to look for
-     * @param array $haystack the haystack from which to look into
+     * @param array<string, mixed> $haystack the haystack from which to look into
      */
-    private function inArrayNorm($needle, array $haystack): bool
+    private function inArrayNorm(mixed $needle, array $haystack): bool
     {
         $needle = trim(strtolower(str_replace('.', '', $needle)));
 
@@ -404,6 +399,7 @@ class LengowNameParser
                                 $this->middle = $current;
                             }
                         }
+                        $this->last = $pieces[0];
                         if (isset($pieces[2]) && $pieces[2]) {
                             if ($this->last == '') {
                                 $this->suffix = trim($pieces[2]);
@@ -416,7 +412,6 @@ class LengowNameParser
                                 }
                             }
                         }
-                        $this->last = $pieces[0];
                         break;
                 }
                 unset($pieces);

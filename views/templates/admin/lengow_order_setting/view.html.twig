@@ -1,0 +1,75 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+{% extends base_layout %}
+
+{% block lengow_header %}
+    {% include '@Modules/lengow/views/templates/admin/twig/header.html.twig' %}
+    {% include '@Modules/lengow/views/templates/admin/twig/header_order.html.twig' %}
+{% endblock %}
+
+{% block lengow_content %}
+<div id="lengow_form_order_setting" class="cms-global">
+    <div class="lgw-container">
+        {% if debugMode %}
+            <div id="lgw-debug" class="adminlengowordersetting {% if multiShop %}multi-shop{% endif %}">
+                {{ locale.t('menu.debug_active') }}
+            </div>
+        {% endif %}
+        <form class="lengow_form" method="POST">
+            {% if countries is defined and countries %}
+                <div class="lgw-box" id="carrier-matching">
+                    <div id="country_selector">
+                        {% include '@Modules/lengow/views/templates/admin/lengow_order_setting/helpers/view/country_selector.html.twig' %}
+                        <p>{{ semantic_search|raw }}</p>
+                    </div>
+                    <div id="marketplace_matching"></div>
+                    <div class="ajax-loading mod-matching-carrier" style="display: none">
+                        <div class="ajax-loading-ball1"></div>
+                        <div class="ajax-loading-ball2"></div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="lgw-box">
+                <input type="hidden" name="action" value="process">
+                <h2>{{ locale.t('order_setting.screen.order_status_title') }}</h2>
+                <div>
+                    <p>{{ locale.t('order_setting.screen.order_status_description') }}</p>
+                    <p>{{ matching|raw }}</p>
+                </div>
+            </div>
+            <div class="lgw-box">
+                <h2>{{ locale.t('order_setting.screen.import_setting_title') }}</h2>
+                <p>{{ locale.t('order_setting.screen.import_setting_description') }}</p>
+                <p>{{ import_params|raw }}</p>
+            </div>
+            <div class="lgw-box">
+                <h2>
+                    {{ locale.t('lengow_setting.lengow_currency_conversion_title') }}
+                </h2>
+                <p>{{ locale.t('lengow_setting.lengow_currency_conversion_legend') }}</p>
+                <p>{{ currency_conversion|raw }}</p>
+            </div>
+            <button type="submit" class="lgw-btn lgw-btn-progression lengow_submit_order_setting">
+                <div class="btn-inner">
+                    <div class="btn-step default">
+                        {{ locale.t('global_setting.screen.button_save') }}
+                    </div>
+                    <div class="btn-step loading">
+                        {{ locale.t('global_setting.screen.setting_saving') }}
+                    </div>
+                    <div class="btn-step done" data-success="Saved!" data-error="Error">
+                        {{ locale.t('global_setting.screen.setting_saved') }}
+                    </div>
+                </div>
+            </button>
+        </form>
+    </div>
+</div>
+<script type="text/javascript" src="{{ lengowPathUri }}views/js/lengow/order_setting.js"></script>
+{% endblock %}
+
+{% block lengow_footer %}
+    {% include '@Modules/lengow/views/templates/admin/twig/footer.html.twig' %}
+{% endblock %}

@@ -1,0 +1,105 @@
+{#
+ * Copyright 2022 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+{% extends base_layout %}
+
+{% block lengow_header %}
+    {% include '@Modules/lengow/views/templates/admin/twig/header.html.twig' %}
+{% endblock %}
+
+{% block lengow_content %}
+<div class="cms-global">
+    <div class="lgw-container lgw-toolbox-wrapper">
+        {% if debugMode %}
+            <div id="lgw-debug" class="adminlengowtoolbox {% if multiShop %}multi-shop{% endif %}">
+                {{ locale.t('menu.debug_active') }}
+            </div>
+        {% endif %}
+        <h2>
+            <i class="fa fa-rocket"></i>
+            {{ locale.t('toolbox.screen.title') }}
+        </h2>
+        <div class="lgw-box">
+            <div class="lgw-switch checked js-lgw-global">
+                <label>
+                    <div>
+                        <span></span>
+                        <input type="checkbox" name="see_global_content" checked>
+                    </div>
+                    {{ locale.t('toolbox.screen.global_information') }}
+                </label>
+            </div>
+            <div class="js-lgw-global-content">
+                <div class="lgw-box-content">
+                    <h3>
+                        <i class="fa fa-check"></i>
+                        {{ locale.t('toolbox.screen.checklist_information') }}
+                    </h3>
+                    {{ checklist|raw }}
+                </div>
+                <div class="lgw-box-content">
+                    <h3>
+                        <i class="fa fa-cog"></i>
+                        {{ locale.t('toolbox.screen.plugin_information') }}
+                    </h3>
+                    {{ globalInformation|raw }}
+                </div>
+                <div class="lgw-box-content">
+                    <h3>
+                        <i class="fa fa-download"></i>
+                        {{ locale.t('toolbox.screen.synchronization_information') }}
+                    </h3>
+                    {{ synchronizationInformation|raw }}
+                </div>
+            </div>
+        </div>
+        <div class="lgw-box">
+            <div class="lgw-switch js-lgw-export">
+                <label>
+                    <div>
+                        <span></span>
+                        <input type="checkbox" name="see_export_content">
+                    </div>
+                    {{ locale.t('toolbox.screen.shop_information') }}
+                </label>
+            </div>
+            <div class="js-lgw-export-content">
+                <div class="lgw-box-content">
+                    <h3>
+                        <i class="fa fa-upload"></i>
+                        {{ locale.t('toolbox.screen.export_information') }}
+                    </h3>
+                    {{ exportInformation|raw }}
+                </div>
+                <div class="lgw-box-content">
+                    <h3>
+                        <i class="fa fa-list"></i>
+                        {{ locale.t('toolbox.screen.content_folder_media') }}
+                    </h3>
+                    {{ fileInformation|raw }}
+                </div>
+            </div>
+        </div>
+        <div class="lgw-box">
+            <div class="lgw-switch js-lgw-checksum">
+                <label>
+                    <div>
+                        <span></span>
+                        <input type="checkbox" name="see_checksum_content">
+                    </div>
+                    {{ locale.t('toolbox.screen.checksum_integrity') }}
+                </label>
+            </div>
+            <div class="lgw-box-content js-lgw-checksum-content">
+                {{ checksum|raw }}
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="{{ lengowPathUri }}views/js/lengow/toolbox.js"></script>
+{% endblock %}
+
+{% block lengow_footer %}
+    {% include '@Modules/lengow/views/templates/admin/twig/footer.html.twig' %}
+{% endblock %}

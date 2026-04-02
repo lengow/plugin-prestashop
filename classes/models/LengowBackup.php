@@ -33,7 +33,7 @@ class LengowBackup extends Backup
      *
      * @throws Exception
      */
-    public function add()
+    public function add(): bool
     {
         if (!$this->psBackupAll) {
             $ignoreInsertTable = [
@@ -50,6 +50,9 @@ class LengowBackup extends Backup
         $rand = dechex(mt_rand(0, min(0xFFFFFFFF, mt_getrandmax())));
         $date = time();
         $backupFile = $this->getRealBackupPath() . $date . '-lengowbackup' . $rand . '.sql';
+        if (!LengowMain::isPathAllowed($backupFile, $this->getRealBackupPath())) {
+            return false;
+        }
         // figure out what compression is available and open the file
         if (function_exists('bzopen')) {
             $backupFile .= '.bz2';
@@ -68,7 +71,7 @@ class LengowBackup extends Backup
         $this->id = realpath($backupFile);
         fwrite(
             $fp,
-            '/* Backup for ' . Tools::getHttpHost(false, false) . __PS_BASE_URI__ . "\n * at " . date($date) . "\n */\n"
+            '/* Backup for ' . Tools::getHttpHost(false, false) . __PS_BASE_URI__ . "\n * at " . date('Y-m-d H:i:s', $date) . "\n */\n"
         );
         fwrite($fp, "\n" . 'SET NAMES \'utf8\';' . "\n\n");
         $found = 0;

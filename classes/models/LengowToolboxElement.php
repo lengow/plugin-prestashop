@@ -39,7 +39,7 @@ class LengowToolboxElement
     /**
      * @var LengowTranslation Lengow translation instance
      */
-    protected $locale;
+    protected LengowTranslation $locale;
 
     /**
      * Constructor
@@ -54,7 +54,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function getCheckList()
+    public function getCheckList(): string
     {
         $checklistData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_CHECKLIST);
         $mailCheck = $this->getMailConfiguration();
@@ -104,7 +104,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function getGlobalInformation()
+    public function getGlobalInformation(): string
     {
         $pluginData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_PLUGIN);
         $checklist = [
@@ -154,7 +154,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function getImportInformation()
+    public function getImportInformation(): string
     {
         $synchronizationData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_SYNCHRONIZATION);
         $lastSynchronization = $synchronizationData[LengowToolbox::SYNCHRONIZATION_LAST_SYNCHRONIZATION];
@@ -222,7 +222,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function getExportInformation()
+    public function getExportInformation(): string
     {
         $content = '';
         $exportData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_SHOP);
@@ -299,7 +299,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function getFileInformation()
+    public function getFileInformation(): string
     {
         $content = '';
         $exportData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_SHOP);
@@ -325,7 +325,7 @@ class LengowToolboxElement
                 $checklist[] = [self::DATA_SIMPLE => $this->locale->t('toolbox.screen.file_list')];
                 foreach ($files as $file) {
                     $fileTimestamp = filectime($folderPath . $file);
-                    $fileLink = '<a href="' . $folderUrl . $file . '" target="_blank">' . $file . '</a>';
+                    $fileLink = '<a href="' . htmlspecialchars($folderUrl . $file, ENT_QUOTES, 'UTF-8') . '" target="_blank">' . htmlspecialchars($file, ENT_QUOTES, 'UTF-8') . '</a>';
                     $checklist[] = [
                         self::DATA_TITLE => $fileLink,
                         self::DATA_MESSAGE => LengowMain::getDateInCorrectFormat($fileTimestamp, true),
@@ -347,7 +347,7 @@ class LengowToolboxElement
      *
      * @return string
      */
-    public function checkFileMd5()
+    public function checkFileMd5(): string
     {
         $checklist = [];
         $checksumData = LengowToolbox::getData(LengowToolbox::DATA_TYPE_CHECKSUM);
@@ -413,9 +413,9 @@ class LengowToolboxElement
     /**
      * Get mail configuration information
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    private function getMailConfiguration()
+    private function getMailConfiguration(): array
     {
         $mailMethod = (int) Configuration::get('PS_MAIL_METHOD');
         if ($mailMethod === 2) {
@@ -442,7 +442,7 @@ class LengowToolboxElement
      *
      * @return bool
      */
-    private function isShopActivated()
+    private function isShopActivated(): bool
     {
         if (Configuration::get('PS_CATALOG_MODE')) {
             return false;
@@ -454,11 +454,11 @@ class LengowToolboxElement
     /**
      * Get HTML Table content of checklist
      *
-     * @param array $checklist all information for toolbox
+     * @param array<int|string, mixed> $checklist all information for toolbox
      *
-     * @return string
+     * @return string|null
      */
-    private function getContent($checklist = [])
+    private function getContent(array $checklist = []): ?string
     {
         if (empty($checklist)) {
             return null;

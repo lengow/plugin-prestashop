@@ -31,14 +31,14 @@ class LengowCustomer extends Customer
     /**
      * @var string customer full name
      */
-    public $fullName;
+    public string $fullName;
 
     /**
      * Get definition array
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getFieldDefinition()
+    public static function getFieldDefinition(): array
     {
         return self::$definition['fields'];
     }
@@ -46,19 +46,19 @@ class LengowCustomer extends Customer
     /**
      * Assign API data
      *
-     * @param array $data API data
+     * @param array<string, mixed> $data API data
      *
      * @return LengowCustomer
      */
-    public function assign($data = [])
+    public function assign(array $data = []): LengowCustomer
     {
         $this->company = LengowAddress::cleanName((string) $data['company']);
         $this->email = $data['email'];
         $this->firstname = $data['first_name'];
         $this->lastname = $data['last_name'];
         $this->fullName = $data['full_name'];
-        $this->passwd = md5(rand());
-        $this->id_gender = LengowGender::getGender((string) $data['civility']);
+        $this->passwd = md5((string) rand());
+        $this->id_gender = (int) LengowGender::getGender((string) $data['civility']);
         $this->id_default_group = LengowConfiguration::get(LengowConfiguration::ORDER_CUSTOMER_GROUP);
 
         return $this;
@@ -71,10 +71,14 @@ class LengowCustomer extends Customer
      *
      * @throws Exception|LengowException invalid object
      */
-    public function validateLengow()
+    public function validateLengow(): bool
     {
         $definition = self::getFieldDefinition();
+        $allowedFields = array_keys($definition);
         foreach ($definition as $fieldName => $constraints) {
+            if (!in_array($fieldName, $allowedFields, true)) {
+                continue;
+            }
             if (isset($constraints['required']) && $constraints['required'] && !$this->{$fieldName}) {
                 $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_EMPTY_ERROR);
             }
@@ -96,9 +100,11 @@ class LengowCustomer extends Customer
      * Modify a field according to the type of error
      *
      * @param string $fieldName incorrect field
-     * @param string $errorType type of error
+     * @param int $errorType type of error
+     *
+     * @return void
      */
-    public function validateFieldLengow($fieldName, $errorType)
+    public function validateFieldLengow(string $fieldName, int $errorType): void
     {
         switch ($errorType) {
             case LengowAddress::LENGOW_EMPTY_ERROR:
@@ -116,9 +122,15 @@ class LengowCustomer extends Customer
      * Modify an empty field
      *
      * @param string $fieldName field name
+     *
+     * @return void
      */
-    public function validateEmptyLengow($fieldName)
+    public function validateEmptyLengow(string $fieldName): void
     {
+        $allowedFields = array_keys(self::getFieldDefinition());
+        if (!in_array($fieldName, $allowedFields, true)) {
+            return;
+        }
         switch ($fieldName) {
             case 'lastname':
             case 'firstname':
@@ -152,54 +164,20 @@ class LengowCustomer extends Customer
      * Modify a field to fit its size
      *
      * @param string $fieldName field name
+     *
+     * @return void
      */
-    public function validateSizeLengow($fieldName)
+    public function validateSizeLengow(string $fieldName): void
     {
-        switch ($fieldName) {
-            case 'address1':
-            case 'address2':
-            case 'other':
-                $addressFullArray = explode(' ', $this->address_full);
-                if (count($addressFullArray) < 1) {
-                    $definition = self::getFieldDefinition();
-                    $address1MaxLength = $definition['address1']['size'];
-                    $address2MaxLength = $definition['address1']['size'];
-                    $otherMaxLength = $definition['other']['size'];
-                    $this->address1 = '';
-                    $this->address2 = '';
-                    $this->other = '';
-                    foreach ($addressFullArray as $addressPart) {
-                        if (Tools::strlen($this->address1) < $address1MaxLength) {
-                            if (!empty($this->address1)) {
-                                $this->address1 .= ' ';
-                            }
-                            $this->address1 .= $addressPart;
-                            continue;
-                        }
-                        if (Tools::strlen($this->address2) < $address2MaxLength) {
-                            if (!empty($this->address2)) {
-                                $this->address2 .= ' ';
-                            }
-                            $this->address2 .= $addressPart;
-                            continue;
-                        }
-                        if (Tools::strlen($this->other) < $otherMaxLength) {
-                            if (!empty($this->other)) {
-                                $this->other .= ' ';
-                            }
-                            $this->other .= $addressPart;
-                        }
-                    }
-                }
-                break;
-            case 'phone':
-                $this->phone = LengowMain::cleanPhone($this->phone);
-                break;
-            case 'phone_mobile':
-                $this->phone_mobile = LengowMain::cleanPhone($this->phone_mobile);
-                break;
-            default:
-                break;
+        // Customer fields are validated by their own definition.
+        // Address-specific fields (address1, address2, other, phone, phone_mobile)
+        // are handled by LengowAddress::validateSizeLengow() instead.
+        $definition = self::getFieldDefinition();
+        if (!array_key_exists($fieldName, $definition)) {
+            return;
+        }
+        if (isset($definition[$fieldName]['size'])) {
+            $this->{$fieldName} = Tools::substr($this->{$fieldName}, 0, $definition[$fieldName]['size']);
         }
     }
 
@@ -211,7 +189,7 @@ class LengowCustomer extends Customer
      *
      * @return LengowCustomer|false
      */
-    public function getByEmailAndShop($email, $idShop)
+    public function getByEmailAndShop(string $email, int $idShop): LengowCustomer|false
     {
         $sql = 'SELECT *
             FROM `' . _DB_PREFIX_ . 'customer`
@@ -223,7 +201,12 @@ class LengowCustomer extends Customer
             return false;
         }
         $this->id = $result['id_customer'];
+        $allowedKeys = array_keys(self::getFieldDefinition());
+        $allowedKeys[] = 'id_customer';
         foreach ($result as $key => $value) {
+            if (!in_array($key, $allowedKeys, true)) {
+                continue;
+            }
             if (property_exists($this, $key)) {
                 $this->{$key} = $value;
             }

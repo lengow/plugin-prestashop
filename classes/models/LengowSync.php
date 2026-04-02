@@ -60,9 +60,9 @@ class LengowSync
     public const API_ISO_CODE_IT = 'it';
 
     /**
-     * @var array cache time for catalog, carrier, account status, options and marketplace synchronisation
+     * @var array<string, mixed> cache time for catalog, carrier, account status, options and marketplace synchronisation
      */
-    protected static $cacheTimes = [
+    protected static array $cacheTimes = [
         self::SYNC_CATALOG => 21600,
         self::SYNC_CARRIER => 86400,
         self::SYNC_CMS_OPTION => 86400,
@@ -72,9 +72,9 @@ class LengowSync
     ];
 
     /**
-     * @var array valid sync actions
+     * @var list<string> valid sync actions
      */
-    public static $syncActions = [
+    public static array $syncActions = [
         self::SYNC_ORDER,
         self::SYNC_CARRIER,
         self::SYNC_CMS_OPTION,
@@ -86,9 +86,9 @@ class LengowSync
     ];
 
     /**
-     * @var array iso code correspondence for plugin links
+     * @var array<string, mixed> iso code correspondence for plugin links
      */
-    public static $genericIsoCodes = [
+    public static array $genericIsoCodes = [
         self::API_ISO_CODE_EN => LengowTranslation::ISO_CODE_EN,
         self::API_ISO_CODE_FR => LengowTranslation::ISO_CODE_FR,
         self::API_ISO_CODE_ES => LengowTranslation::ISO_CODE_ES,
@@ -96,9 +96,9 @@ class LengowSync
     ];
 
     /**
-     * @var array default plugin links when the API is not available
+     * @var array<string, mixed> default plugin links when the API is not available
      */
-    public static $defaultPluginLinks = [
+    public static array $defaultPluginLinks = [
         self::LINK_TYPE_HELP_CENTER => self::LINK_HELP_CENTER,
         self::LINK_TYPE_CHANGELOG => self::LINK_CHANGELOG,
         self::LINK_TYPE_UPDATE_GUIDE => self::LINK_UPDATE_GUIDE,
@@ -108,9 +108,9 @@ class LengowSync
     /**
      * Get Sync Data (Inscription / Update)
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getSyncData()
+    public static function getSyncData(): array
     {
         $data = [
             'domain_name' => $_SERVER['SERVER_NAME'],
@@ -150,7 +150,7 @@ class LengowSync
      *
      * @return bool
      */
-    public static function syncCatalog($force = false, $logOutput = false)
+    public static function syncCatalog(bool $force = false, bool $logOutput = false): bool
     {
         $success = false;
         $settingUpdated = false;
@@ -159,7 +159,7 @@ class LengowSync
         }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_CATALOG);
-            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CATALOG]) {
+            if ($updatedAt !== '' && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CATALOG]) {
                 return $success;
             }
         }
@@ -203,14 +203,14 @@ class LengowSync
      *
      * @return bool
      */
-    public static function syncCarrier($force = false, $logOutput = false)
+    public static function syncCarrier(bool $force = false, bool $logOutput = false): bool
     {
         if (LengowConfiguration::isNewMerchant()) {
             return false;
         }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE_LIST);
-            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CARRIER]) {
+            if ($updatedAt !== '' && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CARRIER]) {
                 return false;
             }
         }
@@ -229,9 +229,9 @@ class LengowSync
     /**
      * Get options for all shops
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getOptionData()
+    public static function getOptionData(): array
     {
         $data = [
             'token' => LengowMain::getToken(),
@@ -264,14 +264,14 @@ class LengowSync
      *
      * @return bool
      */
-    public static function setCmsOption($force = false, $logOutput = false)
+    public static function setCmsOption(bool $force = false, bool $logOutput = false): bool
     {
         if (LengowConfiguration::isNewMerchant() || LengowConfiguration::debugModeIsActive()) {
             return false;
         }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_OPTION_CMS);
-            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CMS_OPTION]) {
+            if ($updatedAt !== '' && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_CMS_OPTION]) {
                 return false;
             }
         }
@@ -288,13 +288,13 @@ class LengowSync
      * @param bool $force force cache update
      * @param bool $logOutput see log or not
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
-    public static function getStatusAccount($force = false, $logOutput = false)
+    public static function getStatusAccount(bool $force = false, bool $logOutput = false): array|false
     {
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_ACCOUNT_STATUS_DATA);
-            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
+            if ($updatedAt !== '' && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_STATUS_ACCOUNT]) {
                 return json_decode(
                     LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_STATUS_DATA),
                     true
@@ -308,12 +308,16 @@ class LengowSync
             '',
             $logOutput
         );
-        if (isset($result->isFreeTrial)) {
+        $resultData = is_object($result) ? (array) $result : [];
+        if (array_key_exists('isFreeTrial', $resultData)) {
+            $leftDaysBeforeExpired = isset($resultData['leftDaysBeforeExpired']) ? (int) $resultData['leftDaysBeforeExpired'] : 0;
+            $isExpired = isset($resultData['isExpired']) ? (bool) $resultData['isExpired'] : false;
+            $accountVersion = isset($resultData['accountVersion']) ? (string) $resultData['accountVersion'] : '';
             $status = [
-                'type' => $result->isFreeTrial ? 'free_trial' : '',
-                'day' => (int) $result->leftDaysBeforeExpired < 0 ? 0 : (int) $result->leftDaysBeforeExpired,
-                'expired' => (bool) $result->isExpired,
-                'legacy' => $result->accountVersion === 'v2',
+                'type' => (bool) $resultData['isFreeTrial'] ? 'free_trial' : '',
+                'day' => $leftDaysBeforeExpired < 0 ? 0 : $leftDaysBeforeExpired,
+                'expired' => $isExpired,
+                'legacy' => $accountVersion === 'v2',
             ];
             LengowConfiguration::updateGlobalValue(
                 LengowConfiguration::ACCOUNT_STATUS_DATA,
@@ -339,14 +343,17 @@ class LengowSync
      * @param bool $force force cache update
      * @param bool $logOutput see log or not
      *
-     * @return array|false
+     * @return mixed
      */
-    public static function getMarketplaces($force = false, $logOutput = false)
+    public static function getMarketplaces(bool $force = false, bool $logOutput = false): mixed
     {
         $filePath = LengowMarketplace::getFilePath();
+        if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+            return false;
+        }
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE);
-            if ($updatedAt !== null
+            if ($updatedAt !== ''
                 && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_MARKETPLACE]
                 && file_exists($filePath)
             ) {
@@ -410,13 +417,13 @@ class LengowSync
      * @param bool $force force cache update
      * @param bool $logOutput see log or not
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
-    public static function getPluginData($force = false, $logOutput = false)
+    public static function getPluginData(bool $force = false, bool $logOutput = false): array|false
     {
         if (!$force) {
             $updatedAt = LengowConfiguration::getGlobalValue(LengowConfiguration::LAST_UPDATE_PLUGIN_DATA);
-            if ($updatedAt !== null && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_PLUGIN_DATA]) {
+            if ($updatedAt !== '' && (time() - (int) $updatedAt) < self::$cacheTimes[self::SYNC_PLUGIN_DATA]) {
                 return json_decode(LengowConfiguration::getGlobalValue(LengowConfiguration::PLUGIN_DATA), true);
             }
         }
@@ -485,9 +492,9 @@ class LengowSync
      * @param string|null $isoCode
      * @param bool|null $default
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getPluginLinks($isoCode = null, $default = false)
+    public static function getPluginLinks(?string $isoCode = null, ?bool $default = false): array
     {
         $pluginData = self::getPluginData();
         if (!$pluginData || $default) {

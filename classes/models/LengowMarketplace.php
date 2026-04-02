@@ -43,73 +43,73 @@ class LengowMarketplace
     public const FILE_MARKETPLACE = 'marketplaces.json';
 
     /**
-     * @var array all valid actions
+     * @var list<string> all valid actions
      */
-    public static $validActions = [
+    public static array $validActions = [
         LengowAction::TYPE_SHIP,
         LengowAction::TYPE_CANCEL,
         LengowAction::TYPE_REFUND,
     ];
 
     /**
-     * @var array|false all marketplaces
+     * @var object|false all marketplaces
      */
-    public static $marketplaces = false;
+    public static object|false $marketplaces = false;
 
     /**
      * @var mixed the current marketplace
      */
-    public $marketplace;
+    public mixed $marketplace;
 
     /**
      * @var string the code of the marketplace
      */
-    public $name;
+    public string $name;
 
     /**
      * @var string the old code of the marketplace for v2 compatibility
      */
-    public $legacyCode;
+    public ?string $legacyCode = null;
 
     /**
      * @var string the name of the marketplace
      */
-    public $labelName;
+    public string $labelName;
 
     /**
      * @var bool if the marketplace is loaded
      */
-    public $isLoaded = false;
+    public bool $isLoaded = false;
 
     /**
-     * @var array Lengow states => marketplace states
+     * @var array<string, mixed> Lengow states => marketplace states
      */
-    public $statesLengow = [];
+    public array $statesLengow = [];
 
     /**
-     * @var array marketplace states => Lengow states
+     * @var array<string, mixed> marketplace states => Lengow states
      */
-    public $states = [];
+    public array $states = [];
 
     /**
-     * @var array all possible actions of the marketplace
+     * @var array<string, mixed> all possible actions of the marketplace
      */
-    public $actions = [];
+    public array $actions = [];
 
     /**
-     * @var array all possible values for actions of the marketplace
+     * @var array<string, mixed> all possible values for actions of the marketplace
      */
-    public $argValues = [];
+    public array $argValues = [];
 
     /**
-     * @var array all carriers of the marketplace
+     * @var array<string, mixed> all carriers of the marketplace
      */
-    public $carriers = [];
+    public array $carriers = [];
 
     /**
-     * @var array all shipping methods of the marketplace
+     * @var array<string, mixed> all shipping methods of the marketplace
      */
-    public $shippingMethods = [];
+    public array $shippingMethods = [];
 
     /**
      * Construct a new Marketplace instance with marketplace API
@@ -118,7 +118,7 @@ class LengowMarketplace
      *
      * @throws LengowException marketplace not present
      */
-    public function __construct($name)
+    public function __construct(string $name)
     {
         self::loadApiMarketplace();
         $this->name = (string) Tools::strtolower($name);
@@ -188,8 +188,10 @@ class LengowMarketplace
      *
      * @param bool $force force cache update
      * @param bool $logOutput see log or not
+     *
+     * @return void
      */
-    public static function loadApiMarketplace($force = false, $logOutput = false)
+    public static function loadApiMarketplace(bool $force = false, bool $logOutput = false): void
     {
         if (!self::$marketplaces || $force) {
             self::$marketplaces = LengowSync::getMarketplaces($force, $logOutput);
@@ -201,7 +203,7 @@ class LengowMarketplace
      *
      * @return string
      */
-    public static function getFilePath()
+    public static function getFilePath(): string
     {
         $sep = DIRECTORY_SEPARATOR;
 
@@ -215,7 +217,7 @@ class LengowMarketplace
      *
      * @return string|false
      */
-    public function getStateLengow($name)
+    public function getStateLengow(string $name): string|false
     {
         if (array_key_exists($name, $this->statesLengow)) {
             return $this->statesLengow[$name];
@@ -229,9 +231,9 @@ class LengowMarketplace
      *
      * @param string $name action's name
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
-    public function getAction($name)
+    public function getAction(string $name): array|false
     {
         if (array_key_exists($name, $this->actions)) {
             return $this->actions[$name];
@@ -247,7 +249,7 @@ class LengowMarketplace
      *
      * @return string|false
      */
-    public function getDefaultValue($name)
+    public function getDefaultValue(string $name): string|false
     {
         if (array_key_exists($name, $this->argValues)) {
             $defaultValue = $this->argValues[$name]['default_value'];
@@ -266,7 +268,7 @@ class LengowMarketplace
      *
      * @return bool
      */
-    public function containOrderLine($action)
+    public function containOrderLine(string $action): bool
     {
         if (isset($this->actions[$action])) {
             $actions = $this->actions[$action];
@@ -292,7 +294,7 @@ class LengowMarketplace
      *
      * @return bool
      */
-    public function hasCarriers()
+    public function hasCarriers(): bool
     {
         return !empty($this->carriers);
     }
@@ -302,7 +304,7 @@ class LengowMarketplace
      *
      * @return bool
      */
-    public function hasShippingMethods()
+    public function hasShippingMethods(): bool
     {
         return !empty($this->shippingMethods);
     }
@@ -313,10 +315,11 @@ class LengowMarketplace
      * @param string $action Lengow order actions type (ship or cancel)
      * @param LengowOrder $lengowOrder Lengow order instance
      * @param string|null $idOrderLine Lengow order line id
+     * @param mixed $partialAction
      *
      * @return bool
      */
-    public function callAction($action, $lengowOrder, $idOrderLine = null, $partialAction = false)
+    public function callAction(string $action, LengowOrder $lengowOrder, ?string $idOrderLine = null, mixed $partialAction = false): bool
     {
         try {
             // check the action and order data
@@ -372,7 +375,7 @@ class LengowMarketplace
         }
         if (isset($errorMessage)) {
             if ($lengowOrder->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
-                LengowOrderError::addOrderLog($lengowOrder->lengowId, $errorMessage, LengowOrderError::TYPE_ERROR_SEND);
+                LengowOrderError::addOrderLog((int) $lengowOrder->lengowId, $errorMessage, LengowOrderError::TYPE_ERROR_SEND);
             }
             $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
             LengowMain::log(
@@ -396,9 +399,11 @@ class LengowMarketplace
      *
      * @param string $action Lengow order actions type (ship or cancel)
      *
+     * @return void
+     *
      * @throws LengowException action not valid / marketplace action not present
      */
-    protected function checkAction($action)
+    protected function checkAction(string $action): void
     {
         if (!in_array($action, self::$validActions, true)) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.action_not_valid', ['action' => $action]));
@@ -413,9 +418,11 @@ class LengowMarketplace
      *
      * @param LengowOrder $lengowOrder Lengow order instance
      *
+     * @return void
+     *
      * @throws LengowException marketplace sku is required / marketplace name is required
      */
-    protected function checkOrderData($lengowOrder)
+    protected function checkOrderData(LengowOrder $lengowOrder): void
     {
         if ($lengowOrder->lengowMarketplaceSku === '') {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.marketplace_sku_require'));
@@ -430,9 +437,9 @@ class LengowMarketplace
      *
      * @param string $action Lengow order actions type (ship or cancel)
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    protected function getMarketplaceArguments($action)
+    protected function getMarketplaceArguments(string $action): array
     {
         $actions = $this->getAction($action);
         if (isset($actions['args'], $actions['optional_args'])) {
@@ -453,13 +460,13 @@ class LengowMarketplace
      *
      * @param string $action Lengow order actions type (ship or cancel)
      * @param LengowOrder $lengowOrder Lengow order instance
-     * @param array $marketplaceArguments All marketplace arguments for a specific action
+     * @param array<string, mixed> $marketplaceArguments All marketplace arguments for a specific action
      *
-     * @return array
+     * @return array<int|string, mixed>
      *
      * @throws Exception|LengowException no delivery country in order
      */
-    protected function getAllParams($action, $lengowOrder, $marketplaceArguments)
+    protected function getAllParams(string $action, LengowOrder $lengowOrder, array $marketplaceArguments): array
     {
         $params = [];
         $actions = $this->getAction($action);
@@ -468,9 +475,9 @@ class LengowMarketplace
         // get tracking number for tracking number and tracking url
         $idOrderCarrier = $lengowOrder->getIdOrderCarrier();
         $orderCarrier = new LengowOrderCarrier($idOrderCarrier);
-        $trackingNumber = $orderCarrier->tracking_number ?? '';
-        $shippingMethod = $lengowOrder->getShippingMethodByPrestashopId($lengowOrder->lengowId);
-        $returnTrackingNumber = $orderCarrier->return_tracking_number ?? '';
+        $trackingNumber = $orderCarrier->tracking_number;
+        $shippingMethod = $lengowOrder->getShippingMethodByPrestashopId((int) $lengowOrder->lengowId);
+        $returnTrackingNumber = $orderCarrier->return_tracking_number;
         if ($trackingNumber === '') {
             $trackingNumber = $lengowOrder->shipping_number ?? '';
         }
@@ -488,7 +495,7 @@ class LengowMarketplace
                     if ((string) $lengowOrder->lengowCarrier !== '') {
                         $carrierName = (string) $lengowOrder->lengowCarrier;
                     } else {
-                        if (!isset($deliveryAddress->id_country) || (int) $deliveryAddress->id_country === 0) {
+                        if ((int) $deliveryAddress->id_country === 0) {
                             if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
                                 break;
                             }
@@ -553,8 +560,13 @@ class LengowMarketplace
                 case LengowAction::ARG_DELIVERY_DATE:
                     $params[$arg] = date(LengowMain::DATE_ISO_8601);
                     break;
+                case LengowAction::ARG_REFUND_REASON:
                 case LengowAction::ARG_REASON:
-                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId($lengowOrder->lengowId)
+                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId((int) $lengowOrder->lengowId)
+                        ?? $this->getDefaultValue((string) $arg);
+                    break;
+                case LengowAction::ARG_REFUND_MODE:
+                    $params[$arg] = $lengowOrder->getRefundModeByPrestashopId((int) $lengowOrder->lengowId)
                         ?? $this->getDefaultValue((string) $arg);
                     break;
                 default:
@@ -576,30 +588,26 @@ class LengowMarketplace
      *
      * @param string $action Lengow order actions type (ship or cancel)
      * @param LengowOrder $lengowOrder Lengow order instance
-     * @param array $marketplaceArguments All marketplace arguments for a specific action
+     * @param list<string> $marketplaceArguments All marketplace arguments for a specific action
+     * @param mixed $orderLineId
      *
-     * @return array
+     * @return array<string, mixed>
      *
      * @throws Exception|LengowException no delivery country in order
      */
-    protected function getAllParamsForPartialRefund(
-        string $action,
-        LengowOrder $lengowOrder,
-        array $marketplaceArguments,
-        $orderLineId
-    ): array {
+    protected function getAllParamsForPartialRefund(string $action, LengowOrder $lengowOrder, array $marketplaceArguments, mixed $orderLineId): array
+    {
         $this->checkAction($action);
         if (!in_array($lengowOrder->lengowState, $this->getRefundStatuses(), true)) {
             throw new LengowException('refund action not available for this order_state: ' . $lengowOrder->lengowState);
         }
         $decodedExtra = json_decode($lengowOrder->lengowExtra, true, 512, JSON_THROW_ON_ERROR);
-        $shippingPriceTTC = $lengowOrder->getTotalShippingCostByOrderId($lengowOrder->id)
-            ?? 0;
+        $shippingPriceTTC = $lengowOrder->getTotalShippingCostByOrderId($lengowOrder->id);
         foreach ($marketplaceArguments as $arg) {
             switch ($arg) {
                 case LengowAction::ARG_REFUND_REASON:
                 case LengowAction::ARG_REASON:
-                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId($lengowOrder->lengowId)
+                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId((int) $lengowOrder->lengowId)
                         ?? $this->getDefaultValue((string) $arg);
                     break;
                 case LengowAction::ARG_REFUND_PRICE:
@@ -612,7 +620,7 @@ class LengowMarketplace
                     $params[$arg] = $orderLineId;
                     break;
                 case LengowAction::ARG_REFUND_MODE:
-                    $params[$arg] = $lengowOrder->getRefundModeByPrestashopId($lengowOrder->lengowId)
+                    $params[$arg] = $lengowOrder->getRefundModeByPrestashopId((int) $lengowOrder->lengowId)
                         ?? $this->getDefaultValue((string) $arg);
                     break;
                 case LengowAction::ARG_REFUND_SHIPPING_PRICE:
@@ -633,13 +641,13 @@ class LengowMarketplace
      * Check required parameters and delete empty parameters
      *
      * @param string $action Lengow order actions type (ship or cancel)
-     * @param array $params all available values
+     * @param array<string, mixed> $params all available values
      *
-     * @return array
+     * @return array<int|string, mixed>
      *
      * @throws Exception argument is required
      */
-    protected function checkAndCleanParams($action, $params)
+    protected function checkAndCleanParams(string $action, array $params): array
     {
         $actions = $this->getAction($action);
         if (isset($actions['args'])) {
@@ -662,8 +670,10 @@ class LengowMarketplace
 
     /**
      * Sync Lengow marketplaces
+     *
+     * @return void
      */
-    public static function syncMarketplaces()
+    public static function syncMarketplaces(): void
     {
         self::loadApiMarketplace();
         if (self::$marketplaces && !empty(self::$marketplaces)) {
@@ -697,9 +707,9 @@ class LengowMarketplace
     /**
      * Get marketplace counters list by country id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getMarketplaceCounters()
+    public static function getMarketplaceCounters(): array
     {
         $marketplaceCounters = [];
         try {
@@ -725,9 +735,9 @@ class LengowMarketplace
      *
      * @param int|bool $idCountry PrestaShop id country
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getAllMarketplaces($idCountry = false)
+    public static function getAllMarketplaces($idCountry = false): array
     {
         if ($idCountry) {
             $sql = 'SELECT lm.id, lm.marketplace_name, lm.marketplace_label, lm.carrier_required
@@ -753,9 +763,9 @@ class LengowMarketplace
      *
      * @param int $idCountry PrestaShop country id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getAllMarketplaceDataByCountry($idCountry)
+    public static function getAllMarketplaceDataByCountry(int $idCountry): array
     {
         $marketplaceData = [];
         $marketplaces = self::getAllMarketplaces($idCountry);
@@ -796,7 +806,7 @@ class LengowMarketplace
      *
      * @return int|false
      */
-    public static function getIdMarketplace($marketplaceName)
+    public static function getIdMarketplace(string $marketplaceName): int|false
     {
         try {
             $result = Db::getInstance()->ExecuteS(
@@ -815,9 +825,9 @@ class LengowMarketplace
      *
      * @param string $marketplaceName Name of the marketplace
      *
-     * @return array|false
+     * @return array<int|string, mixed>|false
      */
-    public static function getValidShippingMethods(string $marketplaceName)
+    public static function getValidShippingMethods(string $marketplaceName): array|false
     {
         $idMarketplace = self::getIdMarketplace($marketplaceName);
         if (!$idMarketplace) {
@@ -836,7 +846,7 @@ class LengowMarketplace
      *
      * @return int|false
      */
-    public static function insertMarketplace($marketplaceName, $marketplaceLabel, $carrierRequired)
+    public static function insertMarketplace(string $marketplaceName, string $marketplaceLabel, bool $carrierRequired): int|false
     {
         $db = Db::getInstance();
         try {
@@ -864,7 +874,7 @@ class LengowMarketplace
      *
      * @return int|false
      */
-    public static function updateMarketplace($idMarketplace, $marketplaceLabel, $carrierRequired)
+    public static function updateMarketplace(int $idMarketplace, string $marketplaceLabel, bool $carrierRequired): int|false
     {
         $db = Db::getInstance();
         $success = $db->update(
@@ -909,6 +919,8 @@ class LengowMarketplace
 
     /**
      * Get all refund reasons choices
+     *
+     * @return array<string, mixed>
      */
     public function getRefundReasons(): array
     {
@@ -923,6 +935,9 @@ class LengowMarketplace
         if (empty($reasons)) {
             $reasons = in_array(LengowAction::ARG_REASON, $arguments) ? $this->argValues[LengowAction::ARG_REASON]['valid_values'] : [];
         }
+        if (empty($reasons)) {
+            return [];
+        }
         foreach ($reasons as $key => $reason) {
             $choices[$reason] = $key;
         }
@@ -932,6 +947,8 @@ class LengowMarketplace
 
     /**
      * Will return all refund modes for cdsicount
+     *
+     * @return array<string, mixed>
      */
     public function getRefundModes(): array
     {
@@ -956,6 +973,8 @@ class LengowMarketplace
 
     /**
      * Get all refund arguments
+     *
+     * @return list<string>
      */
     public function getRefundArguments(): array
     {
@@ -970,6 +989,8 @@ class LengowMarketplace
 
     /**
      * Will return valid statuses for refund
+     *
+     * @return list<string>
      */
     public function getRefundStatuses(): array
     {

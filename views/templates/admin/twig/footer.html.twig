@@ -1,0 +1,81 @@
+{#
+ * Copyright 2017 Lengow SAS.
+ * Licensed under the Apache License, Version 2.0
+ #}
+
+<div class="lgw-container lgw-footer-vold clear">
+    <div class="lgw-content-section text-center">
+        <div id="lgw-footer">
+            <p class="text-center">
+                <a href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowMainSetting') }}" class="sub-link" title="{{ locale.t('footer.settings') }}">{{ locale.t('footer.settings') }}</a>
+                | <a href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowToolbox') }}" class="sub-link" title="{{ locale.t('footer.toolbox') }}">{{ locale.t('footer.toolbox') }}</a>
+                | <a href="{{ lengow_link.getAbsoluteAdminLink('AdminLengowLegals') }}" class="sub-link" title="{{ locale.t('footer.legals') }}">{{ locale.t('footer.legals') }}</a>
+                | {{ locale.t('footer.plugin_lengow') }} - v.{{ lengowVersion }} {% if lengowUrl == 'lengow.net' %}<span class="lgw-label-preprod">sandbox</span>{% endif %}
+                | copyright &copy; {{ "now"|date("Y") }} <a href="{{ locale.t('footer.lengow_link_url') }}" target="_blank" class="sub-link" title="Lengow.com">Lengow</a>
+            </p>
+        </div>
+    </div>
+    {% if not pluginIsUpToDate %}
+        <!-- Modal Update plugin -->
+        <div id="upgrade-plugin" class="lgw-modalbox mod-size-medium {% if showPluginUpgradeModal %}is-open{% endif %}">
+            <div class="lgw-modalbox-content">
+                <span class="lgw-modalbox-close js-upgrade-plugin-modal-close"></span>
+                <div class="lgw-modalbox-body">
+                    <div class="lgw-row flexbox-vertical-center">
+                        <div class="lgw-col-5 text-center">
+                            <img src="{{ lengowPathUri }}views/img/plugin-update.png" alt="">
+                        </div>
+                        <div class="lgw-col-7">
+                            <h1>{{ locale.t('update.version_available') }}</h1>
+                            <p>
+                                {{ locale.t('update.start_now') }}
+                                <a href="{{ changelogLink }}" target="_blank">
+                                    {{ locale.t('update.link_changelog') }}
+                                </a>
+                            </p>
+                            <div class="lgw-content-section mod-small">
+                                <h2 class="no-margin-bottom">{{ locale.t('update.step_one') }}</h2>
+                                <p class="no-margin-bottom">
+                                    {{ locale.t('update.download_last_version') }}
+                                </p>
+                                <p class="text-lesser text-italic">
+                                    {{ locale.t('update.plugin_compatibility', {'cms_min_version': pluginData['cms_min_version'], 'cms_max_version': pluginData['cms_max_version']}) }}
+                                    {% for extension in pluginData['extensions'] %}
+                                        <br />
+                                        {{ locale.t('update.extension_required', {'name': extension['name'], 'min_version': extension['min_version'], 'max_version': extension['max_version']}) }}
+                                    {% endfor %}
+                                </p>
+                            </div>
+                            <div class="lgw-content-section mod-small">
+                                <h2 class="no-margin-bottom">{{ locale.t('update.step_two') }}</h2>
+                                <p class="no-margin-bottom">
+                                    <a href="{{ updateGuideLink }}" target="_blank">
+                                        {{ locale.t('update.link_follow') }}
+                                    </a>
+                                    {{ locale.t('update.update_procedure') }}
+                                </p>
+                                <p class="text-lesser text-italic">
+                                    {{ locale.t('update.not_working') }}
+                                    <a href="{{ supportLink }}" target="_blank">
+                                        {{ locale.t('update.customer_success_team') }}
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="flexbox-vertical-center margin-standard">
+                                <a class="lgw-btn no-margin-top" href="https://my.{{ lengowUrl }}{{ pluginData['download_link'] }}" target="_blank">
+                                    {{ locale.t('update.button_download_version', {'version': pluginData['version']}) }}
+                                </a>
+                                {% if showPluginUpgradeModal %}
+                                    <button class="btn-link sub-link no-margin-top text-small js-upgrade-plugin-modal-remind-me">
+                                        {{ locale.t('update.button_remind_me_later') }}
+                                    </button>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <input type="hidden" id="lengow_modal_ajax_link" value="{{ lengowModalAjaxLink }}">
+        </div>
+    {% endif %}
+</div>

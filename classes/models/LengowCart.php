@@ -29,18 +29,18 @@ class LengowCart extends Cart
     /**
      * @var bool add inactive & out of stock products to cart
      */
-    public $forceProduct = true;
+    public bool $forceProduct = true;
 
     /**
      * Add product to cart
      *
-     * @param array $products list of products to be added
+     * @param array<string, mixed> $products list of products to be added
      *
      * @return bool
      *
      * @throws Exception|LengowException Cannot add product to cart / No quantity for product
      */
-    public function addProducts($products = [])
+    public function addProducts(array $products = []): bool
     {
         if (!$products) {
             throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_product_to_cart'));
@@ -63,11 +63,13 @@ class LengowCart extends Cart
     /**
      * Removes non-Lengow products from cart
      *
-     * @param array $products list of products to be added
+     * @param array<string, mixed> $products list of products to be added
+     *
+     * @return void
      *
      * @throws Exception Cannot add product to cart
      */
-    public function cleanCart($products = [])
+    public function cleanCart(array $products = []): void
     {
         $cartProducts = $this->getProducts();
         if (empty($cartProducts)) {
@@ -104,21 +106,10 @@ class LengowCart extends Cart
      *
      * @throws Exception|PrestaShopDatabaseException
      */
-    public function updateQty(
-        $quantity,
-        $idProduct,
-        $idProductAttribute = null,
-        $idCustomization = false,
-        $operator = 'up',
-        $idAddressDelivery = 0,
-        $shop = null,
-        $autoAddCartRule = true,
-        $skipAvailabilityCheckOutOfStock = false,
-        $preserveGiftRemoval = true,
-        $useOrderPrices = false
-    ) {
+    public function updateQty($quantity, $idProduct, $idProductAttribute = null, $idCustomization = false, $operator = 'up', $idAddressDelivery = 0, $shop = null, $autoAddCartRule = true, $skipAvailabilityCheckOutOfStock = false, $preserveGiftRemoval = true, $useOrderPrices = false): bool
+    {
         if (!$shop instanceof Shop) {
-            $shop = Context::getContext()->shop;
+            $shop = LengowContext::getContext()->shop;
         }
         // this line are useless, but PrestaShop validator require it
         $autoAddCartRule = $autoAddCartRule;
@@ -128,7 +119,7 @@ class LengowCart extends Cart
         $quantity = (int) $quantity;
         $idProduct = (int) $idProduct;
         $idProductAttribute = (int) $idProductAttribute;
-        $product = new Product($idProduct, false, Configuration::get('PS_LANG_DEFAULT'), $shop->id);
+        $product = new Product($idProduct, false, (int) Configuration::get('PS_LANG_DEFAULT'), $shop->id);
         if ($idProductAttribute) {
             $combination = new Combination((int) $idProductAttribute);
             if ((int) $combination->id_product !== $idProduct) {
@@ -137,13 +128,8 @@ class LengowCart extends Cart
         }
         // if we have a product combination, the minimal quantity is set with the one of this combination
         if (!empty($idProductAttribute)) {
-            $version = defined('_PS_VERSION_') ? _PS_VERSION_ : '';
-            // for PrestaShop 8.0 and higher
-            if (version_compare($version, '8.0.0.0', '>=')) {
-                $minimalQuantity = (int) ProductAttribute::getAttributeMinimalQty($idProductAttribute);
-            } else {
-                $minimalQuantity = (int) Attribute::getAttributeMinimalQty($idProductAttribute);
-            }
+            $combination = new Combination((int) $idProductAttribute);
+            $minimalQuantity = (int) $combination->minimal_quantity;
         } else {
             $minimalQuantity = (int) $product->minimal_quantity;
         }
@@ -185,7 +171,7 @@ class LengowCart extends Cart
             $qty = '+ ' . (int) $quantity;
             // force here
             if ($newQty > $productQty
-                && !Product::isAvailableWhenOutOfStock(!$this->forceProduct && (int) $result2['out_of_stock'])
+                && !Product::isAvailableWhenOutOfStock((int) (!$this->forceProduct && (int) $result2['out_of_stock']))
             ) {
                 return false;
             }
@@ -242,7 +228,7 @@ class LengowCart extends Cart
         // refresh cache of self::_products
         $this->_products = $this->getProducts(true);
         $this->update();
-        $context = Context::getContext()->cloneContext();
+        $context = LengowContext::getContext()->cloneContext();
         $context->cart = $this;
         Cache::clean('getContextualValue_*');
         if ($product->customizable) {
@@ -262,9 +248,9 @@ class LengowCart extends Cart
     /**
      * Get definition array
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getFieldDefinition()
+    public static function getFieldDefinition(): array
     {
         return self::$definition['fields'];
     }
@@ -272,11 +258,17 @@ class LengowCart extends Cart
     /**
      * Assign API data
      *
-     * @param array $data API data
+     * @param array<string, mixed> $data API data
+     *
+     * @return void
      */
-    public function assign($data = [])
+    public function assign(array $data = []): void
     {
+        $allowedFields = array_keys(self::getFieldDefinition());
         foreach ($data as $field => $value) {
+            if (!in_array($field, $allowedFields, true)) {
+                continue;
+            }
             $this->{$field} = $value;
         }
     }
@@ -289,14 +281,18 @@ class LengowCart extends Cart
      * @throws LengowException invalid object
      * @throws Exception
      */
-    public function validateLengow()
+    public function validateLengow(): bool
     {
         $definition = self::getFieldDefinition();
+        $allowedFields = array_keys($definition);
         foreach ($definition as $fieldName => $constraints) {
+            if (!in_array($fieldName, $allowedFields, true)) {
+                continue;
+            }
             if (isset($constraints['required']) && $constraints['required'] && !$this->{$fieldName}) {
                 $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_EMPTY_ERROR);
             }
-            if (isset($constraints['size']) && Tools::strlen($this->{$fieldName}) > $constraints['size']) {
+            if (isset($constraints['size']) && mb_strlen((string) $this->{$fieldName}) > $constraints['size']) {
                 $this->validateFieldLengow($fieldName, LengowAddress::LENGOW_SIZE_ERROR);
             }
         }
@@ -314,12 +310,92 @@ class LengowCart extends Cart
      * Modify a field according to the type of error
      *
      * @param string $fieldName incorrect field
-     * @param string $errorType type of error
+     * @param int $errorType type of error
+     *
+     * @return void
      */
-    public function validateFieldLengow($fieldName, $errorType)
+    public function validateFieldLengow(string $fieldName, int $errorType): void
     {
-        if ($errorType === LengowAddress::LENGOW_EMPTY_ERROR && $fieldName === 'id_lang') {
-            $this->{$fieldName} = Context::getContext()->language->id;
+        $allowedFields = array_keys(self::getFieldDefinition());
+        if (!in_array($fieldName, $allowedFields, true)) {
+            return;
         }
+        if ($errorType === LengowAddress::LENGOW_EMPTY_ERROR && $fieldName === 'id_lang') {
+            $this->{$fieldName} = LengowContext::getContext()->language->id;
+        }
+    }
+
+    /**
+     * Check if the product is already in the cart
+     *
+     * @param int $idProduct Product ID
+     * @param int $idProductAttribute Product attribute ID
+     * @param int $idCustomization Customization ID
+     * @param int $idAddressDelivery Delivery address ID
+     *
+     * @return array<int|string, mixed>|false Record from cart_product table
+     */
+    public function containsProduct($idProduct, $idProductAttribute = 0, $idCustomization = 0, $idAddressDelivery = 0): array|false
+    {
+        $sql = 'SELECT *
+            FROM `' . _DB_PREFIX_ . 'cart_product`
+            WHERE `id_product` = ' . (int) $idProduct . '
+            AND `id_product_attribute` = ' . (int) $idProductAttribute . '
+            AND `id_cart` = ' . (int) $this->id;
+
+        if (Configuration::get('PS_ALLOW_MULTISHIPPING') && $this->isMultiAddressDelivery()) {
+            $sql .= ' AND `id_address_delivery` = ' . (int) $idAddressDelivery;
+        }
+
+        return Db::getInstance()->getRow($sql);
+    }
+
+    /**
+     * Update customization quantity
+     *
+     * @param int $quantity Quantity to update
+     * @param int $idCustomization Customization ID
+     * @param int $idProduct Product ID
+     * @param int $idProductAttribute Product attribute ID
+     * @param int $idAddressDelivery Delivery address ID
+     * @param string $operator Operator ('up' or 'down')
+     *
+     * @return bool
+     */
+    protected function _updateCustomizationQuantity($quantity, $idCustomization, $idProduct, $idProductAttribute, $idAddressDelivery, $operator = 'up'): bool
+    {
+        // Check if the customization exists
+        $sql = 'SELECT `quantity`
+            FROM `' . _DB_PREFIX_ . 'customization`
+            WHERE `id_customization` = ' . (int) $idCustomization . '
+            AND `id_cart` = ' . (int) $this->id . '
+            AND `id_product` = ' . (int) $idProduct . '
+            AND `id_product_attribute` = ' . (int) $idProductAttribute;
+
+        if ($result = Db::getInstance()->getRow($sql)) {
+            if ($operator == 'down') {
+                $newQuantity = (int) $result['quantity'] - (int) $quantity;
+                if ($newQuantity < 0) {
+                    return false;
+                }
+            } else {
+                $newQuantity = (int) $result['quantity'] + (int) $quantity;
+            }
+
+            if ($newQuantity == 0) {
+                return Db::getInstance()->execute(
+                    'DELETE FROM `' . _DB_PREFIX_ . 'customization`
+                    WHERE `id_customization` = ' . (int) $idCustomization
+                );
+            }
+
+            return Db::getInstance()->execute(
+                'UPDATE `' . _DB_PREFIX_ . 'customization`
+                    SET `quantity` = ' . (int) $newQuantity . '
+                    WHERE `id_customization` = ' . (int) $idCustomization
+            );
+        }
+
+        return true;
     }
 }

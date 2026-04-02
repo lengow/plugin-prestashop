@@ -114,9 +114,9 @@ class LengowConfiguration extends Configuration
     public const RETURN_TYPE_FLOAT = 'float';
 
     /**
-     * @var array params correspondence keys for toolbox
+     * @var array<string, mixed> params correspondence keys for toolbox
      */
-    public static $genericParamKeys = [
+    public static array $genericParamKeys = [
         self::PLUGIN_ENV => 'plugin_env',
         self::ACCOUNT_ID => 'account_id',
         self::ACCESS_TOKEN => 'access_token',
@@ -184,13 +184,13 @@ class LengowConfiguration extends Configuration
      *
      * @param string $key Lengow configuration key
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getKeys($key = null)
+    public static function getKeys(?string $key = null): array
     {
         static $keys = null;
         if ($keys === null) {
-            $langId = (int) Context::getContext()->cookie->id_lang;
+            $langId = (int) LengowContext::getContext()->cookie->id_lang;
             $locale = new LengowTranslation();
             $orderStates = [];
             $allOrderStates = OrderState::getOrderStates($langId);
@@ -638,11 +638,11 @@ class LengowConfiguration extends Configuration
      * @param int|null $idLang PrestaShop lang id
      * @param int|null $idShopGroup PrestaShop shop group id
      * @param int|null $idShop PrestaShop shop id
-     * @param bool $default default value (compatibility version 1.7)
+     * @param bool $default default value
      *
      * @return mixed
      */
-    public static function get($key, $idLang = null, $idShopGroup = null, $idShop = null, $default = false)
+    public static function get($key, $idLang = null, $idShopGroup = null, $idShop = null, $default = false): mixed
     {
         if ($idShop > 1 && Shop::isFeatureActive()) {
             $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration
@@ -664,7 +664,7 @@ class LengowConfiguration extends Configuration
      *
      * @return bool
      */
-    public static function checkKeyExists($key)
+    public static function checkKeyExists(string $key): bool
     {
         $sql = 'SELECT `value` FROM ' . _DB_PREFIX_ . 'configuration WHERE `name` = \'' . pSQL($key) . '\'';
         $value = Db::getInstance()->getRow($sql);
@@ -675,9 +675,9 @@ class LengowConfiguration extends Configuration
     /**
      * Get Valid Account / Access token / Secret token
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getAccessIds()
+    public static function getAccessIds(): array
     {
         $accountId = self::getGlobalValue(self::ACCOUNT_ID);
         $accessToken = self::getGlobalValue(self::ACCESS_TOKEN);
@@ -692,11 +692,11 @@ class LengowConfiguration extends Configuration
     /**
      * Set Valid Account id / Access token / Secret token
      *
-     * @param array $accessIds Account id / Access token / Secret token
+     * @param array<string, mixed> $accessIds Account id / Access token / Secret token
      *
      * @return bool
      */
-    public static function setAccessIds($accessIds)
+    public static function setAccessIds(array $accessIds): bool
     {
         $count = 0;
         $listKey = [self::ACCOUNT_ID, self::ACCESS_TOKEN, self::SECRET];
@@ -715,8 +715,10 @@ class LengowConfiguration extends Configuration
 
     /**
      * Reset access ids for old customer
+     *
+     * @return void
      */
-    public static function resetAccessIds()
+    public static function resetAccessIds(): void
     {
         $accessIds = [self::ACCOUNT_ID, self::ACCESS_TOKEN, self::SECRET];
         foreach ($accessIds as $accessId) {
@@ -729,8 +731,10 @@ class LengowConfiguration extends Configuration
 
     /**
      * Reset authorization token
+     *
+     * @return void
      */
-    public static function resetAuthorizationToken()
+    public static function resetAuthorizationToken(): void
     {
         self::updateGlobalValue(self::AUTHORIZATION_TOKEN, '');
         self::updateGlobalValue(self::LAST_UPDATE_AUTHORIZATION_TOKEN, '');
@@ -741,7 +745,7 @@ class LengowConfiguration extends Configuration
      *
      * @return bool
      */
-    public static function isNewMerchant()
+    public static function isNewMerchant(): bool
     {
         list($accountId, $accessToken, $secretToken) = self::getAccessIds();
 
@@ -753,9 +757,9 @@ class LengowConfiguration extends Configuration
      *
      * @param int $idShop PrestaShop shop id
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getCatalogIds($idShop)
+    public static function getCatalogIds(int $idShop): array
     {
         $catalogIds = [];
         $shopCatalogIds = self::get(self::CATALOG_IDS, null, null, $idShop);
@@ -775,12 +779,12 @@ class LengowConfiguration extends Configuration
     /**
      * Set catalog ids for a specific shop
      *
-     * @param array $catalogIds Lengow catalog ids
+     * @param array<string, mixed> $catalogIds Lengow catalog ids
      * @param int $idShop PrestaShop shop id
      *
      * @return bool
      */
-    public static function setCatalogIds($catalogIds, $idShop)
+    public static function setCatalogIds(array $catalogIds, int $idShop): bool
     {
         $valueChange = false;
         $shopCatalogIds = self::getCatalogIds($idShop);
@@ -797,8 +801,10 @@ class LengowConfiguration extends Configuration
 
     /**
      * Reset all catalog ids
+     *
+     * @return void
      */
-    public static function resetCatalogIds()
+    public static function resetCatalogIds(): void
     {
         $shops = LengowShop::getActiveShops();
         foreach ($shops as $shop) {
@@ -816,7 +822,7 @@ class LengowConfiguration extends Configuration
      *
      * @return bool
      */
-    public static function shopIsActive($idShop = null)
+    public static function shopIsActive(?int $idShop = null): bool
     {
         return (bool) self::get(self::SHOP_ACTIVE, null, null, $idShop);
     }
@@ -828,7 +834,7 @@ class LengowConfiguration extends Configuration
      *
      * @return bool
      */
-    public static function setActiveShop($idShop)
+    public static function setActiveShop(int $idShop): bool
     {
         $shopIsActive = self::shopIsActive($idShop);
         $catalogIds = self::getCatalogIds($idShop);
@@ -843,7 +849,7 @@ class LengowConfiguration extends Configuration
      *
      * @return bool
      */
-    public static function debugModeIsActive()
+    public static function debugModeIsActive(): bool
     {
         return (bool) self::get(self::DEBUG_MODE_ENABLED);
     }
@@ -851,9 +857,9 @@ class LengowConfiguration extends Configuration
     /**
      * Get Report Email Address for error report
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getReportEmailAddress()
+    public static function getReportEmailAddress(): array
     {
         $emails = explode(';', self::get(self::REPORT_MAILS));
         if ($emails[0] === '') {
@@ -866,9 +872,9 @@ class LengowConfiguration extends Configuration
     /**
      * Get authorized IPs
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getAuthorizedIps()
+    public static function getAuthorizedIps(): array
     {
         $authorizedIps = [];
         $ips = self::getGlobalValue(self::AUTHORIZED_IPS);
@@ -887,7 +893,7 @@ class LengowConfiguration extends Configuration
      *
      * @return bool
      */
-    public static function resetAll($overwrite = false)
+    public static function resetAll(bool $overwrite = false): bool
     {
         $shops = LengowShop::findAll(true);
         $keys = self::getKeys();
@@ -900,7 +906,7 @@ class LengowConfiguration extends Configuration
                             self::updateValue($key, $val, false, null, $shop['id_shop']);
                         }
                     } else {
-                        $oldValue = self::get($key, false, null, $shop['id_shop']);
+                        $oldValue = self::get($key, null, null, $shop['id_shop']);
                         if (!$oldValue) {
                             self::updateValue($key, $val, false, null, $shop['id_shop']);
                         }
@@ -931,7 +937,7 @@ class LengowConfiguration extends Configuration
      *
      * @return bool
      */
-    public static function deleteAll()
+    public static function deleteAll(): bool
     {
         Db::getInstance()->execute('DELETE FROM `' . _DB_PREFIX_ . 'configuration` WHERE name LIKE "LENGOW_%"');
 
@@ -944,9 +950,9 @@ class LengowConfiguration extends Configuration
      * @param int|null $idShop PrestaShop shop id
      * @param bool $toolbox get all values for toolbox or not
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public static function getAllValues($idShop = null, $toolbox = false)
+    public static function getAllValues(?int $idShop = null, bool $toolbox = false): array
     {
         $rows = [];
         $keys = self::getKeys();
@@ -963,7 +969,7 @@ class LengowConfiguration extends Configuration
             }
             if ($idShop) {
                 if (isset($keyParams[self::PARAM_SHOP]) && $keyParams[self::PARAM_SHOP]) {
-                    $value = self::get($key, null, false, $idShop);
+                    $value = self::get($key, null, null, $idShop);
                     $rows[self::$genericParamKeys[$key]] = self::getValueWithCorrectType($key, $value);
                 }
             } elseif (isset($keyParams[self::PARAM_GLOBAL]) && $keyParams[self::PARAM_GLOBAL]) {
@@ -980,7 +986,7 @@ class LengowConfiguration extends Configuration
      *
      * @return string
      */
-    public static function getLengowUrl()
+    public static function getLengowUrl(): string
     {
         $url = LengowConnector::LENGOW_URL;
         if (self::isProductionMode()) {
@@ -1005,7 +1011,7 @@ class LengowConfiguration extends Configuration
      *
      * @return string
      */
-    public static function getLengowApiUrl()
+    public static function getLengowApiUrl(): string
     {
         $url = LengowConnector::LENGOW_API_URL;
         if (self::isProductionMode()) {
@@ -1030,7 +1036,7 @@ class LengowConfiguration extends Configuration
      *
      * @return string
      */
-    public static function getPluginEnvironment()
+    public static function getPluginEnvironment(): string
     {
         $env = self::get(self::PLUGIN_ENV);
 
@@ -1045,7 +1051,7 @@ class LengowConfiguration extends Configuration
     /**
      * @return bool
      */
-    public static function isProductionMode()
+    public static function isProductionMode(): bool
     {
         return self::getPluginEnvironment() === 'prod';
     }
@@ -1053,9 +1059,11 @@ class LengowConfiguration extends Configuration
     /**
      * Will return the global the typed global value
      *
+     * @param mixed $key
+     *
      * @return mixed
      */
-    public static function getTypedGlobalValue($key)
+    public static function getTypedGlobalValue(mixed $key): mixed
     {
         $value = self::get($key);
 
@@ -1068,9 +1076,9 @@ class LengowConfiguration extends Configuration
      * @param string $key Lengow configuration key
      * @param string|null $value configuration value for conversion
      *
-     * @return array|bool|int|string|string[]|null
+     * @return array|bool|float|int|string|string[]|null
      */
-    private static function getValueWithCorrectType($key, $value = null)
+    private static function getValueWithCorrectType(string $key, ?string $value = null): mixed
     {
         $keyParams = self::getKeys($key);
         if (isset($keyParams[self::PARAM_RETURN])) {

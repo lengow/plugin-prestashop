@@ -27,6 +27,55 @@ body.page-topbar .cms-global{
   margin: 0 auto;
 }
 
+.lgw-ps9-content {
+  position: relative;
+  padding-top: 58px;
+}
+
+.lgw-ps9-content .lengow-nav-top {
+  left: -16px;
+  right: -16px;
+  top: -16px;
+}
+
+.lgw-ps9-content .lengow-nav li:not(.lengow_float_right) + li.lengow_float_right {
+  margin-left: auto;
+}
+
+.lgw-ps9-content #lengow_logo a {
+  display: flex;
+  align-items: center;
+}
+.lgw-ps9-content #lengow_logo img {
+  margin-top: 0;
+}
+
+.lgw-ps9-content #lgw-debug {
+  top: 38px;
+}
+
+.lgw-ps9-content .lengow-nav-bottom {
+  top: 38px;
+  left: -16px;
+  right: -16px;
+}
+
+.lgw-ps9-content:has(.lengow-nav-bottom) .cms-global {
+  padding-top: 54px;
+}
+
+.lgw-ps9-content .lgw-container .accordion .marketplace {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 40px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.lgw-ps9-content .lgw-container .accordion .score {
+  float: none;
+}
+
 .lgw-block {
   display: block;
   line-height: 54px;
@@ -387,7 +436,7 @@ body.page-sidebar-closed .lengow-nav-bottom {
   height: 54px;
   display: block;
   padding: 0 15px;
-  text-decoration: none;
+  text-decoration: none !important;
   transition: all 100ms ease;
 }
 
