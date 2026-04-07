@@ -906,7 +906,7 @@ class LengowOrderController extends LengowController
                     'sf-params' => $sfParams,
                 ]
             );
-        } catch (PrestaShopException $e) {
+        } catch (Throwable $e) {
             $href = '#';
         }
 
