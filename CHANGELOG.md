@@ -1,6 +1,17 @@
 # Changelog
 
 
+## [4.0.0](https://github.com/lengow/plugin-prestashop/compare/v3.9.4...v4.0.0) (2026-04-02)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade to prestashop 9 ([#76](https://github.com/lengow/plugin-prestashop/issues/76))
+
+### Features
+
+* upgrade to prestashop 9 ([#76](https://github.com/lengow/plugin-prestashop/issues/76)) ([08dd4da](https://github.com/lengow/plugin-prestashop/commit/08dd4dafdfde85abc41ddf248e0f1143430ac612))
+
 ## [3.9.4](https://github.com/lengow/plugin-prestashop/compare/v3.9.3...v3.9.4) (2025-12-08)
 
 
