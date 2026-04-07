@@ -2,7 +2,7 @@
 /fr.php|e33982ba5b5cff100bd3f7ea7e8c104b
 /index.php|be8b25f88c14bddd7711e4585ebae316
 /it.php|f7bf9029ec3739108a185666561c2d86
-/lengow.php|9cb9064a1b9bc18cde5df26212969938
+/lengow.php|bcddd149ff8cb4c6892b7e1d207ac3fa
 /loader.php|b3d94d65d0a074088758bc1e50736a01
 /config/index.php|be8b25f88c14bddd7711e4585ebae316
 /translations/en.csv|81b2e2ef964f1081ff0f455b22a99d42
@@ -10,7 +10,7 @@
 /translations/fr.csv|a58e1647eaa7fdc493c171860eca27e2
 /translations/index.php|be8b25f88c14bddd7711e4585ebae316
 /translations/it.csv|8f3106c2c9c88c6b7f40ccb24aec629b
-/classes/controllers/LengowOrderController.php|1e4c0b35f3334e69406d9e16c7c70b29
+/classes/controllers/LengowOrderController.php|1b6b5b8a2fc59948489fda8c321befde
 /classes/controllers/LengowDashboardController.php|ebe6a9d71e4a9be250061d96ec23b9ca
 /classes/controllers/LengowLegalsController.php|14effece7503b9524c83f628d255d146
 /classes/controllers/LengowController.php|e4d8bbb3a4d2212e138f8d67dbd1dcd7
