@@ -162,7 +162,7 @@ class LengowMarketplace
                         : '';
                     $acceptFreeValue = !isset($argDescription->accept_free_values)
                         || (bool) $argDescription->accept_free_values;
-                    $this->argValues[(string) $argKey] = [
+                    $this->argValues[(string) $key][(string) $argKey] = [
                         'default_value' => $defaultValue,
                         'accept_free_values' => $acceptFreeValue,
                         'valid_values' => $validValues,
@@ -247,12 +247,23 @@ class LengowMarketplace
      *
      * @return string|false
      */
-    public function getDefaultValue($name)
+    public function getDefaultValue($name, string $actionType = '')
     {
-        if (array_key_exists($name, $this->argValues)) {
-            $defaultValue = $this->argValues[$name]['default_value'];
+        if ($actionType !== '' && isset($this->argValues[$actionType][$name])) {
+            $defaultValue = $this->argValues[$actionType][$name]['default_value'];
             if (!empty($defaultValue)) {
                 return $defaultValue;
+            }
+
+            return false;
+        }
+        // Fallback: search across all actions (backward compatibility)
+        foreach ($this->argValues as $actionArgs) {
+            if (isset($actionArgs[$name])) {
+                $defaultValue = $actionArgs[$name]['default_value'];
+                if (!empty($defaultValue)) {
+                    return $defaultValue;
+                }
             }
         }
 
@@ -545,8 +556,13 @@ class LengowMarketplace
                     $params[$arg] = date(LengowMain::DATE_ISO_8601);
                     break;
                 case LengowAction::ARG_REASON:
-                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId($lengowOrder->lengowId)
-                        ?? $this->getDefaultValue((string) $arg);
+                    $savedReason = $lengowOrder->getRefundReasonByPrestashopId($lengowOrder->lengowId);
+                    $reasonValue = $savedReason ?: $this->getDefaultValue((string) $arg, $action);
+                    if ($reasonValue !== false && $reasonValue !== '') {
+                        $params[$arg] = $reasonValue;
+                    } elseif (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
+                        break;
+                    }
                     break;
                 default:
                     if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
@@ -591,7 +607,7 @@ class LengowMarketplace
                 case LengowAction::ARG_REFUND_REASON:
                 case LengowAction::ARG_REASON:
                     $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId($lengowOrder->lengowId)
-                        ?? $this->getDefaultValue((string) $arg);
+                        ?? $this->getDefaultValue((string) $arg, LengowAction::TYPE_REFUND);
                     break;
                 case LengowAction::ARG_REFUND_PRICE:
                     $params[$arg] = $decodedExtra['total_order'] ?? 0.00;
@@ -604,7 +620,7 @@ class LengowMarketplace
                     break;
                 case LengowAction::ARG_REFUND_MODE:
                     $params[$arg] = $lengowOrder->getRefundModeByPrestashopId($lengowOrder->lengowId)
-                        ?? $this->getDefaultValue((string) $arg);
+                        ?? $this->getDefaultValue((string) $arg, LengowAction::TYPE_REFUND);
                     break;
                 case LengowAction::ARG_REFUND_SHIPPING_PRICE:
                     $params[$arg] = (float) $shippingPriceTTC;
@@ -910,10 +926,36 @@ class LengowMarketplace
         $locale = new LengowTranslation();
         $choices = [$locale->t('order.screen.refund_reason_label') => ''];
         $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_REFUND);
-        $reasons = in_array(LengowAction::ARG_REFUND_REASON, $arguments) ? $this->argValues[LengowAction::ARG_REFUND_REASON]['valid_values'] : [];
+        $reasons = in_array(LengowAction::ARG_REFUND_REASON, $arguments)
+            ? ($this->argValues[LengowAction::TYPE_REFUND][LengowAction::ARG_REFUND_REASON]['valid_values'] ?? [])
+            : [];
         if (empty($reasons)) {
-            $reasons = in_array(LengowAction::ARG_REASON, $arguments) ? $this->argValues[LengowAction::ARG_REASON]['valid_values'] : [];
+            $reasons = in_array(LengowAction::ARG_REASON, $arguments)
+                ? ($this->argValues[LengowAction::TYPE_REFUND][LengowAction::ARG_REASON]['valid_values'] ?? [])
+                : [];
         }
+        foreach ($reasons as $key => $reason) {
+            $choices[$reason] = $key;
+        }
+
+        return $choices;
+    }
+
+    /**
+     * Get all cancel reasons choices
+     */
+    public function getCancelReasons(): array
+    {
+        $action = $this->getAction(LengowAction::TYPE_CANCEL);
+        if (!$action) {
+            return [];
+        }
+        $locale = new LengowTranslation();
+        $choices = [$locale->t('order.screen.cancel_reason_label') => ''];
+        $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_CANCEL);
+        $reasons = in_array(LengowAction::ARG_REASON, $arguments)
+            ? ($this->argValues[LengowAction::TYPE_CANCEL][LengowAction::ARG_REASON]['valid_values'] ?? [])
+            : [];
         foreach ($reasons as $key => $reason) {
             $choices[$reason] = $key;
         }
@@ -932,7 +974,9 @@ class LengowMarketplace
         }
         $locale = new LengowTranslation();
         $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_REFUND);
-        $modes = in_array(LengowAction::ARG_REFUND_MODE, $arguments) ? $this->argValues[LengowAction::ARG_REFUND_MODE]['valid_values'] : [];
+        $modes = in_array(LengowAction::ARG_REFUND_MODE, $arguments)
+            ? ($this->argValues[LengowAction::TYPE_REFUND][LengowAction::ARG_REFUND_MODE]['valid_values'] ?? [])
+            : [];
         $choices = [$locale->t('order.screen.refund_mode_label') => ''];
         if (empty($modes)) {
             return [];
@@ -956,7 +1000,10 @@ class LengowMarketplace
         }
         $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_REFUND);
 
-        return array_intersect($arguments, array_keys($this->argValues));
+        return array_intersect(
+            $arguments,
+            array_keys($this->argValues[LengowAction::TYPE_REFUND] ?? [])
+        );
     }
 
     /**
