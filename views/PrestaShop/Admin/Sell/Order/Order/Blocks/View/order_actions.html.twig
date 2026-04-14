@@ -1,0 +1,232 @@
+{#**
+ * Lengow override of PrestaShop's order_actions.html.twig
+ * Adds contextual cancel/refund reason blocks that appear when the corresponding
+ * Lengow-mapped order state is selected in the status dropdown.
+ *#}
+
+  {{ form_start(updateOrderStatusActionBarForm, {
+    'action': path('admin_orders_update_status', {'orderId': orderForViewing.id}),
+    'attr': {
+      'id': 'update_order_status_action_form'
+    }
+  }) }}
+
+  <div class="input-group">
+    {% set backgroundColor = '#ffffff' %}
+    {% set isBright = true %}
+    {% for choice in updateOrderStatusActionBarForm.new_order_status_id.vars.choices %}
+      {% if choice.value == updateOrderStatusActionBarForm.new_order_status_id.vars.data %}
+        {% set backgroundColor = choice.attr['data-background-color'] %}
+        {% set isBright = choice.attr['data-is-bright'] %}
+      {% endif %}
+    {% endfor %}
+    <div class="select-status{% if isBright %} is-bright{% endif %}" id="update_order_status_action_input_wrapper" style="background-color:{{ backgroundColor }};">
+        {{ form_widget(updateOrderStatusActionBarForm.new_order_status_id, {
+          'attr': {
+            'class': 'select-status-colored',
+          },
+          'id': 'update_order_status_action_input',
+        }) }}
+    </div>
+
+    <button class="btn btn-action ml-2"
+            id="update_order_status_action_btn"
+            disabled
+            data-order-status-id="{{ orderForViewing.history.currentOrderStatusId }}"
+    >
+      {{ 'Update status'|trans({}, 'Admin.Orderscustomers.Feature') }}
+    </button>
+  </div>
+
+  <div class="d-none">
+    {{ form_rest(updateOrderStatusActionBarForm) }}
+  </div>
+  {{ form_end(updateOrderStatusActionBarForm) }}
+
+  {# Lengow: cancel reason — shown when the cancel state is selected #}
+  {% if cancelReasons is defined and cancelReasons is not empty and cancelStateId is defined and cancelStateId > 0 %}
+    <div id="lengow-cancel-reason-block" style="display:none; margin: 0 10px 15px 0; align-self: center;">
+      <div style="position:relative; display:inline-flex; align-items:center;">
+        <select id="lengow_cancel_reason" class="btn btn-action" style="-webkit-appearance:none; appearance:none; padding-right:2rem; cursor:pointer; text-align:left; text-align-last:left; background-image:url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23363a41' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e&quot;); background-repeat:no-repeat; background-position:right 0.6rem center; background-size:8px 10px;">
+          {% for label, value in cancelReasons %}
+            {% if value == '' %}
+              <option value="" disabled {% if cancelReasonSelected is not defined or cancelReasonSelected is empty %}selected{% endif %} style="color:#aaa; font-style:italic;">{{ label }}</option>
+            {% else %}
+              <option value="{{ value }}" {% if cancelReasonSelected is defined and cancelReasonSelected == value %}selected{% endif %}>{{ label }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      <div id="lengow-cancel-reason-message" class="alert d-none mt-1" role="alert"></div>
+    </div>
+  {% endif %}
+
+  {# Lengow: refund reason + mode — shown when the full-refund state is selected #}
+  {% if refundReasons is defined and refundReasons is not empty and refundStateId is defined and refundStateId > 0 %}
+    <div id="lengow-refund-reason-block" style="display:none; margin: 0 10px 15px 0; align-self: center;">
+      <div style="position:relative; display:inline-flex; align-items:center;">
+        <select id="lengow_refund_reason_action" class="btn btn-action" style="-webkit-appearance:none; appearance:none; padding-right:2rem; cursor:pointer; text-align:left; text-align-last:left; background-image:url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23363a41' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e&quot;); background-repeat:no-repeat; background-position:right 0.6rem center; background-size:8px 10px;">
+          {% for label, value in refundReasons %}
+            {% if value == '' %}
+              <option value="" disabled {% if refundReasonSelected is not defined or refundReasonSelected is empty %}selected{% endif %} style="color:#aaa; font-style:italic;">{{ label }}</option>
+            {% else %}
+              <option value="{{ value }}" {% if refundReasonSelected is defined and refundReasonSelected == value %}selected{% endif %}>{{ label }}</option>
+            {% endif %}
+          {% endfor %}
+        </select>
+      </div>
+      {% if refundModes is defined and refundModes is not empty %}
+        <div style="position:relative; display:inline-flex; align-items:center; margin-left:0.5rem;">
+          <select id="lengow_refund_mode_action" class="btn btn-action" style="-webkit-appearance:none; appearance:none; padding-right:2rem; cursor:pointer; text-align:left; text-align-last:left; background-image:url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23363a41' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e&quot;); background-repeat:no-repeat; background-position:right 0.6rem center; background-size:8px 10px;">
+            {% for label, value in refundModes %}
+              <option value="{{ value }}" {% if refundModeSelected is defined and value == refundModeSelected %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      {% endif %}
+      <div id="lengow-refund-reason-action-message" class="alert d-none mt-1" role="alert"></div>
+    </div>
+  {% endif %}
+
+  {% if orderForViewing.documents.canGenerateInvoice %}
+    <form class="order-actions-invoice">
+      <div class="input-group">
+        <a href="{{ path('admin_orders_generate_invoice_pdf', {'orderId': orderForViewing.id}) }}"
+           class="btn btn-action">
+          <i class="material-icons">receipt</i>
+          {{ 'View invoice'|trans({}, 'Admin.Orderscustomers.Feature') }}
+        </a>
+      </div>
+    </form>
+  {% endif %}
+
+  <form class="order-actions-print">
+    <div class="input-group">
+      <button type="button" class="btn btn-action js-print-order-view-page">
+        <i class="material-icons" aria-hidden="true">print</i>
+        {{ 'Print order'|trans({}, 'Admin.Orderscustomers.Feature') }}
+      </button>
+    </div>
+  </form>
+
+  {% if orderForViewing.documents.canGenerateDeliverySlip %}
+    <form class="order-actions-delivery">
+      <div class="input-group">
+        <a href="{{ path('admin_orders_generate_delivery_slip_pdf', {'orderId': orderForViewing.id}) }}"
+           class="btn btn-action">
+          <i class="material-icons">local_shipping</i>
+          {{ 'View delivery slip'|trans({}, 'Admin.Orderscustomers.Feature') }}
+        </a>
+      </div>
+    </form>
+  {% endif %}
+
+  {% include '@PrestaShop/Admin/Sell/Order/Order/Blocks/View/extra_order_button_actions.html.twig' %}
+
+  {% if merchandiseReturnEnabled %}
+    {% if orderForViewing.isDelivered() %}
+      <button class="btn btn-action return-product-display" type="button"{% if not orderForViewing.isRefundable() %} disabled{% endif %}>
+        <i class="material-icons">swap_horiz</i>
+        {{ 'Return products'|trans({}, 'Admin.Orderscustomers.Feature') }}
+      </button>
+    {% elseif orderForViewing.hasBeenPaid() or orderForViewing.hasPayments() %}
+      <button class="btn btn-action standard-refund-display" type="button"{% if not orderForViewing.isRefundable() %} disabled{% endif %}>
+        <i class="material-icons">swap_horiz</i>
+        {{ 'Standard refund'|trans({}, 'Admin.Orderscustomers.Feature') }}
+      </button>
+    {% else %}
+      <button class="btn btn-action cancel-product-display" type="button">
+        {{ 'Cancel products'|trans({}, 'Admin.Orderscustomers.Feature') }}
+      </button>
+    {% endif %}
+  {% endif %}
+
+  {% if orderForViewing.hasBeenPaid() or orderForViewing.hasPayments() %}
+      <button class="btn btn-action partial-refund-display" type="button"{% if not orderForViewing.isRefundable() %} disabled{% endif %}>
+        <i class="material-icons">swap_horiz</i>
+        {{ 'Partial refund'|trans({}, 'Admin.Orderscustomers.Feature') }}
+      </button>
+  {% endif %}
+
+  {% include '@PrestaShop/Admin/Sell/Order/Order/Blocks/View/order_navigation.html.twig' %}
+
+  {# Lengow: JS for contextual show/hide + auto-save #}
+  {% if (cancelReasons is defined and cancelReasons is not empty and cancelStateId is defined and cancelStateId > 0)
+     or (refundReasons is defined and refundReasons is not empty and refundStateId is defined and refundStateId > 0) %}
+    <script>
+      (function () {
+        var cancelStateId = {{ cancelStateId|default(0) }};
+        var refundStateId = {{ refundStateId|default(0) }};
+        var orderId = {{ orderForViewing.id }};
+        var saveReasonUrl = '{{ path("lengow_save_refund_reason") }}';
+        var saveModeUrl = '{{ path("lengow_save_refund_mode") }}';
+
+        function showLengowMessage(id, message, type) {
+          var el = document.getElementById(id);
+          if (!el) { return; }
+          el.textContent = message;
+          el.className = 'alert alert-' + type + ' mt-1';
+          el.classList.remove('d-none');
+          setTimeout(function () { el.classList.add('d-none'); }, 3000);
+        }
+
+        function saveLengowData(url, data, messageId) {
+          fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+            body: JSON.stringify(data)
+          })
+            .then(function (r) { return r.json(); })
+            .then(function (result) {
+              showLengowMessage(messageId, result.success ? 'Enregistré' : (result.message || 'Erreur'), result.success ? 'success' : 'danger');
+            })
+            .catch(function () { showLengowMessage(messageId, 'Erreur réseau', 'danger'); });
+        }
+
+        function updateLengowBlocks(selectedStateId) {
+          var cancelBlock = document.getElementById('lengow-cancel-reason-block');
+          var refundBlock = document.getElementById('lengow-refund-reason-block');
+          if (cancelBlock) {
+            cancelBlock.style.display = (cancelStateId > 0 && selectedStateId === cancelStateId) ? 'block' : 'none';
+          }
+          if (refundBlock) {
+            refundBlock.style.display = (refundStateId > 0 && selectedStateId === refundStateId) ? 'block' : 'none';
+          }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+          var statusSelect = document.getElementById('update_order_status_action_input');
+          if (!statusSelect) { return; }
+
+          statusSelect.addEventListener('change', function () {
+            updateLengowBlocks(parseInt(this.value, 10));
+          });
+
+          // Show block immediately if current selection matches a Lengow state
+          updateLengowBlocks(parseInt(statusSelect.value, 10));
+
+          var cancelReasonSelect = document.getElementById('lengow_cancel_reason');
+          if (cancelReasonSelect) {
+            cancelReasonSelect.addEventListener('change', function () {
+              saveLengowData(saveReasonUrl, { orderId: orderId, reason: this.value }, 'lengow-cancel-reason-message');
+            });
+          }
+
+          var refundReasonActionSelect = document.getElementById('lengow_refund_reason_action');
+          if (refundReasonActionSelect) {
+            refundReasonActionSelect.addEventListener('change', function () {
+              saveLengowData(saveReasonUrl, { orderId: orderId, reason: this.value }, 'lengow-refund-reason-action-message');
+            });
+          }
+
+          var refundModeActionSelect = document.getElementById('lengow_refund_mode_action');
+          if (refundModeActionSelect) {
+            refundModeActionSelect.addEventListener('change', function () {
+              var reason = refundReasonActionSelect ? refundReasonActionSelect.value : '';
+              saveLengowData(saveModeUrl, { orderId: orderId, reason: reason }, 'lengow-refund-reason-action-message');
+            });
+          }
+        });
+      })();
+    </script>
+  {% endif %}
