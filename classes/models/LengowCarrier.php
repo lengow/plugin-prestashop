@@ -1060,6 +1060,20 @@ class LengowCarrier extends Carrier
      */
     public static function carrierCompatibility($idOrder, $idCustomer, $idCart, $idCarrier, $shippingAddress)
     {
+        // Colissimo module (colissimo v2+, external_module_name = 'colissimo')
+        $carrier = new Carrier($idCarrier);
+        if ($carrier->external_module_name === 'colissimo') {
+            if (!LengowMain::isColissimoAvailable()) {
+                return self::COMPATIBILITY_KO;
+            }
+
+            return self::addColissimo(
+                $idCart,
+                $idOrder,
+                $idCarrier,
+                $shippingAddress
+            ) ? self::COMPATIBILITY_OK : self::COMPATIBILITY_KO;
+        }
         // get SoColissimo carrier id
         $soColissimoCarrierId = _PS_VERSION_ < '1.7'
             ? Configuration::get('SOCOLISSIMO_CARRIER_ID')
@@ -1237,6 +1251,107 @@ class LengowCarrier extends Carrier
         }
 
         return Db::getInstance()->execute($sql);
+    }
+
+    /**
+     * Save order data for the Colissimo module (colissimo v2+)
+     *
+     * For relay/pickup point orders, creates a ColissimoPickupPoint record if needed and links
+     * the cart to it. Then fires the newOrder hook so Colissimo creates its colissimo_order record.
+     *
+     * @param int $idCart PrestaShop cart id
+     * @param int $idOrder PrestaShop order id
+     * @param int $idCarrier PrestaShop carrier id
+     * @param LengowAddress $shippingAddress shipping address
+     *
+     * @return bool
+     *
+     * @throws LengowException colissimo module file not found
+     */
+    public static function addColissimo($idCart, $idOrder, $idCarrier, $shippingAddress)
+    {
+        $sep = DIRECTORY_SEPARATOR;
+        $moduleName = 'colissimo';
+        $filePath = _PS_MODULE_DIR_ . $moduleName . $sep . 'classes' . $sep . 'module.classes.php';
+        $loaded = include_once $filePath;
+        if (!$loaded) {
+            throw new LengowException(
+                LengowMain::setLogMessage('log.import.error_colissimo_new_missing_file', ['file_path' => $filePath])
+            );
+        }
+        $carrier = new Carrier($idCarrier);
+        $serviceType = ColissimoService::getServiceTypeByIdCarrier((int) $carrier->id_reference);
+        if ($serviceType === ColissimoService::TYPE_RELAIS && !empty($shippingAddress->idRelay)) {
+            $colissimoId = Tools::substr((string) $shippingAddress->idRelay, 0, 8);
+            $pickupPoint = ColissimoPickupPoint::getPickupPointByIdColissimo($colissimoId);
+            if (!Validate::isLoadedObject($pickupPoint)) {
+                // Determine product code from the RELAIS service (France destination)
+                $productCode = 'A2P';
+                $serviceId = ColissimoService::getServiceIdByIdCarrierDestinationType(
+                    (int) $carrier->id_reference,
+                    'FRANCE'
+                );
+                if ($serviceId) {
+                    $service = new ColissimoService((int) $serviceId);
+                    if (Validate::isLoadedObject($service) && !empty($service->product_code)) {
+                        $productCode = $service->product_code;
+                    }
+                }
+                $pickupPoint = new ColissimoPickupPoint();
+                $pickupPoint->colissimo_id = $colissimoId;
+                $pickupPoint->company_name = Tools::substr(
+                    !empty($shippingAddress->company) ? $shippingAddress->company : $shippingAddress->lastname,
+                    0,
+                    64
+                );
+                $pickupPoint->address1 = $shippingAddress->address1;
+                $pickupPoint->address2 = (string) $shippingAddress->address2;
+                $pickupPoint->city = $shippingAddress->city;
+                $pickupPoint->zipcode = $shippingAddress->postcode;
+                $isoCountry = Country::getIsoById($shippingAddress->id_country);
+                $pickupPoint->iso_country = $isoCountry;
+                $countryName = Country::getNameById(
+                    (int) Context::getContext()->language->id,
+                    (int) $shippingAddress->id_country
+                );
+                $pickupPoint->country = Tools::substr($countryName ?: $isoCountry, 0, 64);
+                $pickupPoint->product_code = $productCode;
+                if (!$pickupPoint->add()) {
+                    LengowMain::log(
+                        LengowLog::CODE_IMPORT,
+                        LengowMain::setLogMessage(
+                            'log.import.error_colissimo_pickup_point_save',
+                            ['relay_id' => $colissimoId]
+                        )
+                    );
+
+                    return false;
+                }
+            }
+            ColissimoCartPickupPoint::updateCartPickupPoint(
+                $idCart,
+                $pickupPoint->id,
+                (string) $shippingAddress->phone_mobile
+            );
+        }
+        // Fire newOrder hook so Colissimo creates its colissimo_order record
+        $order = new Order($idOrder);
+        if (!Validate::isLoadedObject($order)) {
+            return false;
+        }
+        Hook::exec('newOrder', [
+            'cart' => new Cart($idCart),
+            'order' => $order,
+            'customer' => new Customer((int) $order->id_customer),
+            'currency' => new Currency((int) $order->id_currency),
+            'orderStatus' => new OrderState((int) $order->current_state),
+        ]);
+        LengowMain::log(
+            LengowLog::CODE_IMPORT,
+            LengowMain::setLogMessage('log.import.carrier_compatibility_colissimo_ensured')
+        );
+
+        return true;
     }
 
     /**

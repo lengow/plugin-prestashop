@@ -906,6 +906,26 @@ class LengowMain
     }
 
     /**
+     * Check if the Colissimo module (colissimo v2+) is installed, activated and version is supported
+     *
+     * @return bool
+     */
+    public static function isColissimoAvailable()
+    {
+        $moduleName = 'colissimo';
+        $supportedVersion = '2.0.0';
+        $sep = DIRECTORY_SEPARATOR;
+        $moduleDir = _PS_MODULE_DIR_ . $moduleName . $sep;
+        if (!self::isModuleInstalled($moduleName)) {
+            return false;
+        }
+        require_once $moduleDir . $moduleName . '.php';
+        $colissimo = new Colissimo();
+
+        return version_compare($colissimo->version, $supportedVersion, '>=');
+    }
+
+    /**
      * Get prestashop state id corresponding to the current order state
      *
      * @param string $orderStateMarketplace order state marketplace
