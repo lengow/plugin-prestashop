@@ -118,7 +118,7 @@ class LengowCart extends Cart
         $useOrderPrices = false
     ) {
         if (!$shop instanceof Shop) {
-            $shop = LengowContext::getContext()->shop;
+            $shop = Context::getContext()->shop;
         }
         // this line are useless, but PrestaShop validator require it
         $autoAddCartRule = $autoAddCartRule;
@@ -236,7 +236,7 @@ class LengowCart extends Cart
         // refresh cache of self::_products
         $this->_products = $this->getProducts(true);
         $this->update();
-        $context = LengowContext::getContext()->cloneContext();
+        $context = Context::getContext()->cloneContext();
         $context->cart = $this;
         Cache::clean('getContextualValue_*');
         if ($product->customizable) {
