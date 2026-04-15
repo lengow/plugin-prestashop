@@ -46,7 +46,7 @@
   {# Lengow: cancel reason — shown when the cancel state is selected #}
   {% if cancelReasons is defined and cancelReasons is not empty and cancelStateId is defined and cancelStateId > 0 %}
     <div id="lengow-cancel-reason-block" style="display:none; margin: 0 10px 15px 0; align-self: center;">
-      <div style="position:relative; display:inline-flex; align-items:center;">
+      <div style="position:relative; display:inline-block;">
         <select id="lengow_cancel_reason" class="btn btn-action" style="-webkit-appearance:none; appearance:none; padding-right:2rem; cursor:pointer; text-align:left; text-align-last:left; background-image:url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23363a41' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e&quot;); background-repeat:no-repeat; background-position:right 0.6rem center; background-size:8px 10px;">
           {% for label, value in cancelReasons %}
             {% if value == '' %}
@@ -56,15 +56,16 @@
             {% endif %}
           {% endfor %}
         </select>
+        <span id="lengow-cancel-reason-status" style="position:absolute; right:1.4rem; top:50%; transform:translateY(-50%); pointer-events:none; line-height:1;"></span>
       </div>
-      <div id="lengow-cancel-reason-message" class="alert d-none mt-1" role="alert"></div>
     </div>
   {% endif %}
 
   {# Lengow: refund reason + mode — shown when the full-refund state is selected #}
   {% if refundReasons is defined and refundReasons is not empty and refundStateId is defined and refundStateId > 0 %}
     <div id="lengow-refund-reason-block" style="display:none; margin: 0 10px 15px 0; align-self: center;">
-      <div style="position:relative; display:inline-flex; align-items:center;">
+    <div style="display:inline-flex; align-items:center; gap:0.25rem;">
+      <div style="position:relative; display:inline-block;">
         <select id="lengow_refund_reason_action" class="btn btn-action" style="-webkit-appearance:none; appearance:none; padding-right:2rem; cursor:pointer; text-align:left; text-align-last:left; background-image:url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23363a41' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e&quot;); background-repeat:no-repeat; background-position:right 0.6rem center; background-size:8px 10px;">
           {% for label, value in refundReasons %}
             {% if value == '' %}
@@ -74,17 +75,15 @@
             {% endif %}
           {% endfor %}
         </select>
+        <span id="lengow-refund-reason-status" style="position:absolute; right:1.4rem; top:50%; transform:translateY(-50%); pointer-events:none; line-height:1;"></span>
       </div>
       {% if refundModes is defined and refundModes is not empty %}
-        <div style="position:relative; display:inline-flex; align-items:center; margin-left:0.5rem;">
-          <select id="lengow_refund_mode_action" class="btn btn-action" style="-webkit-appearance:none; appearance:none; padding-right:2rem; cursor:pointer; text-align:left; text-align-last:left; background-image:url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23363a41' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e&quot;); background-repeat:no-repeat; background-position:right 0.6rem center; background-size:8px 10px;">
-            {% for label, value in refundModes %}
-              <option value="{{ value }}" {% if refundModeSelected is defined and value == refundModeSelected %}selected{% endif %}>{{ label }}</option>
-            {% endfor %}
-          </select>
-        </div>
+        <select id="lengow_refund_mode_action" class="btn btn-action" style="-webkit-appearance:none; appearance:none; padding-right:2rem; cursor:pointer; text-align:left; text-align-last:left; background-image:url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23363a41' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e&quot;); background-repeat:no-repeat; background-position:right 0.6rem center; background-size:8px 10px;">
+          {% for label, value in refundModes %}
+            <option value="{{ value }}" {% if refundModeSelected is defined and value == refundModeSelected %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
       {% endif %}
-      <div id="lengow-refund-reason-action-message" class="alert d-none mt-1" role="alert"></div>
     </div>
   {% endif %}
 
@@ -161,16 +160,22 @@
         var saveReasonUrl = '{{ path("lengow_save_refund_reason") }}';
         var saveModeUrl = '{{ path("lengow_save_refund_mode") }}';
 
-        function showLengowMessage(id, message, type) {
-          var el = document.getElementById(id);
-          if (!el) { return; }
-          el.textContent = message;
-          el.className = 'alert alert-' + type + ' mt-1';
-          el.classList.remove('d-none');
-          setTimeout(function () { el.classList.add('d-none'); }, 3000);
+        function showStatus(spanId, state) {
+          var span = document.getElementById(spanId);
+          if (!span) { return; }
+          if (state === 'loading') {
+            span.innerHTML = '<span class="spinner-border spinner-border-sm text-secondary" role="status" style="width:.85rem;height:.85rem;border-width:.12em;vertical-align:middle;"></span>';
+          } else if (state === 'success') {
+            span.innerHTML = '<i class="material-icons text-success" style="font-size:1.1rem;vertical-align:middle;">check_circle</i>';
+            setTimeout(function () { span.innerHTML = ''; }, 2000);
+          } else {
+            span.innerHTML = '<i class="material-icons text-danger" style="font-size:1.1rem;vertical-align:middle;">cancel</i>';
+            setTimeout(function () { span.innerHTML = ''; }, 3000);
+          }
         }
 
-        function saveLengowData(url, data, messageId) {
+        function saveData(url, data, statusSpanId) {
+          showStatus(statusSpanId, 'loading');
           fetch(url, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
@@ -178,9 +183,9 @@
           })
             .then(function (r) { return r.json(); })
             .then(function (result) {
-              showLengowMessage(messageId, result.success ? 'Enregistré' : (result.message || 'Erreur'), result.success ? 'success' : 'danger');
+              showStatus(statusSpanId, result.success ? 'success' : 'error');
             })
-            .catch(function () { showLengowMessage(messageId, 'Erreur réseau', 'danger'); });
+            .catch(function () { showStatus(statusSpanId, 'error'); });
         }
 
         function updateLengowBlocks(selectedStateId) {
@@ -208,14 +213,14 @@
           var cancelReasonSelect = document.getElementById('lengow_cancel_reason');
           if (cancelReasonSelect) {
             cancelReasonSelect.addEventListener('change', function () {
-              saveLengowData(saveReasonUrl, { orderId: orderId, reason: this.value }, 'lengow-cancel-reason-message');
+              saveData(saveReasonUrl, { orderId: orderId, reason: this.value }, 'lengow-cancel-reason-status');
             });
           }
 
           var refundReasonActionSelect = document.getElementById('lengow_refund_reason_action');
           if (refundReasonActionSelect) {
             refundReasonActionSelect.addEventListener('change', function () {
-              saveLengowData(saveReasonUrl, { orderId: orderId, reason: this.value }, 'lengow-refund-reason-action-message');
+              saveData(saveReasonUrl, { orderId: orderId, reason: this.value }, 'lengow-refund-reason-status');
             });
           }
 
@@ -223,7 +228,7 @@
           if (refundModeActionSelect) {
             refundModeActionSelect.addEventListener('change', function () {
               var reason = refundReasonActionSelect ? refundReasonActionSelect.value : '';
-              saveLengowData(saveModeUrl, { orderId: orderId, reason: reason }, 'lengow-refund-reason-action-message');
+              saveData(saveModeUrl, { orderId: orderId, mode: this.value, reason: reason }, 'lengow-refund-reason-status');
             });
           }
         });
