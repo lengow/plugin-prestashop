@@ -27,12 +27,27 @@ if (!defined('_PS_VERSION_')) {
     exit;
 }
 
+use PrestaShop\Module\Lengow\Service\OrderRefundDataUpdater;
+use PrestaShop\PrestaShop\Adapter\LegacyContext;
 use PrestaShopBundle\Security\Attribute\AdminSecurity;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class LengowOrderAdminController extends AbstractLengowAdminController
 {
+    public function __construct(
+        LegacyContext $legacyContext,
+        Environment $twig,
+        private readonly OrderRefundDataUpdater $orderRefundDataUpdater,
+    ) {
+        parent::__construct($legacyContext, $twig);
+        if (!defined('_PS_MODULE_LENGOW_DIR_')) {
+            define('_PS_MODULE_LENGOW_DIR_', _PS_MODULE_DIR_ . 'lengow' . \DIRECTORY_SEPARATOR);
+        }
+    }
+
     protected function getPageTitle(): string
     {
         return (new \LengowTranslation($this->legacyContext))->t('tab.order');
@@ -49,5 +64,80 @@ class LengowOrderAdminController extends AbstractLengowAdminController
         }
 
         return $this->renderLegacyPage('@Modules/lengow/views/templates/admin/lengow_order/view.html.twig', $lengowController);
+    }
+
+    /**
+     * Returns cancel/refund reasons and state IDs for a given order as JSON.
+     * Used by the inline selector in the PS order view Twig override.
+     */
+    #[AdminSecurity("is_granted('read', 'AdminOrders')")]
+    public function getOrderReasonsAction(int $orderId): JsonResponse
+    {
+        if (!$orderId || !\LengowOrder::isFromLengow($orderId)) {
+            return new JsonResponse(['isFromLengow' => false]);
+        }
+
+        try {
+            $lengowOrder = new \LengowOrder($orderId);
+            $marketplace = $lengowOrder->getMarketplace();
+
+            if (!$marketplace) {
+                return new JsonResponse(['isFromLengow' => false]);
+            }
+
+            $refundSelectedData = $lengowOrder->getRefundDataFromLengowOrder($orderId, $marketplace->name);
+
+            return new JsonResponse([
+                'isFromLengow' => true,
+                'cancelReasons' => $marketplace->getCancelReasons(),
+                'cancelReasonSelected' => $refundSelectedData['cancel_reason'] ?? '',
+                'cancelStateId' => (int) \LengowMain::getOrderState(\LengowOrder::STATE_CANCELED),
+                'refundReasons' => $marketplace->getRefundReasons(),
+                'refundReasonSelected' => $refundSelectedData['refund_reason'] ?? '',
+                'refundModes' => $marketplace->getRefundModes(),
+                'refundModeSelected' => $refundSelectedData['refund_mode'] ?? '',
+                'refundStateId' => (int) \LengowMain::getOrderState(\LengowOrder::STATE_REFUNDED),
+            ]);
+        } catch (\Exception $e) {
+            return new JsonResponse(['isFromLengow' => false, 'error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Saves the refund or cancel reason for an order.
+     */
+    #[AdminSecurity("is_granted('update', 'AdminOrders')")]
+    public function saveRefundReasonAction(Request $request): JsonResponse
+    {
+        $data = json_decode((string) $request->getContent(), true) ?? [];
+        $orderId = (int) ($data['orderId'] ?? 0);
+        $reason = (string) ($data['reason'] ?? '');
+
+        if (!$orderId) {
+            return new JsonResponse(['success' => false, 'message' => 'Missing order id']);
+        }
+
+        $success = $this->orderRefundDataUpdater->updateRefundReason($orderId, $reason);
+
+        return new JsonResponse(['success' => $success]);
+    }
+
+    /**
+     * Saves the refund mode for an order.
+     */
+    #[AdminSecurity("is_granted('update', 'AdminOrders')")]
+    public function saveRefundModeAction(Request $request): JsonResponse
+    {
+        $data = json_decode((string) $request->getContent(), true) ?? [];
+        $orderId = (int) ($data['orderId'] ?? 0);
+        $mode = (string) ($data['mode'] ?? '');
+
+        if (!$orderId) {
+            return new JsonResponse(['success' => false, 'message' => 'Missing order id']);
+        }
+
+        $success = $this->orderRefundDataUpdater->updateRefundMode($orderId, $mode);
+
+        return new JsonResponse(['success' => $success]);
     }
 }

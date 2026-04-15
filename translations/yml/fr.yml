@@ -191,6 +191,7 @@ fr:
       not_provided: "Non fourni par la marketplace"
       refund_reason_label: "Raison du remboursement"
       refund_mode_label: "Mode de remboursement"
+      cancel_reason_label: "Raison d'annulation"
     table:
       action_lengow: "Actions"
       order_lengow_state: "Statut"

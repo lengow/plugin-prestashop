@@ -191,6 +191,7 @@ en:
       not_provided: "Not provided by the marketplace"
       refund_reason_label: "Refund reason"
       refund_mode_label: "Refund mode"
+      cancel_reason_label: "Cancel reason"
     table:
       action_lengow: "Actions"
       order_lengow_state: "Status"

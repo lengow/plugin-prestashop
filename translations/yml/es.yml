@@ -191,6 +191,7 @@ es:
       not_provided: "No entregado por Marketplace"
       refund_reason_label: "Motivo de reintegro"
       refund_mode_label: "Modo de reintegro"
+      cancel_reason_label: "Motivo de cancelación"
     table:
       action_lengow: "Acciones"
       order_lengow_state: "Estado"

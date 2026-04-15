@@ -1,0 +1,246 @@
+{#**
+ * Lengow override of PrestaShop's order_actions.html.twig
+ * Adds contextual cancel/refund reason blocks that appear when the corresponding
+ * Lengow-mapped order state is selected in the status dropdown.
+ *#}
+
+  {{ form_start(updateOrderStatusActionBarForm, {
+    action: path('admin_orders_update_status', {orderId: orderForViewing.id}),
+    attr: {
+      id: 'update_order_status_action_form'
+    }
+  }) }}
+
+  <div class="input-group">
+    {% set backgroundColor = '#ffffff' %}
+    {% set isBright = true %}
+    {% for choice in updateOrderStatusActionBarForm.new_order_status_id.vars.choices %}
+      {% if choice.value == updateOrderStatusActionBarForm.new_order_status_id.vars.data %}
+        {% set backgroundColor = choice.attr['data-background-color'] %}
+        {% set isBright = choice.attr['data-is-bright'] %}
+      {% endif %}
+    {% endfor %}
+    <div class="select-status{% if isBright %} is-bright{% endif %}" id="update_order_status_action_input_wrapper" style="background-color:{{ backgroundColor }};">
+        {{ form_widget(updateOrderStatusActionBarForm.new_order_status_id, {
+          attr: {
+            class: 'select-status-colored',
+          },
+          id: 'update_order_status_action_input',
+        }) }}
+    </div>
+
+    <button class="btn btn-action ml-2"
+            id="update_order_status_action_btn"
+            disabled
+            data-order-status-id="{{ orderForViewing.history.currentOrderStatusId }}"
+    >
+      {{ 'Update status'|trans({}, 'Admin.Orderscustomers.Feature') }}
+    </button>
+  </div>
+
+  <div class="d-none">
+    {{ form_rest(updateOrderStatusActionBarForm) }}
+  </div>
+  {{ form_end(updateOrderStatusActionBarForm) }}
+
+  {# Lengow: cancel reason block — populated and shown by JS when cancel state is selected #}
+  <div id="lengow-cancel-reason-block" style="display:none; align-self:center;">
+    <div style="position:relative; display:inline-block;">
+      <select id="lengow_cancel_reason" class="btn btn-action" style="-webkit-appearance:none; appearance:none; padding-right:2rem; cursor:pointer; text-align:left; text-align-last:left; background-image:url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23363a41' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e&quot;); background-repeat:no-repeat; background-position:right 0.6rem center; background-size:8px 10px;"></select>
+      <span id="lengow-cancel-reason-status" style="position:absolute; right:1.4rem; top:50%; transform:translateY(-50%); pointer-events:none; line-height:1;"></span>
+    </div>
+  </div>
+
+  {# Lengow: refund reason + mode block — populated and shown by JS when refund state is selected #}
+  <div id="lengow-refund-reason-block" style="display:none; align-self:center;">
+    <div style="display:inline-flex; align-items:center; gap:0.25rem;">
+      <div style="position:relative; display:inline-block;">
+        <select id="lengow_refund_reason_action" class="btn btn-action" style="-webkit-appearance:none; appearance:none; padding-right:2rem; cursor:pointer; text-align:left; text-align-last:left; background-image:url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23363a41' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e&quot;); background-repeat:no-repeat; background-position:right 0.6rem center; background-size:8px 10px;"></select>
+        <span id="lengow-refund-reason-status" style="position:absolute; right:1.4rem; top:50%; transform:translateY(-50%); pointer-events:none; line-height:1;"></span>
+      </div>
+      <select id="lengow_refund_mode_action" class="btn btn-action" style="display:none; -webkit-appearance:none; appearance:none; padding-right:2rem; cursor:pointer; text-align:left; text-align-last:left; background-image:url(&quot;data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='4' height='5' viewBox='0 0 4 5'%3e%3cpath fill='%23363a41' d='M2 0L0 2h4zm0 5L0 3h4z'/%3e%3c/svg%3e&quot;); background-repeat:no-repeat; background-position:right 0.6rem center; background-size:8px 10px;"></select>
+    </div>
+  </div>
+
+  {% if orderForViewing.documents.canGenerateInvoice %}
+    <form class="order-actions-invoice">
+      <div class="input-group">
+        <a href="{{ path('admin_orders_generate_invoice_pdf', {orderId: orderForViewing.id}) }}"
+           class="btn btn-action" data-role="view-invoice">
+          <i class="material-icons">receipt</i>
+          {{ 'View invoice'|trans({}, 'Admin.Orderscustomers.Feature') }}
+        </a>
+      </div>
+    </form>
+  {% endif %}
+
+  <form class="order-actions-print">
+    <div class="input-group">
+      <button type="button" class="btn btn-action js-print-order-view-page">
+        <i class="material-icons" aria-hidden="true">print</i>
+        {{ 'Print order'|trans({}, 'Admin.Orderscustomers.Feature') }}
+      </button>
+    </div>
+  </form>
+
+  {% if orderForViewing.documents.canGenerateDeliverySlip %}
+    <form class="order-actions-delivery">
+      <div class="input-group">
+        <a href="{{ path('admin_orders_generate_delivery_slip_pdf', {orderId: orderForViewing.id}) }}"
+           class="btn btn-action" data-role="view-delivery-slip">
+          <i class="material-icons">local_shipping</i>
+          {{ 'View delivery slip'|trans({}, 'Admin.Orderscustomers.Feature') }}
+        </a>
+      </div>
+    </form>
+  {% endif %}
+
+  {{ include('@PrestaShop/Admin/Sell/Order/Order/Blocks/View/extra_order_button_actions.html.twig') }}
+
+  {% if merchandiseReturnEnabled %}
+    {% if orderForViewing.isDelivered() %}
+      <button class="btn btn-action return-product-display" type="button"{% if not orderForViewing.isRefundable() %} disabled{% endif %}>
+        <i class="material-icons">swap_horiz</i>
+        {{ 'Return products'|trans({}, 'Admin.Orderscustomers.Feature') }}
+      </button>
+    {% elseif orderForViewing.hasBeenPaid() or orderForViewing.hasPayments() %}
+      <button class="btn btn-action standard-refund-display" type="button"{% if not orderForViewing.isRefundable() %} disabled{% endif %}>
+        <i class="material-icons">swap_horiz</i>
+        {{ 'Standard refund'|trans({}, 'Admin.Orderscustomers.Feature') }}
+      </button>
+    {% else %}
+      <button class="btn btn-action cancel-product-display" type="button">
+        {{ 'Cancel products'|trans({}, 'Admin.Orderscustomers.Feature') }}
+      </button>
+    {% endif %}
+  {% endif %}
+
+  {% if orderForViewing.hasBeenPaid() or orderForViewing.hasPayments() %}
+      <button class="btn btn-action partial-refund-display" type="button"{% if not orderForViewing.isRefundable() %} disabled{% endif %}>
+        <i class="material-icons">swap_horiz</i>
+        {{ 'Partial refund'|trans({}, 'Admin.Orderscustomers.Feature') }}
+      </button>
+  {% endif %}
+
+  {{ include('@PrestaShop/Admin/Sell/Order/Order/Blocks/View/order_navigation.html.twig') }}
+
+  {# Lengow: JS for contextual show/hide + auto-save via fetch API #}
+  <script>
+    (function () {
+      var orderId = {{ orderForViewing.id }};
+      var fetchUrl = '{{ path("lengow_order_reasons", {orderId: 0}) }}'.replace('/0', '/' + orderId);
+      var saveReasonUrl = '{{ path("lengow_save_refund_reason") }}';
+      var saveModeUrl = '{{ path("lengow_save_refund_mode") }}';
+
+      var cancelStateId = 0;
+      var refundStateId = 0;
+
+      function showStatus(spanId, state) {
+        var span = document.getElementById(spanId);
+        if (!span) { return; }
+        if (state === 'loading') {
+          span.innerHTML = '<span class="spinner-border spinner-border-sm text-secondary" role="status" style="width:.85rem;height:.85rem;border-width:.12em;vertical-align:middle;"></span>';
+        } else if (state === 'success') {
+          span.innerHTML = '<i class="material-icons text-success" style="font-size:1.1rem;vertical-align:middle;">check_circle</i>';
+          setTimeout(function () { span.innerHTML = ''; }, 2000);
+        } else {
+          span.innerHTML = '<i class="material-icons text-danger" style="font-size:1.1rem;vertical-align:middle;">cancel</i>';
+          setTimeout(function () { span.innerHTML = ''; }, 3000);
+        }
+      }
+
+      function saveData(url, data, statusSpanId) {
+        showStatus(statusSpanId, 'loading');
+        fetch(url, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
+          body: JSON.stringify(data)
+        })
+          .then(function (r) { return r.json(); })
+          .then(function (result) {
+            showStatus(statusSpanId, result.success ? 'success' : 'error');
+          })
+          .catch(function () { showStatus(statusSpanId, 'error'); });
+      }
+
+      function buildSelect(selectEl, options, selectedValue) {
+        selectEl.innerHTML = '';
+        var hasEmpty = false;
+        Object.keys(options).forEach(function (label) {
+          var value = options[label];
+          var opt = document.createElement('option');
+          opt.value = value;
+          opt.textContent = label;
+          if (value === '') {
+            opt.disabled = true;
+            opt.style.color = '#aaa';
+            opt.style.fontStyle = 'italic';
+            hasEmpty = true;
+          }
+          if (value === selectedValue) { opt.selected = true; }
+          selectEl.appendChild(opt);
+        });
+        if (hasEmpty && (!selectedValue || selectedValue === '')) {
+          selectEl.querySelector('option[value=""]').selected = true;
+        }
+      }
+
+      function updateVisibility(selectedStateId) {
+        var cancelBlock = document.getElementById('lengow-cancel-reason-block');
+        var refundBlock = document.getElementById('lengow-refund-reason-block');
+        if (cancelBlock) {
+          cancelBlock.style.display = (cancelStateId > 0 && selectedStateId === cancelStateId) ? 'flex' : 'none';
+        }
+        if (refundBlock) {
+          refundBlock.style.display = (refundStateId > 0 && selectedStateId === refundStateId) ? 'flex' : 'none';
+        }
+      }
+
+      function initLengow(data) {
+        if (!data.isFromLengow) { return; }
+
+        cancelStateId = data.cancelStateId || 0;
+        refundStateId = data.refundStateId || 0;
+
+        var cancelSelect = document.getElementById('lengow_cancel_reason');
+        var refundReasonSelect = document.getElementById('lengow_refund_reason_action');
+        var refundModeSelect = document.getElementById('lengow_refund_mode_action');
+
+        if (cancelSelect && data.cancelReasons && Object.keys(data.cancelReasons).length > 0) {
+          buildSelect(cancelSelect, data.cancelReasons, data.cancelReasonSelected || '');
+          cancelSelect.addEventListener('change', function () {
+            saveData(saveReasonUrl, { orderId: orderId, reason: this.value }, 'lengow-cancel-reason-status');
+          });
+        }
+
+        if (refundReasonSelect && data.refundReasons && Object.keys(data.refundReasons).length > 0) {
+          buildSelect(refundReasonSelect, data.refundReasons, data.refundReasonSelected || '');
+          refundReasonSelect.addEventListener('change', function () {
+            saveData(saveReasonUrl, { orderId: orderId, reason: this.value }, 'lengow-refund-reason-status');
+          });
+        }
+
+        if (refundModeSelect && data.refundModes && Object.keys(data.refundModes).length > 0) {
+          buildSelect(refundModeSelect, data.refundModes, data.refundModeSelected || '');
+          refundModeSelect.style.display = '';
+          refundModeSelect.addEventListener('change', function () {
+            var reason = refundReasonSelect ? refundReasonSelect.value : '';
+            saveData(saveModeUrl, { orderId: orderId, mode: this.value, reason: reason }, 'lengow-refund-reason-status');
+          });
+        }
+
+        if (typeof jQuery !== 'undefined') {
+          jQuery('#update_order_status_action_input').on('change', function () {
+            updateVisibility(parseInt(this.value, 10));
+          });
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function () {
+        fetch(fetchUrl, { headers: { 'X-Requested-With': 'XMLHttpRequest' } })
+          .then(function (r) { return r.json(); })
+          .then(initLengow)
+          .catch(function () {});
+      });
+    })();
+  </script>

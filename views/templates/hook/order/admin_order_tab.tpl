@@ -75,46 +75,6 @@
             </div>
             {/if}
 
-            {if $refundReasons|@count > 0 || $refundModes|@count > 0}
-            <h4 class="mb-3">Refund</h4>
-            <div class="row">
-                {if $refundReasons|@count > 0}
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-control-label">Refund reason</label>
-                        <select id="lengow_refund_reason" class="form-control js-lengow-autoselect"
-                                data-action="save_refund_reason"
-                                data-field="value">
-                            {foreach from=$refundReasons key=label item=value}
-                                <option value="{$value|escape:'html':'UTF-8'}"
-                                    {if $value == $refundReasonSelected}selected{/if}>
-                                    {$label|escape:'html':'UTF-8'}
-                                </option>
-                            {/foreach}
-                        </select>
-                    </div>
-                </div>
-                {/if}
-
-                {if $refundModes|@count > 0}
-                <div class="col-md-6">
-                    <div class="form-group">
-                        <label class="form-control-label">Refund mode</label>
-                        <select id="lengow_refund_mode" class="form-control js-lengow-autoselect"
-                                data-action="save_refund_mode"
-                                data-field="value">
-                            {foreach from=$refundModes key=label item=value}
-                                <option value="{$value|escape:'html':'UTF-8'}"
-                                    {if $value == $refundModeSelected}selected{/if}>
-                                    {$label|escape:'html':'UTF-8'}
-                                </option>
-                            {/foreach}
-                        </select>
-                    </div>
-                </div>
-                {/if}
-            </div>
-            {/if}
 
         </div>
     </div>

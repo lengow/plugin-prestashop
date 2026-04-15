@@ -172,6 +172,7 @@ order.screen.return_carrier_label|Vettore di ritorno
 order.screen.not_provided|Non fornito dal marketplace
 order.screen.refund_reason_label|Motivo del rimborso
 order.screen.refund_mode_label|Modalità di rimborso
+order.screen.cancel_reason_label|Motivo di annullamento
 order.table.action_lengow|Azione
 order.table.order_lengow_state|Stato
 order.table.order_types|Tipi
