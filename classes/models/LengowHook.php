@@ -408,9 +408,7 @@ class LengowHook
         }
 
         $hasContent = $marketplace->hasReturnTrackingNumber()
-            || $marketplace->hasReturnTrackingCarrier()
-            || !empty($marketplace->getRefundReasons())
-            || !empty($marketplace->getRefundModes());
+            || $marketplace->hasReturnTrackingCarrier();
 
         if (!$hasContent) {
             return '';
@@ -445,9 +443,6 @@ class LengowHook
 
         $isActiveReturnTrackingNumber = $marketplace->hasReturnTrackingNumber();
         $isActiveReturnCarrier = $marketplace->hasReturnTrackingCarrier();
-        $refundReasons = $marketplace->getRefundReasons();
-        $refundModes = $marketplace->getRefundModes();
-        $refundSelectedDatas = $lengowOrder->getRefundDataFromLengowOrder($idOrder, $marketplace->name);
 
         $locale = new LengowTranslation();
 
@@ -461,10 +456,6 @@ class LengowHook
             'returnTrackingNumberLabel' => $locale->t('order.screen.return_tracking_number_label'),
             'returnCarrierLabel' => $locale->t('order.screen.return_carrier_label'),
             'carriers' => $isActiveReturnCarrier ? LengowCarrier::getCarriersChoices($this->context->language->id) : [],
-            'refundReasons' => $refundReasons,
-            'refundModes' => $refundModes,
-            'refundReasonSelected' => $refundSelectedDatas['refund_reason'] ?? '',
-            'refundModeSelected' => $refundSelectedDatas['refund_mode'] ?? '',
         ]);
 
         return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/hook/order/admin_order_tab.tpl');

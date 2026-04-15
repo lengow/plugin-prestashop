@@ -191,6 +191,7 @@ it:
       not_provided: "Non fornito dal marketplace"
       refund_reason_label: "Motivo del rimborso"
       refund_mode_label: "Modalità di rimborso"
+      cancel_reason_label: "Motivo di annullamento"
     table:
       action_lengow: "Azione"
       order_lengow_state: "Stato"
