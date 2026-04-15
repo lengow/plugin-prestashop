@@ -118,7 +118,7 @@ class LengowCart extends Cart
         $useOrderPrices = false
     ) {
         if (!$shop instanceof Shop) {
-            $shop = Context::getContext()->shop;
+            $shop = LengowContext::getContext()->shop;
         }
         // this line are useless, but PrestaShop validator require it
         $autoAddCartRule = $autoAddCartRule;
@@ -137,13 +137,8 @@ class LengowCart extends Cart
         }
         // if we have a product combination, the minimal quantity is set with the one of this combination
         if (!empty($idProductAttribute)) {
-            $version = defined('_PS_VERSION_') ? _PS_VERSION_ : '';
-            // for PrestaShop 8.0 and higher
-            if (version_compare($version, '8.0.0.0', '>=') && !isset($skipAvailabilityCheckOutOfStock)) {
-                $minimalQuantity = (int) ProductAttribute::getAttributeMinimalQty($idProductAttribute);
-            } else {
-                $minimalQuantity = (int) Attribute::getAttributeMinimalQty($idProductAttribute);
-            }
+            $combination = new Combination((int) $idProductAttribute);
+            $minimalQuantity = (int) $combination->minimal_quantity;
         } else {
             $minimalQuantity = (int) $product->minimal_quantity;
         }
@@ -241,7 +236,7 @@ class LengowCart extends Cart
         // refresh cache of self::_products
         $this->_products = $this->getProducts(true);
         $this->update();
-        $context = Context::getContext()->cloneContext();
+        $context = LengowContext::getContext()->cloneContext();
         $context->cart = $this;
         Cache::clean('getContextualValue_*');
         if ($product->customizable) {
@@ -321,4 +316,77 @@ class LengowCart extends Cart
             $this->{$fieldName} = Context::getContext()->language->id;
         }
     }
-} 
+
+    /**
+     * Check if a product is already in the cart
+     *
+     * @param int $idProduct PrestaShop product id
+     * @param int $idProductAttribute attribute id
+     * @param int $idCustomization customization id
+     * @param int $idAddressDelivery address delivery id
+     *
+     * @return array|false
+     */
+    public function containsProduct($idProduct, $idProductAttribute = 0, $idCustomization = 0, $idAddressDelivery = 0)
+    {
+        $sql = 'SELECT *
+            FROM `' . _DB_PREFIX_ . 'cart_product`
+            WHERE `id_product` = ' . (int) $idProduct . '
+            AND `id_product_attribute` = ' . (int) $idProductAttribute . '
+            AND `id_cart` = ' . (int) $this->id;
+
+        if (Configuration::get('PS_ALLOW_MULTISHIPPING') && $this->isMultiAddressDelivery()) {
+            $sql .= ' AND `id_address_delivery` = ' . (int) $idAddressDelivery;
+        }
+
+        return Db::getInstance()->getRow($sql);
+    }
+
+    /**
+     * Update customization quantity
+     *
+     * @param int $quantity quantity
+     * @param int $idCustomization customization id
+     * @param int $idProduct product id
+     * @param int $idProductAttribute attribute id
+     * @param int $idAddressDelivery address delivery id
+     * @param string $operator up or down
+     *
+     * @return bool
+     */
+    protected function _updateCustomizationQuantity($quantity, $idCustomization, $idProduct, $idProductAttribute, $idAddressDelivery, $operator = 'up')
+    {
+        $sql = 'SELECT `quantity`
+            FROM `' . _DB_PREFIX_ . 'customization`
+            WHERE `id_customization` = ' . (int) $idCustomization . '
+            AND `id_cart` = ' . (int) $this->id . '
+            AND `id_product` = ' . (int) $idProduct . '
+            AND `id_product_attribute` = ' . (int) $idProductAttribute;
+
+        if ($result = Db::getInstance()->getRow($sql)) {
+            if ($operator == 'down') {
+                $newQuantity = (int) $result['quantity'] - (int) $quantity;
+                if ($newQuantity < 0) {
+                    return false;
+                }
+            } else {
+                $newQuantity = (int) $result['quantity'] + (int) $quantity;
+            }
+
+            if ($newQuantity == 0) {
+                return Db::getInstance()->execute(
+                    'DELETE FROM `' . _DB_PREFIX_ . 'customization`
+                    WHERE `id_customization` = ' . (int) $idCustomization
+                );
+            }
+
+            return Db::getInstance()->execute(
+                'UPDATE `' . _DB_PREFIX_ . 'customization`
+                    SET `quantity` = ' . (int) $newQuantity . '
+                    WHERE `id_customization` = ' . (int) $idCustomization
+            );
+        }
+
+        return true;
+    }
+}
