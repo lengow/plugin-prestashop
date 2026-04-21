@@ -86,12 +86,15 @@ class LengowHook
 
         foreach ($lengowHooks as $hook => $version) {
             if ((float) $version <= (float) Tools::substr(_PS_VERSION_, 0, 3)) {
-                if ($this->module->isRegisteredInHook($hook)) {
+                if ($this->isRegisteredForCurrentContext($hook)) {
                     continue;
                 }
                 try {
                     $registered = $this->module->registerHook($hook);
-                } catch (PrestaShopDatabaseException $e) {
+                } catch (PrestaShopDatabaseException|PrestaShopException $e) {
+                    if (!str_contains($e->getMessage(), 'ps_hook_module.PRIMARY')) {
+                        throw $e;
+                    }
                     LengowMain::log(
                         LengowLog::CODE_INSTALL,
                         LengowMain::setLogMessage('log.install.registering_hook_success', ['hook' => $hook])
@@ -124,6 +127,43 @@ class LengowHook
         }
 
         return !$error;
+    }
+
+    /**
+     * @param string $hook
+     *
+     * @return bool
+     */
+    private function isRegisteredForCurrentContext(string $hook): bool
+    {
+        $hookId = (int) Hook::getIdByName($hook);
+        $moduleId = (int) $this->module->id;
+        if ($hookId === 0 || $moduleId === 0) {
+            return false;
+        }
+
+        $shopIds = Shop::getContextListShopID();
+        if (empty($shopIds)) {
+            $shopIds = Shop::getCompleteListOfShopsID();
+        }
+        $shopIds = array_values(array_unique(array_map('intval', $shopIds)));
+        if (empty($shopIds)) {
+            return false;
+        }
+
+        $rows = Db::getInstance()->executeS(
+            'SELECT id_shop FROM ' . _DB_PREFIX_ . 'hook_module
+            WHERE id_hook = ' . $hookId . '
+            AND id_module = ' . $moduleId . '
+            AND id_shop IN (' . implode(',', $shopIds) . ')'
+        );
+        if (!is_array($rows)) {
+            return false;
+        }
+
+        $registeredShopIds = array_map('intval', array_column($rows, 'id_shop'));
+
+        return [] === array_diff($shopIds, $registeredShopIds);
     }
 
     /**
