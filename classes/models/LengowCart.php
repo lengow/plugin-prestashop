@@ -137,13 +137,8 @@ class LengowCart extends Cart
         }
         // if we have a product combination, the minimal quantity is set with the one of this combination
         if (!empty($idProductAttribute)) {
-            $version = defined('_PS_VERSION_') ? _PS_VERSION_ : '';
-            // for PrestaShop 8.0 and higher
-            if (version_compare($version, '8.0.0.0', '>=') && !isset($skipAvailabilityCheckOutOfStock)) {
-                $minimalQuantity = (int) ProductAttribute::getAttributeMinimalQty($idProductAttribute);
-            } else {
-                $minimalQuantity = (int) Attribute::getAttributeMinimalQty($idProductAttribute);
-            }
+            $combination = new Combination((int) $idProductAttribute);
+            $minimalQuantity = (int) $combination->minimal_quantity;
         } else {
             $minimalQuantity = (int) $product->minimal_quantity;
         }
@@ -321,4 +316,4 @@ class LengowCart extends Cart
             $this->{$fieldName} = Context::getContext()->language->id;
         }
     }
-} 
+}
