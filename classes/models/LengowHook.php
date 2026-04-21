@@ -274,11 +274,13 @@ class LengowHook
         $shippingMethods = LengowMarketplace::getValidShippingMethods($marketplaceName);
 
         $ajaxUrl = $this->context->link->getAdminLink('AdminLengowOrder', true);
+        $locale = new LengowTranslation();
         $this->context->smarty->assign([
             'id_order' => $id_order,
             'shipping_methods' => $shippingMethods,
             'lengowOrder' => $lengowOrder,
             'ajax_url' => $ajaxUrl,
+            'lengow_locale' => $locale,
         ]);
 
         return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/hook/order/admin_order_side.tpl');
