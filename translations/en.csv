@@ -245,7 +245,7 @@ help.screen.contain_text_support|Ask us anything about Lengow or share feedback 
 help.screen.title_lengow_support|Lengow Support.
 help.screen.need_some_help|Need some help?
 help.screen.contain_text_support_hour|We’ll do our best to get back to you during regular business hours (Monday to Friday – 9am to 6pm GMT+1).
-help.screen.find_answer|You can also find answers in our 
+help.screen.find_answer|You can also find answers in our
 help.screen.link_prestashop_guide|PrestaShop dedicated guide
 legals.screen.simplified_company|Simplified limited liability company
 legals.screen.social_capital|Social capital:
@@ -597,3 +597,11 @@ log.setting.setting_reset|all Lengow settings were reset
 log.setting.setting_updated|all Lengow settings were updated
 log.setting.setting_change|%{key} - old value %{old_value} replaced with %{value}
 log.setting.setting_change_for_shop|%{key} - old value %{old_value} replaced with %{value} for shop %{shop_id}
+admin.order.shipping_method_label|Shipping method sent by Lengow:
+admin.order.shipping_method_empty|-- No shipping method selected --
+admin.order.shipping_method_custom_label|Or enter a custom value (e.g. ECONOMY):
+admin.order.shipping_method_custom_help|The value entered here takes priority over the dropdown selection above. Amazon accepts free text values for this field.
+admin.order.shipping_method_save|Save shipping method
+admin.order.shipping_method_saved|Shipping method saved successfully.
+admin.order.shipping_method_error|Error:
+admin.order.shipping_method_server_error|Error communicating with server

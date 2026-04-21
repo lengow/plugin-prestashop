@@ -100,7 +100,7 @@ status.screen.third_description_end_free_trial|Votre compte d'essai sera supprim
 status.screen.upgrade_account_button|Je suis prêt à souscrire !
 status.screen.refresh_action|Actualiser mon compte
 product.screen.filter_exported|filtrer les produits exportés
-product.screen.nb_exported|produits exportés 
+product.screen.nb_exported|produits exportés
 product.screen.nb_available|produits disponibles
 product.screen.include_variation_product|Inclure les variations de produits
 product.screen.include_out_of_stock_product|Inclure les produits hors stock
@@ -152,7 +152,7 @@ order.screen.action_sent|Action %{action_type} envoyée
 order.screen.action_waiting_return|Action envoyée, en attente d'une réponse.
 order.screen.action_sent_not_work|Erreur sur l'action envoyée à la marketplace.
 order.screen.no_error_message|Erreur non identifiée, merci de contacter le support Lengow pour plus d'informations
-order.screen.no_order_title|Le meilleur est encore à venir ! 
+order.screen.no_order_title|Le meilleur est encore à venir !
 order.screen.no_order_description|Vos produits sont bien visibles, vos ventes sont sur le point de décoller
 order.screen.action_success|Succès
 order.screen.action_error|Erreur
@@ -471,3 +471,11 @@ admin.order.resend_action|Renvoyer l'action
 admin.order.check_resend_action|Vous voulez vous vraiment renvoyer l'action %{action} ?
 admin.order.customer_shipping_phone|Numéro de téléphone de livraison client
 admin.order.customer_billing_phone|Numéro de téléphone de facturation client
+admin.order.shipping_method_label|Méthode de livraison envoyée par Lengow :
+admin.order.shipping_method_empty|-- Aucune méthode de livraison sélectionnée --
+admin.order.shipping_method_custom_label|Ou saisissez une valeur personnalisée (ex : ECONOMY) :
+admin.order.shipping_method_custom_help|La valeur saisie ici sera prioritaire sur la sélection du menu déroulant ci-dessus. Amazon accepte des valeurs libres pour ce champ.
+admin.order.shipping_method_save|Enregistrer la méthode de livraison
+admin.order.shipping_method_saved|Méthode enregistrée avec succès.
+admin.order.shipping_method_error|Erreur :
+admin.order.shipping_method_server_error|Erreur de communication avec le serveur
