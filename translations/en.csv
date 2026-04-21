@@ -471,6 +471,14 @@ admin.order.resend_action|Resend Action
 admin.order.check_resend_action|Do you really want to send the following action: %{action}?
 admin.order.customer_shipping_phone|Customer shipping phone
 admin.order.customer_billing_phone|Customer billing phone
+admin.order.shipping_method_label|Shipping method sent by Lengow:
+admin.order.shipping_method_empty|-- No shipping method selected --
+admin.order.shipping_method_custom_label|Or enter a custom value (e.g. ECONOMY):
+admin.order.shipping_method_custom_help|The value entered here takes priority over the dropdown selection above. Amazon accepts free text values for this field.
+admin.order.shipping_method_save|Save shipping method
+admin.order.shipping_method_saved|Shipping method saved successfully.
+admin.order.shipping_method_error|Error:
+admin.order.shipping_method_server_error|Error communicating with server
 log.install.install_start|## start install for version %{version} ##
 log.install.install_end|## end install for version %{version} ##
 log.install.table_created|adding table %{name} in database

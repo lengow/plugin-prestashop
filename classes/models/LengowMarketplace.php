@@ -505,7 +505,16 @@ class LengowMarketplace
                     $params[$arg] = $carrierName;
                     break;
                 case LengowAction::ARG_SHIPPING_METHOD:
-                    $params[$arg] = $shippingMethod;
+                    // Only send shipping_method when it is a required argument,
+                    // or when it is optional but has a non-empty value set by the merchant.
+                    // This prevents sending Amazon-imported default values (e.g. "Standard", "SecondDay")
+                    // when the merchant has not explicitly chosen a shipping method.
+                    $isRequired = isset($actions['args']) && in_array(LengowAction::ARG_SHIPPING_METHOD, $actions['args'], true);
+                    if ($isRequired) {
+                        $params[$arg] = $shippingMethod ?? '';
+                    } elseif (!empty($shippingMethod)) {
+                        $params[$arg] = $shippingMethod;
+                    }
                     break;
                 case LengowAction::ARG_RETURN_CARRIER:
                     $idReturnCarrier = LengowOrderDetail::getOrderReturnCarrier($lengowOrder->id);

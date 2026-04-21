@@ -21,29 +21,58 @@
     <div class="card-header"><h2>Lengow Shipping</h2></div>
     <div class="card-body">
         <div class="form-group">
-            <label for="lengow_shipping_select">Méthode de livraison envoyée par Lengow :</label>
+            <label for="lengow_shipping_select">{$lengow_locale->t('admin.order.shipping_method_label')|escape:'html':'UTF-8'}</label>
             <select id="lengow_shipping_select" class="form-control">
+                <option value="">{$lengow_locale->t('admin.order.shipping_method_empty')|escape:'html':'UTF-8'}</option>
                 {foreach from=$shipping_methods item=method}
-                    {if $method.method_lengow_code}
+                    {if $method.method_lengow_code && $method.method_lengow_code !== 'null' && $method.method_lengow_code !== 'NULL'}
                         <option value="{$method.method_lengow_code|escape:'html':'UTF-8'}"
-                                {if isset($lengowOrder.method) && $lengowOrder.method == $method.method_lengow_code}selected{/if}>
+                                {if isset($lengowOrder.method) && $lengowOrder.method !== '' && $lengowOrder.method !== null && $lengowOrder.method == $method.method_lengow_code}selected{/if}>
                             {$method.method_lengow_code|escape:'html':'UTF-8'}
                         </option>
                     {/if}
                 {/foreach}
             </select>
         </div>
-        <button id="save_lengow_method" class="btn btn-primary mt-3">Enregistrer la méthode de livraison</button>
+        <div class="form-group mt-2">
+            <label for="lengow_shipping_custom">{$lengow_locale->t('admin.order.shipping_method_custom_label')|escape:'html':'UTF-8'}</label>
+            <input type="text" id="lengow_shipping_custom" class="form-control"
+                   placeholder="ECONOMY"
+                   value="{if isset($lengowOrder.method) && $lengowOrder.method !== '' && $lengowOrder.method !== null}{$lengowOrder.method|escape:'html':'UTF-8'}{/if}" />
+            <small class="form-text text-muted">
+                {$lengow_locale->t('admin.order.shipping_method_custom_help')|escape:'html':'UTF-8'}
+            </small>
+        </div>
+        <button id="save_lengow_method" class="btn btn-primary mt-3">{$lengow_locale->t('admin.order.shipping_method_save')|escape:'html':'UTF-8'}</button>
         <div id="lengow_save_result" class="mt-2"></div>
     </div>
 </div>
 
 <script>
     (function() {
+        var i18n = {
+            saved: "{$lengow_locale->t('admin.order.shipping_method_saved')|escape:'javascript':'UTF-8'}",
+            error: "{$lengow_locale->t('admin.order.shipping_method_error')|escape:'javascript':'UTF-8'}",
+            serverError: "{$lengow_locale->t('admin.order.shipping_method_server_error')|escape:'javascript':'UTF-8'}"
+        };
         document.addEventListener('DOMContentLoaded', function() {
+            var selectEl = document.getElementById('lengow_shipping_select');
+            var customEl = document.getElementById('lengow_shipping_custom');
+
+            // When a dropdown option is chosen, copy it to the text field (or clear if empty option)
+            selectEl.addEventListener('change', function() {
+                customEl.value = selectEl.value;
+            });
+
+            // When text field is modified, reset dropdown to empty
+            customEl.addEventListener('input', function() {
+                selectEl.value = '';
+            });
+
             var btn = document.getElementById('save_lengow_method');
             btn.addEventListener('click', function() {
-                var method = document.getElementById('lengow_shipping_select').value;
+                // Text field takes priority; otherwise use dropdown value
+                var method = customEl.value !== '' ? customEl.value : selectEl.value;
                 var idOrder = {$id_order|intval};
                 // URL générée par getAdminLink (inclut token et controller)
                 var url = "{$ajax_url|escape:'javascript':'UTF-8'}";
@@ -59,15 +88,15 @@
                     .then(function(json) {
                         var res = document.getElementById('lengow_save_result');
                         if (json.success) {
-                            res.innerHTML = '<div class="alert alert-success">Méthode enregistrée avec succès.</div>';
+                            res.innerHTML = '<div class="alert alert-success">' + i18n.saved + '</div>';
                             setTimeout(function() { res.innerHTML = ''; }, 5000);
                         } else {
-                            res.innerHTML = '<div class="alert alert-danger">Erreur : ' + json.message + '</div>';
+                            res.innerHTML = '<div class="alert alert-danger">' + i18n.error + ' ' + json.message + '</div>';
                         }
                     })
                     .catch(function(error) {
                         console.error(error);
-                        document.getElementById('lengow_save_result').innerHTML = '<div class="alert alert-danger">Erreur de communication avec le serveur</div>';
+                        document.getElementById('lengow_save_result').innerHTML = '<div class="alert alert-danger">' + i18n.serverError + '</div>';
                     });
             });
         });
