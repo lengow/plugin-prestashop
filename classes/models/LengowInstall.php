@@ -97,7 +97,6 @@ class LengowInstall
         'controllers/AdminLengowController.php',
         'controllers/AdminLengowLogController.php',
         'controllers/TabLengowLogController.php',
-        'controllers/TabLengowLogController.php',
         'translations/es.php',
         'translations/fr.php',
         'translations/it.php',
@@ -116,6 +115,13 @@ class LengowInstall
         'views/templates/admin/form.tpl',
         'webservice/lengow.php',
         'webservice/import.php',
+        'controllers/admin/AdminLengowDashboardController.php',
+        'controllers/admin/AdminLengowHelpController.php',
+        'controllers/admin/AdminLengowHomeController.php',
+        'controllers/admin/AdminLengowMainSettingController.php',
+        'controllers/admin/AdminLengowOrderController.php',
+        'controllers/admin/AdminLengowOrderSettingController.php',
+        'controllers/admin/AdminLengowToolboxController.php',
         'src/Controller/AdminOrderController.php',
         'views/PrestaShop/Admin/Sell/Order/Order/Blocks/View/Modal/update_shipping_modal.html.twig',
         'views/PrestaShop/Admin/Sell/Order/Order/Blocks/View/products.html.twig',
@@ -156,6 +162,9 @@ class LengowInstall
         'views/templates/admin/lengow_order_setting/layout.tpl',
         'views/templates/admin/lengow_toolbox/helpers/view/view.tpl',
         'views/templates/admin/lengow_toolbox/layout.tpl',
+        'webservice/cron.php',
+        'webservice/export.php',
+        'webservice/toolbox.php',
     ];
 
     /**
