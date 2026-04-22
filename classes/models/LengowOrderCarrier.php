@@ -26,11 +26,11 @@ if (!defined('_PS_VERSION_')) {
  */
 class LengowOrderCarrier extends OrderCarrier
 {
-    /** @var string */
-    public string $return_tracking_number = '';
+    /** @var string|null */
+    public ?string $return_tracking_number = '';
 
-    /** @var string */
-    public string $return_carrier = '';
+    /** @var string|null */
+    public ?string $return_carrier = '';
 
     /**
      * @param int|null $id
@@ -41,6 +41,9 @@ class LengowOrderCarrier extends OrderCarrier
     public function __construct(?int $id = null, ?int $id_lang = null, ?int $id_shop = null, mixed $translator = null)
     {
         parent::__construct($id, $id_lang, $id_shop, $translator);
+
+        $this->return_tracking_number = $this->return_tracking_number ?? '';
+        $this->return_carrier = $this->return_carrier ?? '';
 
         self::$definition['fields']['return_tracking_number'] = ['type' => self::TYPE_STRING, 'validate' => 'isTrackingNumber'];
         self::$definition['fields']['return_carrier'] = ['type' => self::TYPE_STRING, 'validate' => 'isString'];
