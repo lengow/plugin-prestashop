@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [4.0.1](https://github.com/lengow/plugin-prestashop/compare/v4.0.0...v4.0.1) (2026-04-22)
+
+
+### Bug Fixes
+
+* **install:** fix possible issues on v4.0 install ([#89](https://github.com/lengow/plugin-prestashop/issues/89)) ([57feac8](https://github.com/lengow/plugin-prestashop/commit/57feac8fab0313e198b610a3e926cb578dc6f178))
+
 ## [4.0.0](https://github.com/lengow/plugin-prestashop/compare/v3.9.4...v4.0.0) (2026-04-02)
 
 
