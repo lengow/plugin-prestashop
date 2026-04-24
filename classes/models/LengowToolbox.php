@@ -1056,6 +1056,7 @@ class LengowToolbox
                 $row = $wrongRows[0];
                 $rowId = (int) $row[LengowCarrier::FIELD_ID];
                 $previousCountry = (int) $row[LengowCarrier::FIELD_COUNTRY_ID];
+                $previousIso = (string) Country::getIsoById($previousCountry);
                 $idCarrier = (int) $row[LengowCarrier::FIELD_CARRIER_ID];
                 $idCarrierMarketplace = (int) $row[LengowCarrier::FIELD_CARRIER_MARKETPLACE_ID];
                 if (!$dryRun) {
@@ -1077,8 +1078,9 @@ class LengowToolbox
                     'marketplace' => $marketplaceName,
                     'id_default_carrier' => $rowId,
                     'from_country' => $previousCountry,
+                    'from_country_iso' => $previousIso !== '' ? $previousIso : null,
                     'to_country' => $correctCountryId,
-                    'country_iso' => $iso,
+                    'to_country_iso' => $iso,
                     'id_carrier_preserved' => $idCarrier,
                     'id_carrier_marketplace_preserved' => $idCarrierMarketplace,
                 ];
@@ -1088,8 +1090,8 @@ class LengowToolbox
                         'log.setting.carrier_remap_moved',
                         [
                             'marketplace_name' => $marketplaceName,
-                            'from_country' => $previousCountry,
-                            'to_country' => $correctCountryId,
+                            'from_country' => $previousIso !== '' ? $previousIso : (string) $previousCountry,
+                            'to_country' => $iso,
                             'id_carrier' => $idCarrier,
                         ]
                     )
@@ -1099,11 +1101,18 @@ class LengowToolbox
 
             if (count($wrongRows) > 1) {
                 // ambiguous: more than one wrong-country row; do not silently merge
+                $wrongRowsWithIso = [];
+                foreach ($wrongRows as $wrongRow) {
+                    $wrongCountryId = (int) $wrongRow[LengowCarrier::FIELD_COUNTRY_ID];
+                    $wrongRowsWithIso[] = $wrongRow + [
+                        'country_iso' => (string) Country::getIsoById($wrongCountryId) ?: null,
+                    ];
+                }
                 $result['skipped'][] = [
                     'marketplace' => $marketplaceName,
                     'country_iso' => $iso,
                     'reason' => 'multiple_wrong_country_rows',
-                    'wrong_rows' => $wrongRows,
+                    'wrong_rows' => $wrongRowsWithIso,
                 ];
                 LengowMain::log(
                     LengowLog::CODE_SETTING,

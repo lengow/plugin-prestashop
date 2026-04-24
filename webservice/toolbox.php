@@ -120,6 +120,16 @@ switch ($action) {
         echo json_encode($result);
         break;
     case LengowToolbox::ACTION_RECATEGORIZE_MARKETPLACES:
+        if (($_SERVER['REQUEST_METHOD'] ?? 'GET') !== 'POST') {
+            header('HTTP/1.1 405 Method Not Allowed');
+            header('Allow: POST');
+            header('Content-Type: application/json');
+            echo json_encode([
+                'status' => 'error',
+                'errors' => [['reason' => 'method_not_allowed', 'message' => 'POST required']],
+            ]);
+            break;
+        }
         $dryRun = (bool) Tools::getValue(LengowToolbox::PARAM_DRY_RUN, false);
         try {
             $result = LengowToolbox::recategorizeMarketplaces($dryRun);
