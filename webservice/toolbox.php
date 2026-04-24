@@ -119,6 +119,25 @@ switch ($action) {
         }
         echo json_encode($result);
         break;
+    case LengowToolbox::ACTION_RECATEGORIZE_MARKETPLACES:
+        $dryRun = (bool) Tools::getValue(LengowToolbox::PARAM_DRY_RUN, false);
+        try {
+            $result = LengowToolbox::recategorizeMarketplaces($dryRun);
+        } catch (Throwable $e) {
+            header('HTTP/1.1 500 Internal Server Error');
+            header('Content-Type: application/json');
+            echo json_encode([
+                'status' => 'error',
+                'errors' => [['reason' => 'unhandled_exception', 'message' => $e->getMessage()]],
+            ]);
+            break;
+        }
+        if (isset($result['status']) && $result['status'] !== 'ok') {
+            header('HTTP/1.1 500 Internal Server Error');
+        }
+        header('Content-Type: application/json');
+        echo json_encode($result);
+        break;
     default:
         header('Content-Type: application/json');
         $type = Tools::getValue(LengowToolbox::PARAM_TYPE, null);

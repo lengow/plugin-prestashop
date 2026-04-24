@@ -597,3 +597,7 @@ log.setting.setting_reset|all Lengow settings were reset
 log.setting.setting_updated|all Lengow settings were updated
 log.setting.setting_change|%{key} - old value %{old_value} replaced with %{value}
 log.setting.setting_change_for_shop|%{key} - old value %{old_value} replaced with %{value} for shop %{shop_id}
+log.setting.carrier_remap_moved|marketplace %{marketplace_name} default carrier moved from country %{from_country} to %{to_country} (carrier id %{id_carrier} preserved)
+log.setting.carrier_remap_inserted|marketplace %{marketplace_name} default carrier row inserted under country %{id_country}
+log.setting.carrier_remap_skipped|marketplace %{marketplace_name} default carrier remap skipped: %{reason}
+log.setting.country_not_found_for_marketplace|marketplace %{marketplace_name} country ISO %{country_iso} not found in PrestaShop, skipping

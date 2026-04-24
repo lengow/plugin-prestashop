@@ -40,11 +40,13 @@ class LengowToolbox
     public const PARAM_TOOLBOX_ACTION = 'toolbox_action';
     public const PARAM_TYPE = 'type';
     public const PARAM_SHORT_PATH = 'short_path';
+    public const PARAM_DRY_RUN = 'dry_run';
 
     /* Toolbox actions */
     public const ACTION_DATA = 'data';
     public const ACTION_LOG = 'log';
     public const ACTION_ORDER = 'order';
+    public const ACTION_RECATEGORIZE_MARKETPLACES = 'recategorize_marketplaces';
 
     /* Toolbox data type */
     public const DATA_TYPE_ACTION = 'action';
@@ -198,6 +200,7 @@ class LengowToolbox
         self::ACTION_DATA,
         self::ACTION_LOG,
         self::ACTION_ORDER,
+        self::ACTION_RECATEGORIZE_MARKETPLACES,
     ];
 
     /**
@@ -928,6 +931,216 @@ class LengowToolbox
             default:
                 return null;
         }
+    }
+
+    /**
+     * Re-categorise lengow_default_carrier rows under each marketplace's
+     * native country (marketplace.country_iso_a2 from the API), instead of
+     * the row that was seeded under PS_COUNTRY_DEFAULT.
+     *
+     * Idempotent. Strategy per marketplace:
+     *   - resolve PS id_country from marketplace.country_iso_a2
+     *   - if a row already exists for the correct country: skip
+     *   - else if exactly one "wrong" row exists for this marketplace:
+     *     UPDATE its id_country (preserves any carrier mapping)
+     *   - else if a wrong row exists AND a correct row already exists:
+     *     skip (caller decides to clean up; we never silently drop a
+     *     configured carrier mapping)
+     *   - else: INSERT a fresh empty row
+     *
+     * @param bool $dryRun when true, returns the would-be plan without writing
+     *
+     * @return array{status:string, dry_run:bool, moved:array, inserted:array, skipped:array, errors:array}
+     */
+    public static function recategorizeMarketplaces($dryRun = false)
+    {
+        $result = [
+            'status' => 'ok',
+            'dry_run' => (bool) $dryRun,
+            'moved' => [],
+            'inserted' => [],
+            'skipped' => [],
+            'errors' => [],
+        ];
+
+        try {
+            // force fresh API data so country_iso_a2 reflects the latest marketplace catalog
+            LengowMarketplace::loadApiMarketplace(true);
+            $marketplaces = LengowMarketplace::getAllMarketplaces();
+        } catch (Exception $e) {
+            $result['status'] = 'error';
+            $result['errors'][] = [
+                'reason' => 'api_marketplace_load_failed',
+                'message' => $e->getMessage(),
+            ];
+
+            return $result;
+        }
+
+        if (empty($marketplaces)) {
+            $result['status'] = 'error';
+            $result['errors'][] = ['reason' => 'no_marketplaces_in_db'];
+
+            return $result;
+        }
+
+        $db = Db::getInstance();
+        foreach ($marketplaces as $marketplace) {
+            $idMarketplace = (int) $marketplace[LengowMarketplace::FIELD_ID];
+            $marketplaceName = (string) $marketplace[LengowMarketplace::FIELD_MARKETPLACE_NAME];
+
+            $iso = LengowMarketplace::getCountryIsoA2($marketplaceName);
+            if (!$iso) {
+                $result['skipped'][] = [
+                    'marketplace' => $marketplaceName,
+                    'reason' => 'no_country_iso_a2_in_api',
+                ];
+                continue;
+            }
+            $correctCountryId = (int) Country::getByIso($iso);
+            if (!$correctCountryId) {
+                $result['skipped'][] = [
+                    'marketplace' => $marketplaceName,
+                    'country_iso' => $iso,
+                    'reason' => 'country_not_found_in_prestashop',
+                ];
+                LengowMain::log(
+                    LengowLog::CODE_SETTING,
+                    LengowMain::setLogMessage(
+                        'log.setting.country_not_found_for_marketplace',
+                        ['marketplace_name' => $marketplaceName, 'country_iso' => $iso]
+                    )
+                );
+                continue;
+            }
+
+            try {
+                $rows = $db->executeS(
+                    'SELECT id, id_country, id_carrier, id_carrier_marketplace
+                     FROM ' . _DB_PREFIX_ . LengowCarrier::TABLE_DEFAULT_CARRIER . '
+                     WHERE id_marketplace = ' . $idMarketplace
+                );
+            } catch (PrestaShopDatabaseException $e) {
+                $result['errors'][] = [
+                    'marketplace' => $marketplaceName,
+                    'reason' => 'select_failed',
+                    'message' => $e->getMessage(),
+                ];
+                continue;
+            }
+            $rows = is_array($rows) ? $rows : [];
+
+            $correctRow = null;
+            $wrongRows = [];
+            foreach ($rows as $row) {
+                if ((int) $row[LengowCarrier::FIELD_COUNTRY_ID] === $correctCountryId) {
+                    $correctRow = $row;
+                } else {
+                    $wrongRows[] = $row;
+                }
+            }
+
+            if ($correctRow !== null) {
+                $result['skipped'][] = [
+                    'marketplace' => $marketplaceName,
+                    'country_iso' => $iso,
+                    'id_country' => $correctCountryId,
+                    'reason' => 'already_correct',
+                    'wrong_rows_left' => count($wrongRows),
+                ];
+                continue;
+            }
+
+            // no correct row exists; check the wrong rows
+            if (count($wrongRows) === 1) {
+                $row = $wrongRows[0];
+                $rowId = (int) $row[LengowCarrier::FIELD_ID];
+                $previousCountry = (int) $row[LengowCarrier::FIELD_COUNTRY_ID];
+                $idCarrier = (int) $row[LengowCarrier::FIELD_CARRIER_ID];
+                $idCarrierMarketplace = (int) $row[LengowCarrier::FIELD_CARRIER_MARKETPLACE_ID];
+                if (!$dryRun) {
+                    $updated = $db->update(
+                        LengowCarrier::TABLE_DEFAULT_CARRIER,
+                        [LengowCarrier::FIELD_COUNTRY_ID => $correctCountryId],
+                        LengowCarrier::FIELD_ID . ' = ' . $rowId
+                    );
+                    if (!$updated) {
+                        $result['errors'][] = [
+                            'marketplace' => $marketplaceName,
+                            'id_default_carrier' => $rowId,
+                            'reason' => 'update_failed',
+                        ];
+                        continue;
+                    }
+                }
+                $result['moved'][] = [
+                    'marketplace' => $marketplaceName,
+                    'id_default_carrier' => $rowId,
+                    'from_country' => $previousCountry,
+                    'to_country' => $correctCountryId,
+                    'country_iso' => $iso,
+                    'id_carrier_preserved' => $idCarrier,
+                    'id_carrier_marketplace_preserved' => $idCarrierMarketplace,
+                ];
+                LengowMain::log(
+                    LengowLog::CODE_SETTING,
+                    LengowMain::setLogMessage(
+                        'log.setting.carrier_remap_moved',
+                        [
+                            'marketplace_name' => $marketplaceName,
+                            'from_country' => $previousCountry,
+                            'to_country' => $correctCountryId,
+                            'id_carrier' => $idCarrier,
+                        ]
+                    )
+                );
+                continue;
+            }
+
+            if (count($wrongRows) > 1) {
+                // ambiguous: more than one wrong-country row; do not silently merge
+                $result['skipped'][] = [
+                    'marketplace' => $marketplaceName,
+                    'country_iso' => $iso,
+                    'reason' => 'multiple_wrong_country_rows',
+                    'wrong_rows' => $wrongRows,
+                ];
+                LengowMain::log(
+                    LengowLog::CODE_SETTING,
+                    LengowMain::setLogMessage(
+                        'log.setting.carrier_remap_skipped',
+                        ['marketplace_name' => $marketplaceName, 'reason' => 'multiple_wrong_country_rows']
+                    )
+                );
+                continue;
+            }
+
+            // no row at all for this marketplace: insert a fresh empty row
+            if (!$dryRun) {
+                $newId = LengowCarrier::insertDefaultCarrier($correctCountryId, $idMarketplace);
+                if (!$newId) {
+                    $result['errors'][] = [
+                        'marketplace' => $marketplaceName,
+                        'reason' => 'insert_failed',
+                    ];
+                    continue;
+                }
+            }
+            $result['inserted'][] = [
+                'marketplace' => $marketplaceName,
+                'country_iso' => $iso,
+                'id_country' => $correctCountryId,
+            ];
+            LengowMain::log(
+                LengowLog::CODE_SETTING,
+                LengowMain::setLogMessage(
+                    'log.setting.carrier_remap_inserted',
+                    ['marketplace_name' => $marketplaceName, 'id_country' => $correctCountryId]
+                )
+            );
+        }
+
+        return $result;
     }
 
     /**
