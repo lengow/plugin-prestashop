@@ -634,17 +634,30 @@ class LengowCarrier extends Carrier
      */
     public static function createDefaultCarrier($idCountry = null, $idMarketplace = null)
     {
-        if ($idCountry === null) {
-            $idCountry = (int) Configuration::get('PS_COUNTRY_DEFAULT');
-        }
+        $fallbackCountryId = $idCountry ?? (int) Configuration::get('PS_COUNTRY_DEFAULT');
+        $useApiCountry = ($idCountry === null);
+
         $marketplaces = LengowMarketplace::getAllMarketplaces();
         foreach ($marketplaces as $marketplace) {
             $id = (int) $marketplace[LengowMarketplace::FIELD_ID];
             if ($idMarketplace !== null && $idMarketplace !== $id) {
                 continue;
             }
-            if (!self::getIdDefaultCarrier($idCountry, $id)) {
-                self::insertDefaultCarrier($idCountry, $id);
+
+            $targetCountryId = $fallbackCountryId;
+            if ($useApiCountry) {
+                $marketplaceName = $marketplace[LengowMarketplace::FIELD_MARKETPLACE_NAME];
+                $iso = LengowMarketplace::getCountryIsoA2($marketplaceName);
+                if ($iso) {
+                    $resolvedCountryId = (int) Country::getByIso($iso);
+                    if ($resolvedCountryId > 0) {
+                        $targetCountryId = $resolvedCountryId;
+                    }
+                }
+            }
+
+            if (!self::getIdDefaultCarrier($targetCountryId, $id)) {
+                self::insertDefaultCarrier($targetCountryId, $id);
             }
         }
     }
