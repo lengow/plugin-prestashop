@@ -686,6 +686,28 @@ class LengowMarketplace
     }
 
     /**
+     * Get the country ISO A2 code for a marketplace from the API data
+     *
+     * @param string $marketplaceName marketplace name (e.g. "manomano_fr")
+     *
+     * @return string|null ISO A2 country code (e.g. "FR") or null if not found
+     */
+    public static function getCountryIsoA2($marketplaceName)
+    {
+        self::loadApiMarketplace();
+        if (self::$marketplaces
+            && isset(self::$marketplaces->{$marketplaceName})
+            && isset(self::$marketplaces->{$marketplaceName}->country_iso_a2)
+        ) {
+            $iso = (string) self::$marketplaces->{$marketplaceName}->country_iso_a2;
+
+            return $iso !== '' ? $iso : null;
+        }
+
+        return null;
+    }
+
+    /**
      * Get marketplace counters list by country id
      *
      * @return array
