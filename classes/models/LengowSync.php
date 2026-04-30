@@ -219,6 +219,7 @@ class LengowSync
         LengowCarrier::syncCarrierMarketplace();
         LengowMethod::syncMethodMarketplace();
         LengowCarrier::createDefaultCarrier();
+        LengowToolbox::recategorizeMarketplaces();
         LengowCarrier::cleanCarrierMarketplaceMatching();
         LengowMethod::cleanMethodMarketplaceMatching();
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_MARKETPLACE_LIST, time());

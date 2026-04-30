@@ -75,7 +75,7 @@ class LengowCarrier extends Carrier
     public static function getActiveCarriers($idCountry = null)
     {
         $carriers = [];
-        if ($idCountry) {
+        if ($idCountry !== null && (int) $idCountry > 0) {
             $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
                 INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
                 INNER JOIN ' . _DB_PREFIX_ . 'country co ON (co.id_zone = cz.id_zone)
@@ -246,7 +246,7 @@ class LengowCarrier extends Carrier
      */
     public static function getIdActiveCarrierByIdCarrier($idCarrier, $idCountry = null)
     {
-        if ($idCountry) {
+        if ($idCountry !== null && (int) $idCountry > 0) {
             $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c
                 INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
                 INNER JOIN ' . _DB_PREFIX_ . 'country co ON (co.id_zone = cz.id_zone)
@@ -260,7 +260,7 @@ class LengowCarrier extends Carrier
                 return (int) $row['id_carrier'];
             }
             $sql = 'SELECT * FROM ' . _DB_PREFIX_ . 'carrier c';
-            if ($idCountry) {
+            if ($idCountry !== null && (int) $idCountry > 0) {
                 $sql .= ' INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone cz ON (cz.id_carrier = c.id_carrier)
                         INNER JOIN ' . _DB_PREFIX_ . 'country co ON (co.id_zone = cz.id_zone)
                         WHERE c.deleted = 0 AND c.active = 1 AND co.id_country = ' . (int) $idCountry
@@ -287,7 +287,7 @@ class LengowCarrier extends Carrier
      */
     public static function getIdReferenceByIdCarrier($idCarrier, $idCountry = null)
     {
-        if ($idCountry) {
+        if ($idCountry !== null && (int) $idCountry > 0) {
             $sql = 'SELECT c.id_reference FROM ' . _DB_PREFIX_ . 'carrier as c
                 INNER JOIN ' . _DB_PREFIX_ . 'carrier_zone as cz ON (cz.id_carrier = c.id_carrier)
                 INNER JOIN ' . _DB_PREFIX_ . 'country as co ON (co.id_zone = cz.id_zone)
@@ -634,17 +634,38 @@ class LengowCarrier extends Carrier
      */
     public static function createDefaultCarrier($idCountry = null, $idMarketplace = null)
     {
-        if ($idCountry === null) {
-            $idCountry = (int) Configuration::get('PS_COUNTRY_DEFAULT');
-        }
+        $fallbackCountryId = $idCountry ?? (int) Configuration::get('PS_COUNTRY_DEFAULT');
+        $useApiCountry = ($idCountry === null);
+
         $marketplaces = LengowMarketplace::getAllMarketplaces();
         foreach ($marketplaces as $marketplace) {
             $id = (int) $marketplace[LengowMarketplace::FIELD_ID];
             if ($idMarketplace !== null && $idMarketplace !== $id) {
                 continue;
             }
-            if (!self::getIdDefaultCarrier($idCountry, $id)) {
-                self::insertDefaultCarrier($idCountry, $id);
+
+            $targetCountryId = $fallbackCountryId;
+            $isoResolved = false;
+            if ($useApiCountry) {
+                $marketplaceName = $marketplace[LengowMarketplace::FIELD_MARKETPLACE_NAME];
+                $iso = LengowMarketplace::getCountryIsoA2($marketplaceName);
+                if ($iso) {
+                    $resolvedCountryId = (int) Country::getByIso($iso);
+                    if ($resolvedCountryId > 0) {
+                        $targetCountryId = $resolvedCountryId;
+                        $isoResolved = true;
+                    }
+                }
+            }
+
+            if (!self::defaultCarrierRowExists($targetCountryId, $id)) {
+                // When falling back to PS_COUNTRY_DEFAULT (no ISO A2), only insert if
+                // no row exists for this marketplace under any country. This prevents
+                // overwriting correct-country rows that were placed by a prior sync.
+                if (!$isoResolved && $useApiCountry && self::hasDefaultCarrierForMarketplace($id)) {
+                    continue;
+                }
+                self::insertDefaultCarrier($targetCountryId, $id);
             }
         }
     }
@@ -695,6 +716,51 @@ class LengowCarrier extends Carrier
             );
 
             return !empty($results) ? (int) $results[0][self::FIELD_ID] : false;
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Check whether any lengow_default_carrier row exists for a marketplace (any country)
+     *
+     * @param int $idMarketplace Lengow marketplace id
+     *
+     * @return bool
+     */
+    public static function hasDefaultCarrierForMarketplace($idMarketplace)
+    {
+        try {
+            $results = Db::getInstance()->ExecuteS(
+                'SELECT id FROM ' . _DB_PREFIX_ . 'lengow_default_carrier
+                WHERE id_marketplace = ' . (int) $idMarketplace . ' LIMIT 1'
+            );
+
+            return !empty($results);
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
+    }
+
+    /**
+     * Check whether a row exists in lengow_default_carrier for a given country/marketplace pair,
+     * regardless of whether id_carrier is set. Unlike getIdDefaultCarrier(), this returns true
+     * even when the row has id_carrier = NULL (i.e. not yet matched by the merchant).
+     *
+     * @param int $idCountry PrestaShop country id
+     * @param int $idMarketplace Lengow marketplace id
+     *
+     * @return bool
+     */
+    public static function defaultCarrierRowExists($idCountry, $idMarketplace)
+    {
+        try {
+            $result = Db::getInstance()->getRow(
+                'SELECT id FROM ' . _DB_PREFIX_ . self::TABLE_DEFAULT_CARRIER . '
+                WHERE id_country = ' . (int) $idCountry . ' AND id_marketplace = ' . (int) $idMarketplace
+            );
+
+            return !empty($result);
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }

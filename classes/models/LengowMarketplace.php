@@ -686,6 +686,28 @@ class LengowMarketplace
     }
 
     /**
+     * Get the country ISO A2 code for a marketplace from the API data
+     *
+     * @param string $marketplaceName marketplace name (e.g. "manomano_fr")
+     *
+     * @return string|null ISO A2 country code (e.g. "FR") or null if not found
+     */
+    public static function getCountryIsoA2($marketplaceName)
+    {
+        self::loadApiMarketplace();
+        if (self::$marketplaces
+            && isset(self::$marketplaces->{$marketplaceName})
+            && isset(self::$marketplaces->{$marketplaceName}->country_iso_a2)
+        ) {
+            $iso = (string) self::$marketplaces->{$marketplaceName}->country_iso_a2;
+
+            return $iso !== '' ? $iso : null;
+        }
+
+        return null;
+    }
+
+    /**
      * Get marketplace counters list by country id
      *
      * @return array
@@ -720,7 +742,11 @@ class LengowMarketplace
      */
     public static function getAllMarketplaces($idCountry = false)
     {
-        if ($idCountry) {
+        $idCountry = $idCountry !== false ? (int) $idCountry : false;
+        if ($idCountry !== false && $idCountry <= 0) {
+            return [];
+        }
+        if ($idCountry !== false && (int) $idCountry > 0) {
             $sql = 'SELECT lm.id, lm.marketplace_name, lm.marketplace_label, lm.carrier_required
               FROM ' . _DB_PREFIX_ . 'lengow_marketplace as lm
               INNER JOIN ' . _DB_PREFIX_ . 'lengow_default_carrier as ldc ON ldc.id_marketplace = lm.id
@@ -748,6 +774,10 @@ class LengowMarketplace
      */
     public static function getAllMarketplaceDataByCountry($idCountry)
     {
+        $idCountry = (int) $idCountry;
+        if ($idCountry <= 0) {
+            return [];
+        }
         $marketplaceData = [];
         $marketplaces = self::getAllMarketplaces($idCountry);
         if ($marketplaces) {

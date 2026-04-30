@@ -1464,7 +1464,6 @@ class LengowImportOrder
             // get default carrier by country
             $idCarrier = LengowCarrier::getDefaultIdCarrier($idCountry, $idMarketplace, true);
             if (!$idCarrier) {
-                LengowCarrier::createDefaultCarrier($idCountry, $idMarketplace);
                 $countryName = Country::getNameById($this->context->language->id, $idCountry);
                 throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_default_carrier_for_country', ['country_name' => $countryName, 'marketplace_name' => $this->marketplace->labelName]));
             }
