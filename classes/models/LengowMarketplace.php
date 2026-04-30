@@ -742,7 +742,11 @@ class LengowMarketplace
      */
     public static function getAllMarketplaces($idCountry = false)
     {
-        if ($idCountry) {
+        $idCountry = $idCountry !== false ? (int) $idCountry : false;
+        if ($idCountry !== false && $idCountry <= 0) {
+            return [];
+        }
+        if ($idCountry !== false && (int) $idCountry > 0) {
             $sql = 'SELECT lm.id, lm.marketplace_name, lm.marketplace_label, lm.carrier_required
               FROM ' . _DB_PREFIX_ . 'lengow_marketplace as lm
               INNER JOIN ' . _DB_PREFIX_ . 'lengow_default_carrier as ldc ON ldc.id_marketplace = lm.id
@@ -770,6 +774,10 @@ class LengowMarketplace
      */
     public static function getAllMarketplaceDataByCountry($idCountry)
     {
+        $idCountry = (int) $idCountry;
+        if ($idCountry <= 0) {
+            return [];
+        }
         $marketplaceData = [];
         $marketplaces = self::getAllMarketplaces($idCountry);
         if ($marketplaces) {

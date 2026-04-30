@@ -85,7 +85,10 @@ class LengowOrderSettingController extends LengowController
             : [];
         switch ($action) {
             case 'open_marketplace_matching':
-                $idCountry = (int) Tools::getValue('idCountry');
+                $idCountry = (int) Tools::getValue('id_country', 0);
+                if ($idCountry <= 0) {
+                    die(json_encode(['marketplace_matching' => '']));
+                }
                 $country = LengowCountry::getCountry($idCountry);
                 $marketplaces = LengowMarketplace::getAllMarketplaceDataByCountry($idCountry);
                 $carriers = LengowCarrier::getActiveCarriers($idCountry);
@@ -102,9 +105,23 @@ class LengowOrderSettingController extends LengowController
                 ];
                 echo json_encode($data);
                 exit;
+            case 'open_country_selector':
+                $countries = LengowCarrier::getCountries();
+                $marketplaceCounters = LengowMarketplace::getMarketplaceCounters();
+                $defaultCarrierNotMatched = LengowCarrier::getDefaultCarrierNotMatched();
+                $this->context->smarty->assign('countries', $countries);
+                $this->context->smarty->assign('marketplaceCounters', $marketplaceCounters);
+                $this->context->smarty->assign('defaultCarrierNotMatched', $defaultCarrierNotMatched);
+                $module = Module::getInstanceByName('lengow');
+                $displayCountrySelector = $module->display(
+                    _PS_MODULE_LENGOW_DIR_,
+                    'views/templates/admin/lengow_order_setting/helpers/view/country_selector.tpl'
+                );
+                echo json_encode(['country_selector' => preg_replace('/\r|\n/', '', $displayCountrySelector)]);
+                exit;
             case 'process':
                 // save carrier matching
-                if ($idCountry) {
+                if ($idCountry !== false) {
                     // save default carriers
                     foreach ($defaultCarriers as $idMarketplace => $value) {
                         $idCarrier = isset($value['carrier']) ? (int) $value['carrier'] : null;

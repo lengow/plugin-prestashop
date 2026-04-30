@@ -47,6 +47,7 @@ class LengowToolbox
     public const ACTION_LOG = 'log';
     public const ACTION_ORDER = 'order';
     public const ACTION_RECATEGORIZE_MARKETPLACES = 'recategorize_marketplaces';
+    public const ACTION_DIAGNOSE_CARRIER_MAPPING = 'diagnose_carrier_mapping';
 
     /* Toolbox data type */
     public const DATA_TYPE_ACTION = 'action';
@@ -201,6 +202,7 @@ class LengowToolbox
         self::ACTION_LOG,
         self::ACTION_ORDER,
         self::ACTION_RECATEGORIZE_MARKETPLACES,
+        self::ACTION_DIAGNOSE_CARRIER_MAPPING,
     ];
 
     /**
@@ -1041,13 +1043,29 @@ class LengowToolbox
             }
 
             if ($correctRow !== null) {
-                $result['skipped'][] = [
+                $deletedIds = [];
+                foreach ($wrongRows as $wrongRow) {
+                    $wrongRowId = (int) $wrongRow[LengowCarrier::FIELD_ID];
+                    if (!$dryRun) {
+                        $db->delete(
+                            LengowCarrier::TABLE_DEFAULT_CARRIER,
+                            LengowCarrier::FIELD_ID . ' = ' . $wrongRowId
+                        );
+                    }
+                    $deletedIds[] = $wrongRowId;
+                }
+                $entry = [
                     'marketplace' => $marketplaceName,
                     'country_iso' => $iso,
                     'id_country' => $correctCountryId,
                     'reason' => 'already_correct',
-                    'wrong_rows_left' => count($wrongRows),
+                    'wrong_rows_deleted' => $deletedIds,
                 ];
+                if (empty($deletedIds)) {
+                    $result['skipped'][] = $entry;
+                } else {
+                    $result['moved'][] = $entry;
+                }
                 continue;
             }
 
@@ -1150,6 +1168,61 @@ class LengowToolbox
         }
 
         return $result;
+    }
+
+    /**
+     * Diagnose the carrier mapping state: for each country that has rows in lengow_default_carrier,
+     * list the marketplaces and flag those whose native country (from API) differs from the stored country.
+     *
+     * GET ?token=...&toolbox_action=diagnose_carrier_mapping
+     *
+     * @return array
+     */
+    public static function diagnoseCarrierMapping()
+    {
+        $db = Db::getInstance();
+
+        // Raw rows grouped by country
+        try {
+            $rows = $db->executeS(
+                'SELECT ldc.id, ldc.id_country, ldc.id_marketplace, ldc.id_carrier,
+                        c.iso_code AS country_iso,
+                        lm.marketplace_name, lm.marketplace_label
+                 FROM ' . _DB_PREFIX_ . LengowCarrier::TABLE_DEFAULT_CARRIER . ' AS ldc
+                 LEFT JOIN ' . _DB_PREFIX_ . 'country AS c ON c.id_country = ldc.id_country
+                 LEFT JOIN ' . _DB_PREFIX_ . LengowMarketplace::TABLE_MARKETPLACE . ' AS lm
+                     ON lm.id = ldc.id_marketplace
+                 ORDER BY ldc.id_country, lm.marketplace_name'
+            );
+        } catch (PrestaShopDatabaseException $e) {
+            return ['status' => 'error', 'message' => $e->getMessage()];
+        }
+
+        LengowMarketplace::loadApiMarketplace(true);
+
+        $byCountry = [];
+        foreach (is_array($rows) ? $rows : [] as $row) {
+            $countryIso = $row['country_iso'] ?? '?';
+            $idCountry = (int) $row['id_country'];
+            $marketplaceName = $row['marketplace_name'] ?? '(orphan id=' . $row['id_marketplace'] . ')';
+            $nativeIso = $marketplaceName !== null
+                ? LengowMarketplace::getCountryIsoA2($marketplaceName)
+                : null;
+            $nativeCountryId = $nativeIso ? (int) Country::getByIso($nativeIso) : null;
+            $isWrong = $nativeCountryId !== null && $nativeCountryId !== $idCountry;
+
+            $byCountry[$countryIso][] = [
+                'row_id' => (int) $row['id'],
+                'marketplace' => $marketplaceName,
+                'label' => $row['marketplace_label'] ?? '',
+                'id_carrier' => $row['id_carrier'],
+                'native_country_iso' => $nativeIso,
+                'native_id_country' => $nativeCountryId,
+                'wrong' => $isWrong,
+            ];
+        }
+
+        return ['status' => 'ok', 'by_country' => $byCountry];
     }
 
     /**

@@ -148,6 +148,10 @@ switch ($action) {
         header('Content-Type: application/json');
         echo json_encode($result);
         break;
+    case LengowToolbox::ACTION_DIAGNOSE_CARRIER_MAPPING:
+        header('Content-Type: application/json');
+        echo json_encode(LengowToolbox::diagnoseCarrierMapping());
+        break;
     default:
         header('Content-Type: application/json');
         $type = Tools::getValue(LengowToolbox::PARAM_TYPE, null);
