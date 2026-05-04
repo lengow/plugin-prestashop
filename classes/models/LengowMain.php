@@ -508,12 +508,15 @@ class LengowMain
     /**
      * Clean data
      *
-     * @param string $value the content
+     * @param string|null $value the content
      *
      * @return string
      */
-    public static function cleanData(string $value): string
+    public static function cleanData(?string $value): string
     {
+        if ($value === null) {
+            return '';
+        }
         $value = preg_replace(
             '/[\x00-\x08\x10\x0B\x0C\x0E-\x19\x7F]' .
             '|[\x00-\x7F][\x80-\xBF]+' .
