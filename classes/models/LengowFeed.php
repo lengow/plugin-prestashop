@@ -368,13 +368,13 @@ class LengowFeed
     /**
      * Format field names according to the given format
      *
-     * @param string $str field name
-     * @param string $format export format
+     * @param string|null $str field name
+     * @param string|null $format export format
      * @param bool $legacy export legacy field or not
      *
      * @return string
      */
-    public static function formatFields(string $str, string $format, bool $legacy = false): string
+    public static function formatFields(?string $str, ?string $format, bool $legacy = false): string
     {
         switch ($format) {
             case self::FORMAT_CSV:
