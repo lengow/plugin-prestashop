@@ -82,6 +82,7 @@ class LengowOrder extends Order
     public const STATE_REFUSED = 'refused';
     public const STATE_CANCELED = 'canceled';
     public const STATE_REFUNDED = 'refunded';
+    public const STATE_REFUNDING = 'refunding';
     public const STATE_PARTIALLY_REFUNDED = 'partial_refunded';
 
     /* Order types */
@@ -914,6 +915,7 @@ class LengowOrder extends Order
             case self::STATE_REFUSED:
             case self::STATE_CANCELED:
             case self::STATE_REFUNDED:
+            case self::STATE_REFUNDING:
                 return self::PROCESS_STATE_FINISH;
             default:
                 return false;

@@ -181,6 +181,8 @@ fr:
       status_shipped: "Expédié"
       status_closed: "Fermé"
       status_refunded: "Remboursé"
+      status_refunding: "Remboursement en cours"
+      status_partial_refunded: "Partiellement Remboursé"
       status_partially_refunded: "Partiellement Remboursé"
       status_canceled: "Annulé"
       type_express: "Livraison Express"
