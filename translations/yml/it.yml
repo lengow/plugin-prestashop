@@ -181,6 +181,8 @@ it:
       status_shipped: "Spedito"
       status_closed: "Chiuso"
       status_refunded: "Rimborsato"
+      status_refunding: "Rimborso in corso"
+      status_partial_refunded: "Parzialmente rimborsato"
       status_partially_refunded: "Parzialmente rimborsato"
       status_canceled: "Cancellato"
       type_express: "Consegna espressa"
