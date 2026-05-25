@@ -473,7 +473,7 @@ class LengowProduct extends Product
         // If an attribute id is provided and combinations for it exist, prefer its supplier reference
         if ($idProductAttribute && isset($this->combinations[$idProductAttribute]) && !empty($this->combinations[$idProductAttribute]['supplier_reference'])) {
             $supplierReference = $this->combinations[$idProductAttribute]['supplier_reference'];
-        } elseif ($this->supplier_reference !== '') {
+        } elseif (!empty($this->supplier_reference)) {
             $supplierReference = $this->supplier_reference;
         } else {
             $sql = 'SELECT `product_supplier_reference`
@@ -484,7 +484,7 @@ class LengowProduct extends Product
             $supplierReference = $result['product_supplier_reference'] ?? '';
         }
 
-        return $supplierReference;
+        return (string) $supplierReference;
     }
 
     /**
