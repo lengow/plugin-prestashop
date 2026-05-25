@@ -393,6 +393,10 @@ class LengowOrderController extends LengowController
                     'text' => $this->locale->t('order.screen.status_refunded'),
                 ],
                 [
+                    'id' => LengowOrder::STATE_REFUNDING,
+                    'text' => $this->locale->t('order.screen.status_refunding'),
+                ],
+                [
                     'id' => LengowOrder::STATE_PARTIALLY_REFUNDED,
                     'text' => $this->locale->t('order.screen.status_partially_refunded'),
                 ],
