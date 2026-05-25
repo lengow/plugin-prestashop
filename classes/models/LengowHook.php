@@ -173,7 +173,9 @@ class LengowHook
      */
     public function hookDisplayBackOfficeHeader(): void
     {
-        $this->context->controller->addCss(_PS_MODULE_LENGOW_DIR_ . 'views/css/lengow-tab.css');
+        $this->context->controller->addCss(
+            _PS_MODULE_LENGOW_DIR_ . 'views/css/lengow-tab.css?v=' . $this->module->version
+        );
     }
 
     /**
