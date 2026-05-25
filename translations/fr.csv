@@ -162,6 +162,8 @@ order.screen.status_waiting_shipment|En attente d'expédition
 order.screen.status_shipped|Expédié
 order.screen.status_closed|Fermé
 order.screen.status_refunded|Remboursé
+order.screen.status_refunding|Remboursement en cours
+order.screen.status_partial_refunded|Partiellement Remboursé
 order.screen.status_partially_refunded|Partiellement Remboursé
 order.screen.status_canceled|Annulé
 order.screen.type_express|Livraison Express

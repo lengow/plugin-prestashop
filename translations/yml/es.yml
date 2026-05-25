@@ -181,6 +181,8 @@ es:
       status_shipped: "Enviado"
       status_closed: "Cerrado"
       status_refunded: "Reintegrado"
+      status_refunding: "Reembolsando"
+      status_partial_refunded: "Reintegrado Parcial"
       status_partially_refunded: "Reintegrado Parcial"
       status_canceled: "Cancelado"
       type_express: "Entrega urgente"
