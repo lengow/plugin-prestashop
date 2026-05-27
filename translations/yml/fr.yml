@@ -492,6 +492,7 @@ fr:
       total_paid: "Montant total payé sur la marketplace"
       customer_vat_number: "Numéro de TVA"
       commission: "Commission"
+      processing_fee: "Frais de traitement"
       currency: "Devise"
       customer_name: "Nom du client"
       customer_email: "Email du client"

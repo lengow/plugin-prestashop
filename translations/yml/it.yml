@@ -492,6 +492,7 @@ it:
       total_paid: "Totale pagato di Marketplace"
       customer_vat_number: "Numero IVA"
       commission: "Commissione"
+      processing_fee: "Spese di trattamento"
       currency: "Moneta"
       customer_name: "Nome del cliente"
       customer_email: "Email cliente"
