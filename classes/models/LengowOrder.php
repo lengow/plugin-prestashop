@@ -1207,6 +1207,37 @@ class LengowOrder extends Order
     }
 
     /**
+     * Decode stored extra order data
+     *
+     * @return array
+     */
+    public function getExtraData()
+    {
+        if (!is_string($this->lengowExtra) || $this->lengowExtra === '') {
+            return [];
+        }
+        try {
+            $extraData = json_decode($this->lengowExtra, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            return [];
+        }
+
+        return is_array($extraData) ? $extraData : [];
+    }
+
+    /**
+     * Get imported processing fee from extra order data
+     *
+     * @return float
+     */
+    public function getProcessingFee()
+    {
+        $extraData = $this->getExtraData();
+
+        return (float) ($extraData['processing_fee'] ?? 0.0);
+    }
+
+    /**
      * Check if order is B2B
      *
      * @return bool
@@ -1216,7 +1247,7 @@ class LengowOrder extends Order
         if (isset($this->lengowOrderTypes[self::TYPE_BUSINESS])) {
             return true;
         }
-        $extraData = json_decode($this->lengowExtra, true);
+        $extraData = $this->getExtraData();
         $paymentInfo = $extraData['payments'][0] ?? [];
         $billingInfo = $extraData['billing_address'] ?? [];
 

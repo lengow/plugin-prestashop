@@ -453,6 +453,7 @@ admin.order.delivery_address_id|Identifiant de l'adresse de livraison
 admin.order.total_paid|Montant total payé sur la marketplace
 admin.order.customer_vat_number|Numéro de TVA
 admin.order.commission|Commission
+admin.order.processing_fee|Frais de traitement
 admin.order.currency|Devise
 admin.order.customer_name|Nom du client
 admin.order.customer_email|Email du client

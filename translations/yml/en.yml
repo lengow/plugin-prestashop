@@ -492,6 +492,7 @@ en:
       total_paid: "Total amount paid on Marketplace"
       customer_vat_number: "VAT number"
       commission: "Commission"
+      processing_fee: "Processing fee"
       currency: "Currency"
       customer_name: "Customer name"
       customer_email: "Customer email"

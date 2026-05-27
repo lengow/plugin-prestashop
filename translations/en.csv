@@ -453,6 +453,7 @@ admin.order.delivery_address_id|Delivery Address ID
 admin.order.total_paid|Total amount paid on Marketplace
 admin.order.customer_vat_number|VAT number
 admin.order.commission|Commission
+admin.order.processing_fee|Processing fee
 admin.order.currency|Currency
 admin.order.customer_name|Customer name
 admin.order.customer_email|Customer email
