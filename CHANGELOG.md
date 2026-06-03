@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [3.9.5](https://github.com/lengow/plugin-prestashop/compare/v3.9.4...v3.9.5) (2026-06-03)
+
+
+### Bug Fixes
+
+* **orders:** [PCMT-1475] Remove useless condition ([#78](https://github.com/lengow/plugin-prestashop/issues/78)) ([107c61f](https://github.com/lengow/plugin-prestashop/commit/107c61f6ffdbea404252f035c7e8e71062d0eec0))
+* **translations:** add missing status_refunding translation and STATE_REFUNDING constant ([#96](https://github.com/lengow/plugin-prestashop/issues/96)) ([1211aef](https://github.com/lengow/plugin-prestashop/commit/1211aefc8c6903491fb6f7f1f46c36fe99d81b5b))
+
+
+### Miscellaneous
+
+* update build v3 ([#105](https://github.com/lengow/plugin-prestashop/issues/105)) ([d80ddac](https://github.com/lengow/plugin-prestashop/commit/d80ddace06e740c60f37a2fe7a8bc6cb9dc7c728))
+
 ## [3.9.4](https://github.com/lengow/plugin-prestashop/compare/v3.9.3...v3.9.4) (2025-12-08)
 
 
