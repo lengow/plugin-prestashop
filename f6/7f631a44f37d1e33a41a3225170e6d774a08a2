@@ -1,0 +1,29 @@
+webservice/export.php
+  s_848754f7f9260b::t_ca8f46178b3654 25-26,31
+  s_848754f7f9260b::t_65a68e41dd6f0f 1-24
+  s_848754f7f9260b::t_1e7f3eb003b159 27-30
+webservice/cron.php
+  s_848754f7f9260b::t_1e7f3eb003b159 27-30
+  s_848754f7f9260b::t_cc2a3d45a69bef 1-24
+  s_848754f7f9260b::t_ca8f46178b3654 25-26,31
+webservice/toolbox.php
+  s_848754f7f9260b::t_1e7f3eb003b159 27-30
+  s_848754f7f9260b::t_65a68e41dd6f0f 1-24
+  s_848754f7f9260b::t_ca8f46178b3654 25-26,31
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "f67f631a44f37d1e33a41a3225170e6d774a08a2",
+  "prompts": {},
+  "sessions": {
+    "s_848754f7f9260b": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e8d06-4ca0-7c40-9144-d13fd6dc5f7b",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
