@@ -1,0 +1,19 @@
+tools/build.sh
+  s_f0058c9a9ee420::t_9409afca226039 74
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "30abae2671c5f9fd2cb054b92c6559dd451598f2",
+  "prompts": {},
+  "sessions": {
+    "s_f0058c9a9ee420": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019e8da9-c2ed-74f3-9766-20b04b63853e",
+        "model": "gpt-5.5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
