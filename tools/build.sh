@@ -67,10 +67,11 @@ remove_agent_runtime_files(){
         "CLAUDE.md"
         "COPILOT.md"
         "GEMINI.md"
+        ".opencode"
     )
 
     for FILE in "${AGENT_FILES[@]}"; do
-        find "$DIRECTORY" -name "$FILE" -exec rm -rf {} \;
+        find "$DIRECTORY" -name "$FILE" -prune -exec rm -rf {} +
     done
 
     echo -e "- Delete agent runtime files and folders : ${VERT}DONE${NORMAL}"
