@@ -162,9 +162,6 @@ class LengowInstall
         'views/templates/admin/lengow_order_setting/layout.tpl',
         'views/templates/admin/lengow_toolbox/helpers/view/view.tpl',
         'views/templates/admin/lengow_toolbox/layout.tpl',
-        'webservice/cron.php',
-        'webservice/export.php',
-        'webservice/toolbox.php',
     ];
 
     /**
