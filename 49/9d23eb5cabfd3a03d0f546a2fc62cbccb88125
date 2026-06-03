@@ -1,0 +1,9 @@
+tools/build.sh
+  s_f0058c9a9ee420::t_9409afca226039 74
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.2",
+  "base_commit_sha": "499d23eb5cabfd3a03d0f546a2fc62cbccb88125",
+  "prompts": {}
+}
