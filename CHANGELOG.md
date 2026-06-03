@@ -1,6 +1,22 @@
 # Changelog
 
 
+## [4.0.2](https://github.com/lengow/plugin-prestashop/compare/v4.0.1...v4.0.2) (2026-06-03)
+
+
+### Bug Fixes
+
+* **admin:** add version parameter to js and css to avoid caching issues ([#98](https://github.com/lengow/plugin-prestashop/issues/98)) ([45a2e67](https://github.com/lengow/plugin-prestashop/commit/45a2e67c71d450e4ce1125e97c4fa41fb7a4b4e4))
+* **export:** nullable string in LengowFeed::formatFields() ([#94](https://github.com/lengow/plugin-prestashop/issues/94)) ([71d06aa](https://github.com/lengow/plugin-prestashop/commit/71d06aa87b083c42ad17365575ffe712f5040f7a))
+* **export:** prevent null supplier reference fatal during product export ([#101](https://github.com/lengow/plugin-prestashop/issues/101)) ([5a65c14](https://github.com/lengow/plugin-prestashop/commit/5a65c1454b1dce5ad88e0d2d0f29061dec8dd79e))
+* **install:** accept nullable string in LengowMain::cleanData() ([#93](https://github.com/lengow/plugin-prestashop/issues/93)) ([8c6840f](https://github.com/lengow/plugin-prestashop/commit/8c6840f7d9073f9033af201ff008fe51ee3af6e5))
+* **translations:** [PCMT-1573] add missing status_refunding translation and STATE_REFUNDING constant ([#97](https://github.com/lengow/plugin-prestashop/issues/97)) ([8ce760f](https://github.com/lengow/plugin-prestashop/commit/8ce760f4f4521208aed17b7fc87fc24870277c4c))
+
+
+### Miscellaneous
+
+* update build ([#106](https://github.com/lengow/plugin-prestashop/issues/106)) ([f653e47](https://github.com/lengow/plugin-prestashop/commit/f653e47ae25b7c9eb4ef6bb563185eae5c5f7a98))
+
 ## [4.0.1](https://github.com/lengow/plugin-prestashop/compare/v4.0.0...v4.0.1) (2026-04-22)
 
 
