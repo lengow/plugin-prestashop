@@ -4,6 +4,7 @@
 #     - Remove .DS_Store
 #     - Remove .README.md
 #     - Remove .idea
+#     - Remove agent runtime files and folders
 #     - Clean export folder
 #     - Clean logs folder
 #     - Clean translation folder
@@ -48,6 +49,32 @@ remove_files(){
     if [ -d "${DIRECTORY}/${FILE}" ]; then
         rm -Rf "${DIRECTORY}/${FILE}"
     fi
+}
+
+remove_agent_runtime_files(){
+    DIRECTORY="$1"
+    AGENT_FILES=(
+        ".agent"
+        ".agent-kit"
+        ".agents"
+        ".claude"
+        ".codex"
+        ".cursor"
+        ".gemini"
+        ".GEMINI"
+        ".windsurf"
+        "AGENTS.md"
+        "CLAUDE.md"
+        "COPILOT.md"
+        "GEMINI.md"
+        ".opencode"
+    )
+
+    for FILE in "${AGENT_FILES[@]}"; do
+        find "$DIRECTORY" -name "$FILE" -prune -exec rm -rf {} +
+    done
+
+    echo -e "- Delete agent runtime files and folders : ${VERT}DONE${NORMAL}"
 }
 
 remove_directories(){
@@ -161,6 +188,8 @@ remove_files "$FOLDER_TMP" ".php-cs-fixer.dist.php"
 # remove .git
 remove_files "$FOLDER_TMP" ".git"
 rm -Rf "$FOLDER_TMP/.github"
+# remove agent runtime files and folders
+remove_agent_runtime_files "$FOLDER_TMP"
 # remove .DS_Store
 remove_files "$FOLDER_TMP" ".DS_Store"
 # remove composer.json
