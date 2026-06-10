@@ -262,17 +262,16 @@ class LengowHook
                 ? LengowAction::TYPE_CANCEL
                 : LengowAction::TYPE_SHIP;
 
-            if (!empty($lengowOrder->lengowExtra)) {
-                try {
-                    $decoded = json_decode($lengowOrder->lengowExtra, true, 512, JSON_THROW_ON_ERROR);
-                    $shipping_phone = $decoded['packages'][0]['delivery']['phone_mobile']
-                        ?? $decoded['packages'][0]['delivery']['phone_home']
-                        ?? $decoded['packages'][0]['delivery']['phone_office'];
-                    $billing_phone = $decoded['billing_address']['phone_mobile']
-                        ?? $decoded['billing_address']['phone_home']
-                        ?? $decoded['billing_address']['phone_office'];
-                } catch (JsonException $e) {
-                }
+            $extraData = $lengowOrder->getExtraData();
+            if ($extraData !== []) {
+                $shipping_phone = $extraData['packages'][0]['delivery']['phone_mobile']
+                    ?? $extraData['packages'][0]['delivery']['phone_home']
+                    ?? $extraData['packages'][0]['delivery']['phone_office']
+                    ?? null;
+                $billing_phone = $extraData['billing_address']['phone_mobile']
+                    ?? $extraData['billing_address']['phone_home']
+                    ?? $extraData['billing_address']['phone_office']
+                    ?? null;
             }
 
             $templateData = [
@@ -282,6 +281,7 @@ class LengowHook
                 'marketplace_label' => $lengowOrder->lengowMarketplaceLabel,
                 'total_paid' => $lengowOrder->lengowTotalPaid,
                 'commission' => $lengowOrder->lengowCommission,
+                'processing_fee' => $lengowOrder->getProcessingFee(),
                 'currency' => $lengowOrder->lengowCurrency,
                 'customer_vat_number' => $lengowOrder->lengowCustomerVatNumber,
                 'customer_name' => $lengowOrder->lengowCustomerName,
