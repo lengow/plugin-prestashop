@@ -69,3 +69,21 @@ lengow_toolbox:
     _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowToolboxAdminController::indexAction'
     _legacy_controller: AdminLengowToolbox
     _legacy_link: AdminLengowToolbox
+
+lengow_order_reasons:
+  path: /lengow/order-reasons/{orderId}
+  methods: [ GET ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowOrderAdminController::getOrderReasonsAction'
+
+lengow_save_refund_reason:
+  path: /lengow/save-refund-reason
+  methods: [ POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowOrderAdminController::saveRefundReasonAction'
+
+lengow_save_refund_mode:
+  path: /lengow/save-refund-mode
+  methods: [ POST ]
+  defaults:
+    _controller: 'PrestaShop\Module\Lengow\Controller\Admin\LengowOrderAdminController::saveRefundModeAction'

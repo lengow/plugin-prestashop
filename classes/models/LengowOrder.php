@@ -1329,6 +1329,18 @@ class LengowOrder extends Order
     }
 
     /**
+     * Get the cancel reason from the Lengow orders table (stored in the shared refund_reason column)
+     *
+     * @param int $idOrder PrestaShop order id
+     *
+     * @return string|null
+     */
+    public static function getCancelReasonByPrestashopId(int $idOrder): ?string
+    {
+        return self::getRefundReasonByPrestashopId($idOrder);
+    }
+
+    /**
      * Get the refund reason from the Lengow orders table
      *
      * @param int $idOrder PrestaShop order id
@@ -1406,14 +1418,16 @@ class LengowOrder extends Order
 
         if (!$result) {
             return [
-                'refund_reason' => [],
-                'refund_mode' => [],
+                'refund_reason' => '',
+                'refund_mode' => '',
+                'cancel_reason' => '',
             ];
         }
 
         return [
-            'refund_reason' => $result['refund_reason'] ?? [],
-            'refund_mode' => $result['refund_mode'] ?? [],
+            'refund_reason' => $result['refund_reason'] ?? '',
+            'refund_mode' => $result['refund_mode'] ?? '',
+            'cancel_reason' => $result['refund_reason'] ?? '',
         ];
     }
 
