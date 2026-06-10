@@ -205,9 +205,14 @@ class AdminOrderController extends OrderController
             if ($this->isFromLengow($orderId)) {
                 $lengowOrder = new \LengowOrder($orderId);
                 $marketplace = $lengowOrder->getMarketplace();
-                $refundReasons = $marketplace->getRefundReasons();
-                $refundMode = $marketplace->getRefundModes();
-                $refundSelectedDatas = $lengowOrder->getRefundDataFromLengowOrder($orderId, $marketplace->name);
+                if ($marketplace !== null) {
+                    $refundReasons = $marketplace->getRefundReasons();
+                    $cancelReasons = $marketplace->getCancelReasons();
+                    $refundMode = $marketplace->getRefundModes();
+                    $refundSelectedDatas = $lengowOrder->getRefundDataFromLengowOrder($orderId, $marketplace->name);
+                    $cancelStateId = (int) \LengowMain::getOrderState(\LengowOrder::STATE_CANCELED);
+                    $refundStateId = (int) \LengowMain::getOrderState(\LengowOrder::STATE_REFUNDED);
+                }
             }
         } catch (\Exception $e) {
             $this->addFlash('error', $this->getErrorMessageForException($e, $this->getErrorMessages($e)));
@@ -283,6 +288,10 @@ class AdminOrderController extends OrderController
             'refundModes' => $refundMode ?? [],
             'refundReasonSelected' => $refundSelectedDatas['refund_reason'] ?? '',
             'refundModeSelected' => $refundSelectedDatas['refund_mode'] ?? '',
+            'cancelReasons' => $cancelReasons ?? [],
+            'cancelReasonSelected' => $refundSelectedDatas['refund_reason'] ?? '',
+            'cancelStateId' => $cancelStateId ?? 0,
+            'refundStateId' => $refundStateId ?? 0,
         ]);
     }
 
