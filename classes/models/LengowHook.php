@@ -92,7 +92,7 @@ class LengowHook
                 try {
                     $registered = $this->module->registerHook($hook);
                 } catch (PrestaShopDatabaseException|PrestaShopException $e) {
-                    if (!str_contains($e->getMessage(), 'ps_hook_module.PRIMARY')) {
+                    if (!$this->isDuplicateHookRegistrationException($e)) {
                         throw $e;
                     }
                     LengowMain::log(
@@ -127,6 +127,17 @@ class LengowHook
         }
 
         return !$error;
+    }
+
+    /**
+     * @param Exception $exception
+     *
+     * @return bool
+     */
+    private function isDuplicateHookRegistrationException(Exception $exception): bool
+    {
+        return str_contains($exception->getMessage(), 'Duplicate entry')
+            && str_contains($exception->getMessage(), 'hook_module.PRIMARY');
     }
 
     /**
