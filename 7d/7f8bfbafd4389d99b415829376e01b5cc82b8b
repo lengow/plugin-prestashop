@@ -1,0 +1,41 @@
+classes/models/LengowMarketplace.php
+  s_53610fddfa813d::t_933c00ed51cb15 519-528
+translations/it.csv
+  s_53610fddfa813d::t_d5285e7a707e4d 478-485
+translations/en.csv
+  s_53610fddfa813d::t_d5285e7a707e4d 478-485
+translations/yml/en.yml
+  s_53610fddfa813d::t_a58cd24e5dfad4 517-524
+views/templates/hook/order/admin_order_side.tpl
+  s_53610fddfa813d::t_ce054c50c031f4 24,26,28,30,37-46,53-57,59-70,73-74,90,93,98
+translations/yml/es.yml
+  s_53610fddfa813d::t_1121a5c9a8077e 517-524
+translations/fr.csv
+  s_53610fddfa813d::t_d5285e7a707e4d 478-485
+classes/controllers/LengowOrderController.php
+  s_53610fddfa813d::t_7ddb312c2e3c12 155,158,162-163,166
+translations/yml/fr.yml
+  s_53610fddfa813d::t_a02d27364ee620 517-524
+classes/models/LengowHook.php
+  s_53610fddfa813d::t_cc423c4419cfab 337,343
+translations/es.csv
+  s_53610fddfa813d::t_d5285e7a707e4d 478-485
+translations/yml/it.yml
+  s_53610fddfa813d::t_0e485d4f26f6f4 517-524
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "7d7f8bfbafd4389d99b415829376e01b5cc82b8b",
+  "prompts": {},
+  "sessions": {
+    "s_53610fddfa813d": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "49550a8d-c7d3-4042-91b1-b92b8b14ae5d",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
