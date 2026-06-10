@@ -1,0 +1,32 @@
+translations/it.csv
+  s_c5e0545e9dedd5::t_96e410108b50c2 68,251,352
+translations/yml/log.yml
+  s_c5e0545e9dedd5::t_64e47dc2298cbb 98-99,102
+classes/models/LengowMain.php
+  s_c5e0545e9dedd5::t_2d4cbcec2d3f30 937-959
+translations/es.csv
+  s_c5e0545e9dedd5::t_96e410108b50c2 72,136,421,425,433
+translations/fr.csv
+  s_c5e0545e9dedd5::t_96e410108b50c2 103,155
+classes/models/LengowCarrier.php
+  s_c5e0545e9dedd5::t_dbb511c95ab45a 1071-1084
+  s_c5e0545e9dedd5::t_0afd4e96c15f5e 1288-1385
+translations/en.csv
+  s_c5e0545e9dedd5::t_96e410108b50c2 251,478-485,575-576,579
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.5.6",
+  "base_commit_sha": "c1b03ee5b504f32c1a2a3880f63e0bfdffbb4a75",
+  "prompts": {},
+  "sessions": {
+    "s_c5e0545e9dedd5": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "58868909-a173-4d5c-b4e6-43bca33af5bc",
+        "model": "unknown"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
