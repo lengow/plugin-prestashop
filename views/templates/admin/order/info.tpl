@@ -39,6 +39,10 @@
 								<dd>{$total_paid|escape:'htmlall':'UTF-8'}</dd>
 								<dt>{$lengow_locale->t('admin.order.commission')|escape:'htmlall':'UTF-8'}</dt>
 								<dd>{if $commission}{$commission|escape:'htmlall':'UTF-8'}{else}--{/if}</dd>
+								{if $processing_fee > 0}
+									<dt>{$lengow_locale->t('admin.order.processing_fee')|escape:'htmlall':'UTF-8'}</dt>
+									<dd>{$processing_fee|escape:'htmlall':'UTF-8'}</dd>
+								{/if}
 								{if $id_flux != 0}
 									<dt>{$lengow_locale->t('admin.order.feed_id')|escape:'htmlall':'UTF-8'}</dt>
 									<dd>{$id_flux|escape:'htmlall':'UTF-8'}</dd>
@@ -125,6 +129,39 @@
 							</a>
 						{/if}
 					</div>
+				{/if}
+				{if $processing_fee > 0}
+					<div id="lengow-processing-fee-context"
+						 data-processing-fee-label="{$lengow_locale->t('admin.order.processing_fee')|escape:'htmlall':'UTF-8'}"
+						 hidden></div>
+					<script type="text/javascript">
+						(function () {
+							var processingFeeContext = document.getElementById('lengow-processing-fee-context');
+							if (!processingFeeContext) {
+								return;
+							}
+
+							var processingFeeLabel = processingFeeContext.getAttribute('data-processing-fee-label');
+							if (!processingFeeLabel) {
+								return;
+							}
+
+							var wrappingTotal = document.getElementById('orderWrappingTotal');
+							if (!wrappingTotal) {
+								return;
+							}
+
+							var wrappingContainer = wrappingTotal.closest('.text-center');
+							if (!wrappingContainer) {
+								return;
+							}
+
+							var wrappingLabel = wrappingContainer.querySelector('p strong');
+							if (wrappingLabel) {
+								wrappingLabel.textContent = processingFeeLabel;
+							}
+						})();
+					</script>
 				{/if}
 			</div>
 		</div>
