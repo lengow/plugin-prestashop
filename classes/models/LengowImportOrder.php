@@ -805,6 +805,18 @@ class LengowImportOrder
     private function checkOrderData(): bool
     {
         $errorMessages = [];
+        // --- Fallback: Billing -> Delivery ---
+        if ($this->orderData->billing_address === null && isset($this->packageData->delivery)) {
+            // Copy the shipping information to the invoice
+            $this->orderData->billing_address = clone $this->packageData->delivery;
+            
+            LengowMain::log(
+                LengowLog::CODE_IMPORT,
+                LengowMain::setLogMessage('log.import.fallback_billing_address'),
+                $this->logOutput,
+                $this->marketplaceSku
+            );
+        }
         if (empty($this->packageData->cart)) {
             $errorMessages[] = LengowMain::setLogMessage('lengow_log.error.no_product');
         }
@@ -1330,6 +1342,18 @@ class LengowImportOrder
         if ($shippingData && $this->relayId !== null) {
             $addressData['id_relay'] = $this->relayId;
         }
+        
+        // Phone number fallback ---
+        // Replaces ‘__’ or an empty phone number with ‘0000000000’ to bypass strict regular expressions
+        $fallbackPhone = '0000000000';
+        
+        if (empty($addressData['phone_home']) || $addressData['phone_home'] === '__') {
+            $addressData['phone_home'] = $fallbackPhone;
+        }
+        if (empty($addressData['phone_mobile']) || $addressData['phone_mobile'] === '__') {
+            $addressData['phone_mobile'] = $fallbackPhone;
+        }
+        
         $addressData['address_full'] = '';
         // construct field address_full
         $addressData['address_full'] .= !empty($addressData['first_line']) ? $addressData['first_line'] . ' ' : '';
