@@ -494,7 +494,6 @@ class LengowMarketplace
                     $params[$arg] = $returnTrackingNumber;
                     break;
                 case LengowAction::ARG_CARRIER:
-                case LengowAction::ARG_CARRIER_NAME:
                 case LengowAction::ARG_CUSTOM_CARRIER:
                     if ((string) $lengowOrder->lengowCarrier !== '') {
                         $carrierName = (string) $lengowOrder->lengowCarrier;
@@ -514,6 +513,32 @@ class LengowMarketplace
                         );
                     }
                     $params[$arg] = $carrierName;
+                    break;
+                case LengowAction::ARG_CARRIER_NAME:
+                    // carrier_name should only be sent when carrier code is "Other"
+                    // otherwise marketplaces like Amazon reject the feed
+                    if ((string) $lengowOrder->lengowCarrier !== '') {
+                        $resolvedCarrier = (string) $lengowOrder->lengowCarrier;
+                    } else {
+                        if (!isset($deliveryAddress->id_country) || (int) $deliveryAddress->id_country === 0) {
+                            break;
+                        }
+                        $idMarketplace = self::getIdMarketplace($lengowOrder->lengowMarketplaceName);
+                        $resolvedCarrier = LengowCarrier::getCarrierMarketplaceCode(
+                            (int) $deliveryAddress->id_country,
+                            $idMarketplace,
+                            (int) $lengowOrder->id_carrier
+                        );
+                    }
+                    if (strtolower($resolvedCarrier) === 'other') {
+                        // when carrier is "Other", send the PrestaShop carrier name
+                        $idActiveCarrier = LengowCarrier::getIdActiveCarrierByIdCarrier(
+                            (int) $lengowOrder->id_carrier,
+                            (int) $deliveryAddress->id_country
+                        );
+                        $psCarrier = new Carrier($idActiveCarrier ?: (int) $lengowOrder->id_carrier);
+                        $params[$arg] = $psCarrier->name;
+                    }
                     break;
                 case LengowAction::ARG_SHIPPING_METHOD:
                     // Only send shipping_method when it is a required argument,
