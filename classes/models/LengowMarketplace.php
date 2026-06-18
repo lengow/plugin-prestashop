@@ -500,7 +500,6 @@ class LengowMarketplace
                     $params[$arg] = $returnTrackingNumber;
                     break;
                 case LengowAction::ARG_CARRIER:
-                case LengowAction::ARG_CARRIER_NAME:
                 case LengowAction::ARG_CUSTOM_CARRIER:
                     if ((string) $lengowOrder->lengowCarrier !== '') {
                         $carrierName = (string) $lengowOrder->lengowCarrier;
@@ -520,6 +519,29 @@ class LengowMarketplace
                         );
                     }
                     $params[$arg] = $carrierName;
+                    break;
+                case LengowAction::ARG_CARRIER_NAME:
+                    // carrier_name should only be sent when carrier code is "Other"
+                    if ((string) $lengowOrder->lengowCarrier !== '') {
+                        $resolvedCarrier = (string) $lengowOrder->lengowCarrier;
+                    } else {
+                        if ((int) $deliveryAddress->id_country === 0) {
+                            if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
+                                break;
+                            }
+                            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_delivery_country_in_order'));
+                        }
+                        $idMarketplace = self::getIdMarketplace($lengowOrder->lengowMarketplaceName);
+                        $resolvedCarrier = LengowCarrier::getCarrierMarketplaceCode(
+                            (int) $deliveryAddress->id_country,
+                            $idMarketplace,
+                            (int) $lengowOrder->id_carrier
+                        );
+                    }
+                    // Only populate carrier_name when the carrier code is "Other"
+                    if (strtolower($resolvedCarrier) === 'other') {
+                        $params[$arg] = $resolvedCarrier;
+                    }
                     break;
                 case LengowAction::ARG_SHIPPING_METHOD:
                     // Only send shipping_method when it is a required argument,
