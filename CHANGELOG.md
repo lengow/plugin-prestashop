@@ -1,6 +1,21 @@
 # Changelog
 
 
+## [3.10.0](https://github.com/lengow/plugin-prestashop/compare/v3.9.5...v3.10.0) (2026-06-18)
+
+
+### Features
+
+* **colissimo:** add support for colissimo v2 ([#86](https://github.com/lengow/plugin-prestashop/issues/86)) ([8a086a1](https://github.com/lengow/plugin-prestashop/commit/8a086a127e12ca592709072debee06071b9b3ddc))
+
+
+### Bug Fixes
+
+* **admin:** fix processing_fees not displaying as Processing Fees ([#103](https://github.com/lengow/plugin-prestashop/issues/103)) ([3a61e24](https://github.com/lengow/plugin-prestashop/commit/3a61e24653557745105c1c0a1d9af339e63c9d20))
+* **cancel:** fix cancel reasons not applied on cancel events ([#83](https://github.com/lengow/plugin-prestashop/issues/83)) ([2e2fca1](https://github.com/lengow/plugin-prestashop/commit/2e2fca167cac6b9846b8cc6741572d9f50e0af0f))
+* **shipping:** fix shipping method always send to Amazon ([#109](https://github.com/lengow/plugin-prestashop/issues/109)) ([433be0e](https://github.com/lengow/plugin-prestashop/commit/433be0e1f74dc166fbbaae2bac702b8655ddac7b))
+* **shipping:** only send carrier_name when carrier code is "Other" for Amazon compatibility ([#115](https://github.com/lengow/plugin-prestashop/issues/115)) ([139b3c0](https://github.com/lengow/plugin-prestashop/commit/139b3c05f2a9305a2f6e07dfd92872e82066a750))
+
 ## [3.9.5](https://github.com/lengow/plugin-prestashop/compare/v3.9.4...v3.9.5) (2026-06-03)
 
 
