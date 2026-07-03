@@ -1564,8 +1564,8 @@ class LengowImportOrder
                 $order->id_carrier,
                 $this->shippingAddress
             );
+            $carrier = new Carrier($order->id_carrier);
             if ($carrierCompatibility > 0) {
-                $carrier = new Carrier($order->id_carrier);
                 LengowMain::log(
                     LengowLog::CODE_IMPORT,
                     LengowMain::setLogMessage(
@@ -1575,6 +1575,21 @@ class LengowImportOrder
                     $this->logOutput,
                     $this->marketplaceSku
                 );
+            } elseif (!empty($this->shippingAddress->idRelay)) {
+                // the marketplace explicitly requires a relay point but no shipping module
+                // (SoColissimo/Mondial Relay) ensured compatibility for it: without this, the
+                // failure would otherwise stay completely silent even though the order and its
+                // carrier were resolved successfully.
+                $message = LengowMain::setLogMessage(
+                    'log.import.carrier_compatibility_not_ensured',
+                    [
+                        'id_relay' => $this->shippingAddress->idRelay,
+                        'carrier_name' => $carrier->name,
+                        'id_carrier' => $order->id_carrier,
+                    ]
+                );
+                LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput, $this->marketplaceSku);
+                LengowOrderError::addOrderLog($this->idOrderLengow, $message, LengowOrderError::TYPE_ERROR_SEND);
             }
         } catch (LengowException $e) {
             LengowMain::log(LengowLog::CODE_IMPORT, $e->getMessage(), $this->logOutput, $this->marketplaceSku);

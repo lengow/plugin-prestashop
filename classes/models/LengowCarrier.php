@@ -1102,7 +1102,7 @@ class LengowCarrier extends Carrier
                     ? self::COMPATIBILITY_OK
                     : self::COMPATIBILITY_KO;
             }
-        } elseif (LengowMain::isMondialRelayV3Available()) {
+        } elseif (LengowMain::isMondialRelayV3Available() || LengowMain::isMondialRelayV4Available()) {
             try {
                 if (!self::handleMRRelayV3($idOrder, $idCarrier, $shippingAddress->idRelay)) {
                     return self::COMPATIBILITY_KO;
@@ -1417,7 +1417,7 @@ class LengowCarrier extends Carrier
     }
 
     /**
-     * Check if relay ID is correct for Mondial Relay V3
+     * Check if relay ID is correct for Mondial Relay V3/V4 (same relay selection API)
      *
      * @param int $idOrder PrestaShop order id
      * @param int $idCarrier PrestaShop shipping address id
