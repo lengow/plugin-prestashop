@@ -675,7 +675,8 @@ class LengowOrder extends Order
 
     /**
      * Reconcile local orders stuck at PROCESS_STATE_IMPORT with their current state on Lengow API.
-     * Runs after each full cron to fix orders whose updated_at was never refreshed by the marketplace.
+     * Runs after each full cron to fix orders where the marketplace status changed but the Lengow
+     * order updated_at was not refreshed, causing the cron time window to miss the order.
      * Processes up to 50 orders per run (oldest first) from the last 30 days.
      *
      * @param bool $logOutput see log or not
@@ -700,6 +701,7 @@ class LengowOrder extends Order
             LEFT JOIN `' . _DB_PREFIX_ . 'lengow_actions` la
                 ON la.`id_order` = lo.`id_order` AND la.`state` = ' . LengowAction::STATE_NEW . '
             WHERE lo.`order_process_state` = ' . self::PROCESS_STATE_IMPORT . '
+            AND lo.`id_order` > 0
             AND lo.`date_add` >= "' . $date . '"
             AND la.`id` IS NULL
             ORDER BY lo.`date_add` ASC
