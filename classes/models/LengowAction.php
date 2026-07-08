@@ -713,7 +713,7 @@ class LengowAction
                     ) {
                         $packageData = $apiResult->results[0]->packages[0];
                         try {
-                            $orderLengow->updateState((string) $apiResult->results[0]->lengow_status, $packageData);
+                            $updated = $orderLengow->updateState((string) $apiResult->results[0]->lengow_status, $packageData);
                         } catch (Exception $e) {
                             LengowMain::log(
                                 LengowLog::CODE_ACTION,
@@ -728,15 +728,17 @@ class LengowAction
                             usleep(250000);
                             continue;
                         }
-                        LengowMain::log(
-                            LengowLog::CODE_ACTION,
-                            LengowMain::setLogMessage(
-                                'log.order_action.order_state_reconciled',
-                                ['state' => $apiResult->results[0]->lengow_status]
-                            ),
-                            $logOutput,
-                            $orderLengow->lengowMarketplaceSku
-                        );
+                        if ($updated) {
+                            LengowMain::log(
+                                LengowLog::CODE_ACTION,
+                                LengowMain::setLogMessage(
+                                    'log.order_action.order_state_reconciled',
+                                    ['state' => $orderLengow->getCurrentStateName()]
+                                ),
+                                $logOutput,
+                                $orderLengow->lengowMarketplaceSku
+                            );
+                        }
                     } else {
                         // action genuinely timed out without resolution -> create order error
                         $errorMessage = LengowMain::setLogMessage('lengow_log.exception.action_is_too_old');
@@ -777,7 +779,9 @@ class LengowAction
         $date = date(LengowMain::DATE_FULL, time() - self::MAX_INTERVAL_TIME);
         $query = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
                 WHERE created_at <= "' . $date . '"
-                AND state = ' . self::STATE_NEW;
+                AND state = ' . self::STATE_NEW . '
+                ORDER BY created_at ASC
+                LIMIT 50';
         try {
             $results = Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {
