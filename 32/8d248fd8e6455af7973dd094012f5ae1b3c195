@@ -1,0 +1,22 @@
+classes/models/LengowAction.php
+  s_35beb95de6a089::t_702337ea1e33c0 709-710
+classes/models/LengowOrder.php
+  s_35beb95de6a089::t_b104103f9e2f0c 687-688,691
+  s_35beb95de6a089::t_e5bf61a4479397 726
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "328d248fd8e6455af7973dd094012f5ae1b3c195",
+  "prompts": {},
+  "sessions": {
+    "s_35beb95de6a089": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "cd874832-8a26-4884-abd1-bb33156cd005",
+        "model": "claude-sonnet-4.6"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
