@@ -1,0 +1,38 @@
+classes/models/LengowOrder.php
+  s_35beb95de6a089::t_a1e0eb959a5c8c 527-530
+  s_35beb95de6a089::t_168315ac66da67 550
+  s_35beb95de6a089::t_1a02d1c2a00e5f 658
+  s_35beb95de6a089::t_082112c481b7ea 676-732,755-772
+  s_35beb95de6a089::t_382b54c9cc4f83 733-754
+  s_35beb95de6a089::t_a4798254560e96 675
+translations/yml/log.yml
+  s_35beb95de6a089::t_a0466fd64ac564 92-93
+  s_35beb95de6a089::t_ed50069be0e412 125
+classes/models/LengowImport.php
+  s_35beb95de6a089::t_3dcab795b12e90 1139
+classes/models/LengowAction.php
+  s_35beb95de6a089::t_36da15944d29b6 761
+  s_35beb95de6a089::t_ca78d806385cb6 697-707,709-711,713,731-758
+  s_35beb95de6a089::t_4717db3fb4ffb4 712,714-730
+webservice/cron.php
+  s_35beb95de6a089::t_0a7927ec1bdce8 146
+translations/en.csv
+  s_35beb95de6a089::t_a914d8d91a363f 557-558
+  s_35beb95de6a089::t_dad3e01589421b 589
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "7e715380182a0503fe460d02ce6d661606d27cae",
+  "prompts": {},
+  "sessions": {
+    "s_35beb95de6a089": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "cd874832-8a26-4884-abd1-bb33156cd005",
+        "model": "claude-sonnet-4.6"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
