@@ -1136,6 +1136,7 @@ class LengowImport
         ) {
             LengowAction::checkFinishAction($this->logOutput);
             LengowAction::checkOldAction($this->logOutput);
+            LengowOrder::checkAndReconcileOrders($this->logOutput);
             LengowAction::checkActionNotSent($this->logOutput);
         }
         // sending email in error for orders (import and send errors)

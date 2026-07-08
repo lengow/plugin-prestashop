@@ -525,7 +525,10 @@ class LengowOrder extends Order
         if ((int) $this->getCurrentState() !== $idOrderState) {
             // change state process to shipped
             if (($orderStateLengow === self::STATE_SHIPPED || $orderStateLengow === self::STATE_CLOSED)
-                && (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_ACCEPTED)
+                && (
+                    (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_ACCEPTED)
+                    || (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_WAITING_SHIPMENT)
+                )
             ) {
                 // create a new order history
                 $history = new OrderHistory();
@@ -545,6 +548,7 @@ class LengowOrder extends Order
                 && (
                     (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_ACCEPTED)
                     || (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_SHIPPED)
+                    || (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_WAITING_SHIPMENT)
                 )
             ) {
                 // create a new order history
@@ -652,6 +656,7 @@ class LengowOrder extends Order
                     false
                 );
                 if (!$activeAction
+                    && !$orderLogs
                     && !array_key_exists($result[self::FIELD_ORDER_ID], $unsentOrders)
                 ) {
                     $action = (int) $result['id_order_state'] === LengowMain::getOrderState(self::STATE_CANCELED)
@@ -666,6 +671,104 @@ class LengowOrder extends Order
         }
 
         return false;
+    }
+
+    /**
+     * Reconcile local orders stuck at PROCESS_STATE_IMPORT with their current state on Lengow API.
+     * Runs after each full cron to fix orders whose updated_at was never refreshed by the marketplace.
+     * Processes up to 50 orders per run (oldest first) from the last 30 days.
+     *
+     * @param bool $logOutput see log or not
+     *
+     * @return bool
+     */
+    public static function checkAndReconcileOrders($logOutput = false)
+    {
+        if (LengowConfiguration::debugModeIsActive()) {
+            return false;
+        }
+        LengowMain::log(
+            LengowLog::CODE_IMPORT,
+            LengowMain::setLogMessage('log.import.check_reconcile_orders'),
+            $logOutput
+        );
+        $date = date(LengowMain::DATE_FULL, strtotime('-30 days', time()));
+        $sql = 'SELECT lo.`id`, lo.`id_order`, lo.`marketplace_sku`, lo.`marketplace_name`
+            FROM `' . _DB_PREFIX_ . 'lengow_orders` lo
+            LEFT JOIN `' . _DB_PREFIX_ . 'lengow_actions` la
+                ON la.`id_order` = lo.`id_order` AND la.`state` = ' . LengowAction::STATE_NEW . '
+            WHERE lo.`order_process_state` = ' . self::PROCESS_STATE_IMPORT . '
+            AND lo.`date_add` >= "' . $date . '"
+            AND la.`id` IS NULL
+            ORDER BY lo.`date_add` ASC
+            LIMIT 50';
+        try {
+            $results = Db::getInstance()->executeS($sql);
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
+        if (empty($results)) {
+            return true;
+        }
+        $accountId = LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_ID);
+        foreach ($results as $row) {
+            $apiResult = LengowConnector::queryApi(
+                LengowConnector::GET,
+                LengowConnector::API_ORDER,
+                [
+                    LengowImport::ARG_MARKETPLACE_ORDER_ID => $row[self::FIELD_MARKETPLACE_SKU],
+                    LengowImport::ARG_MARKETPLACE => $row[self::FIELD_MARKETPLACE_NAME],
+                    LengowImport::ARG_ACCOUNT_ID => $accountId,
+                ]
+            );
+            if (!isset($apiResult->results[0]->lengow_status)) {
+                usleep(250000);
+                continue;
+            }
+            $lengowStatus = (string) $apiResult->results[0]->lengow_status;
+            if (self::getOrderProcessState($lengowStatus) !== self::PROCESS_STATE_FINISH) {
+                usleep(250000);
+                continue;
+            }
+            $orderLengow = new LengowOrder($row[self::FIELD_ORDER_ID]);
+            if (empty($apiResult->results[0]->packages)) {
+                unset($orderLengow);
+                usleep(250000);
+                continue;
+            }
+            $packageData = $apiResult->results[0]->packages[0];
+            try {
+                $updated = $orderLengow->updateState($lengowStatus, $packageData);
+            } catch (Exception $e) {
+                LengowMain::log(
+                    LengowLog::CODE_IMPORT,
+                    LengowMain::setLogMessage(
+                        'log.import.error_order_state_updated',
+                        ['error_message' => $e->getMessage()]
+                    ),
+                    $logOutput,
+                    $row[self::FIELD_MARKETPLACE_SKU]
+                );
+                unset($orderLengow);
+                usleep(250000);
+                continue;
+            }
+            if ($updated) {
+                LengowMain::log(
+                    LengowLog::CODE_IMPORT,
+                    LengowMain::setLogMessage(
+                        'log.import.order_state_reconciled',
+                        ['state_name' => $updated]
+                    ),
+                    $logOutput,
+                    $row[self::FIELD_MARKETPLACE_SKU]
+                );
+            }
+            unset($orderLengow);
+            usleep(250000);
+        }
+
+        return true;
     }
 
     /**
