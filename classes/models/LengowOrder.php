@@ -762,7 +762,7 @@ class LengowOrder extends Order
                     LengowLog::CODE_IMPORT,
                     LengowMain::setLogMessage(
                         'log.import.order_state_reconciled',
-                        ['state_name' => $updated]
+                        ['state_name' => $orderLengow->getCurrentStateName()]
                     ),
                     $logOutput,
                     $row[self::FIELD_MARKETPLACE_SKU]

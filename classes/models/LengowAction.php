@@ -689,6 +689,7 @@ class LengowAction
         // get all old order action (+ 3 days)
         $actions = self::getOldActions();
         if ($actions) {
+            $accountId = LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_ID);
             foreach ($actions as $action) {
                 // finish action in lengow_action table
                 self::finishAction($action[self::FIELD_ID]);
@@ -701,9 +702,7 @@ class LengowAction
                         [
                             LengowImport::ARG_MARKETPLACE_ORDER_ID => $orderLengow->lengowMarketplaceSku,
                             LengowImport::ARG_MARKETPLACE => $orderLengow->lengowMarketplaceName,
-                            LengowImport::ARG_ACCOUNT_ID => LengowConfiguration::getGlobalValue(
-                                LengowConfiguration::ACCOUNT_ID
-                            ),
+                            LengowImport::ARG_ACCOUNT_ID => $accountId,
                         ]
                     );
                     if (is_object($apiResult)
