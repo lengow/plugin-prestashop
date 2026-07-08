@@ -684,9 +684,11 @@ class LengowOrder extends Order
      */
     public static function checkAndReconcileOrders($logOutput = false)
     {
-        if (LengowConfiguration::debugModeIsActive()) {
+        static $ran = false;
+        if ($ran || LengowConfiguration::debugModeIsActive()) {
             return false;
         }
+        $ran = true;
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.check_reconcile_orders'),
@@ -721,7 +723,7 @@ class LengowOrder extends Order
                     LengowImport::ARG_ACCOUNT_ID => $accountId,
                 ]
             );
-            if (!isset($apiResult->results[0]->lengow_status)) {
+            if (!is_object($apiResult) || !isset($apiResult->results[0]->lengow_status)) {
                 usleep(250000);
                 continue;
             }

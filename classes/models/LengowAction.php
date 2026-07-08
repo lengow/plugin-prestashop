@@ -706,7 +706,8 @@ class LengowAction
                             ),
                         ]
                     );
-                    if (isset($apiResult->results[0]->lengow_status)
+                    if (is_object($apiResult)
+                        && isset($apiResult->results[0]->lengow_status)
                         && LengowOrder::getOrderProcessState($apiResult->results[0]->lengow_status)
                             === LengowOrder::PROCESS_STATE_FINISH
                         && !empty($apiResult->results[0]->packages)
