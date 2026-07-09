@@ -634,13 +634,23 @@ class LengowOrder extends Order
     public static function getUnsentOrders()
     {
         $date = date(LengowMain::DATE_FULL, strtotime('-5 days', time()));
-        $sql = 'SELECT lo.`id`, oh.`id_order_state`, oh.`id_order`
-            FROM ' . _DB_PREFIX_ . 'lengow_orders lo
-            INNER JOIN ' . _DB_PREFIX_ . 'order_history oh ON (oh.id_order = lo.id_order)
-            WHERE lo.`order_process_state` = ' . self::PROCESS_STATE_IMPORT
-            . ' AND oh.`id_order_state` IN ('
-            . LengowMain::getOrderState(self::STATE_SHIPPED) . ',' . LengowMain::getOrderState(self::STATE_CANCELED)
-            . ') AND oh.`date_add` >= "' . $date . '"';
+        $sql = 'SELECT lo.`id`, lo.`id_order`, MIN(oh.`id_order_state`) as id_order_state
+            FROM `' . _DB_PREFIX_ . 'lengow_orders` lo
+            INNER JOIN `' . _DB_PREFIX_ . 'order_history` oh
+                ON oh.`id_order` = lo.`id_order`
+                AND oh.`id_order_state` IN ('
+                . LengowMain::getOrderState(self::STATE_SHIPPED) . ',' . LengowMain::getOrderState(self::STATE_CANCELED)
+                . ') AND oh.`date_add` >= "' . $date . '"
+            LEFT JOIN `' . _DB_PREFIX_ . 'lengow_actions` la
+                ON la.`id_order` = lo.`id_order` AND la.`state` = ' . LengowAction::STATE_NEW . '
+            LEFT JOIN `' . _DB_PREFIX_ . 'lengow_logs_import` lli
+                ON lli.`id_order_lengow` = lo.`id`
+                AND lli.`type` = ' . LengowOrderError::TYPE_ERROR_SEND . '
+                AND lli.`is_finished` = 0
+            WHERE lo.`order_process_state` = ' . self::PROCESS_STATE_IMPORT . '
+            AND la.`id` IS NULL
+            AND lli.`id` IS NULL
+            GROUP BY lo.`id`, lo.`id_order`';
         try {
             $results = Db::getInstance()->executeS($sql);
         } catch (PrestaShopDatabaseException $e) {
@@ -649,21 +659,10 @@ class LengowOrder extends Order
         if ($results) {
             $unsentOrders = [];
             foreach ($results as $result) {
-                $activeAction = LengowAction::getActionsByOrderId($result[self::FIELD_ORDER_ID], true);
-                $orderLogs = LengowOrderError::getOrderLogs(
-                    $result[self::FIELD_ID],
-                    LengowOrderError::TYPE_ERROR_SEND,
-                    false
-                );
-                if (!$activeAction
-                    && !$orderLogs
-                    && !array_key_exists($result[self::FIELD_ORDER_ID], $unsentOrders)
-                ) {
-                    $action = (int) $result['id_order_state'] === LengowMain::getOrderState(self::STATE_CANCELED)
-                        ? LengowAction::TYPE_CANCEL
-                        : LengowAction::TYPE_SHIP;
-                    $unsentOrders[$result[self::FIELD_ORDER_ID]] = $action;
-                }
+                $action = (int) $result['id_order_state'] === LengowMain::getOrderState(self::STATE_CANCELED)
+                    ? LengowAction::TYPE_CANCEL
+                    : LengowAction::TYPE_SHIP;
+                $unsentOrders[$result[self::FIELD_ORDER_ID]] = $action;
             }
             if (!empty($unsentOrders)) {
                 return $unsentOrders;
@@ -689,7 +688,15 @@ class LengowOrder extends Order
         if ($ran || LengowConfiguration::debugModeIsActive()) {
             return false;
         }
+        $lockName = 'lengow_reconcile_orders';
+        $locked = (bool) Db::getInstance()->getValue(
+            'SELECT GET_LOCK(\'' . pSQL($lockName) . '\', 0)'
+        );
+        if (!$locked) {
+            return false;
+        }
         $ran = true;
+        try {
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage('log.import.check_reconcile_orders'),
@@ -773,6 +780,9 @@ class LengowOrder extends Order
         }
 
         return true;
+        } finally {
+            Db::getInstance()->execute('SELECT RELEASE_LOCK(\'' . pSQL($lockName) . '\')');
+        }
     }
 
     /**
