@@ -695,6 +695,10 @@ class LengowAction
                 self::finishAction($action[self::FIELD_ID]);
                 $orderLengow = new LengowOrder($action[self::FIELD_ORDER_ID]);
                 if ($orderLengow->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
+                    // compatibility V2: normalize marketplace name before API call
+                    if ($orderLengow->lengowIdFlux !== null) {
+                        $orderLengow->checkAndChangeMarketplaceName();
+                    }
                     // before logging as too old, check current state on Lengow API
                     $apiResult = LengowConnector::queryApi(
                         LengowConnector::GET,

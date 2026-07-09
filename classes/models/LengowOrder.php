@@ -709,7 +709,7 @@ class LengowOrder extends Order
             $logOutput
         );
         $date = date(LengowMain::DATE_FULL, strtotime('-30 days', time()));
-        $sql = 'SELECT lo.`id`, lo.`id_order`, lo.`marketplace_sku`, lo.`marketplace_name`
+        $sql = 'SELECT lo.`id`, lo.`id_order`, lo.`marketplace_sku`, lo.`marketplace_name`, lo.`id_flux`
             FROM `' . _DB_PREFIX_ . 'lengow_orders` lo
             LEFT JOIN `' . _DB_PREFIX_ . 'lengow_actions` la
                 ON la.`id_order` = lo.`id_order` AND la.`state` = ' . LengowAction::STATE_NEW . '
@@ -729,12 +729,20 @@ class LengowOrder extends Order
         }
         $accountId = LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_ID);
         foreach ($results as $row) {
+            // compatibility V2: normalize marketplace name if needed before API call
+            $marketplaceName = $row[self::FIELD_MARKETPLACE_NAME];
+            if ($row[self::FIELD_FLUX_ID] !== null) {
+                $tmp = new LengowOrder($row[self::FIELD_ORDER_ID]);
+                $tmp->checkAndChangeMarketplaceName();
+                $marketplaceName = $tmp->lengowMarketplaceName;
+                unset($tmp);
+            }
             $apiResult = LengowConnector::queryApi(
                 LengowConnector::GET,
                 LengowConnector::API_ORDER,
                 [
                     LengowImport::ARG_MARKETPLACE_ORDER_ID => $row[self::FIELD_MARKETPLACE_SKU],
-                    LengowImport::ARG_MARKETPLACE => $row[self::FIELD_MARKETPLACE_NAME],
+                    LengowImport::ARG_MARKETPLACE => $marketplaceName,
                     LengowImport::ARG_ACCOUNT_ID => $accountId,
                 ]
             );
