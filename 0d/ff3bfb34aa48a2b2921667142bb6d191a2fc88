@@ -1,0 +1,29 @@
+translations/en.csv
+  s_a99a8c823dfa1e::t_001576cf0d38a2 580
+classes/models/LengowMain.php
+  s_a99a8c823dfa1e::t_e4f9be3bda9b06 905-917
+  s_a99a8c823dfa1e::t_05028339e356a8 904
+translations/yml/log.yml
+  s_a99a8c823dfa1e::t_61c5c693046119 103
+classes/models/LengowCarrier.php
+  s_a99a8c823dfa1e::t_32ee694875501a 1434
+  s_a99a8c823dfa1e::t_1be932ddc3b5ca 1115
+classes/models/LengowImportOrder.php
+  s_a99a8c823dfa1e::t_e8c1db3b924258 1581,1592-1606
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "0dff3bfb34aa48a2b2921667142bb6d191a2fc88",
+  "prompts": {},
+  "sessions": {
+    "s_a99a8c823dfa1e": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "12fe66e7-8bd9-4315-8ba8-1e3cbb8f91f1",
+        "model": "claude-sonnet-5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
