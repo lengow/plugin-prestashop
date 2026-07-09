@@ -641,8 +641,8 @@ class LengowOrder extends Order
                 ON oh.`id_order` = lo.`id_order`
                 AND oh.`id_order_state` IN (' . $states . ')
                 AND oh.`date_add` >= "' . $date . '"
-                AND oh.`id` = (
-                    SELECT MAX(oh2.`id`)
+                AND oh.`id_order_history` = (
+                    SELECT MAX(oh2.`id_order_history`)
                     FROM `' . _DB_PREFIX_ . 'order_history` oh2
                     WHERE oh2.`id_order` = lo.`id_order`
                     AND oh2.`id_order_state` IN (' . $states . ')
