@@ -634,13 +634,20 @@ class LengowOrder extends Order
     public static function getUnsentOrders()
     {
         $date = date(LengowMain::DATE_FULL, strtotime('-5 days', time()));
-        $sql = 'SELECT lo.`id`, lo.`id_order`, MIN(oh.`id_order_state`) as id_order_state
+        $states = LengowMain::getOrderState(self::STATE_SHIPPED) . ',' . LengowMain::getOrderState(self::STATE_CANCELED);
+        $sql = 'SELECT lo.`id`, lo.`id_order`, oh.`id_order_state`
             FROM `' . _DB_PREFIX_ . 'lengow_orders` lo
             INNER JOIN `' . _DB_PREFIX_ . 'order_history` oh
                 ON oh.`id_order` = lo.`id_order`
-                AND oh.`id_order_state` IN ('
-                . LengowMain::getOrderState(self::STATE_SHIPPED) . ',' . LengowMain::getOrderState(self::STATE_CANCELED)
-                . ') AND oh.`date_add` >= "' . $date . '"
+                AND oh.`id_order_state` IN (' . $states . ')
+                AND oh.`date_add` >= "' . $date . '"
+                AND oh.`id` = (
+                    SELECT MAX(oh2.`id`)
+                    FROM `' . _DB_PREFIX_ . 'order_history` oh2
+                    WHERE oh2.`id_order` = lo.`id_order`
+                    AND oh2.`id_order_state` IN (' . $states . ')
+                    AND oh2.`date_add` >= "' . $date . '"
+                )
             LEFT JOIN `' . _DB_PREFIX_ . 'lengow_actions` la
                 ON la.`id_order` = lo.`id_order` AND la.`state` = ' . LengowAction::STATE_NEW . '
             LEFT JOIN `' . _DB_PREFIX_ . 'lengow_logs_import` lli
@@ -649,8 +656,7 @@ class LengowOrder extends Order
                 AND lli.`is_finished` = 0
             WHERE lo.`order_process_state` = ' . self::PROCESS_STATE_IMPORT . '
             AND la.`id` IS NULL
-            AND lli.`id` IS NULL
-            GROUP BY lo.`id`, lo.`id_order`';
+            AND lli.`id` IS NULL';
         try {
             $results = Db::getInstance()->executeS($sql);
         } catch (PrestaShopDatabaseException $e) {
