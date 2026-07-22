@@ -1285,6 +1285,11 @@ class LengowImportOrder
             $this->shippingAddress->vat_number = $billingAddress->vat_number;
             $this->shippingAddress->update();
         }
+        // get company from billing address if empty in shipping address
+        if (empty($this->shippingAddress->company) && !empty($billingAddress->company)) {
+            $this->shippingAddress->company = $billingAddress->company;
+            $this->shippingAddress->update();
+        }
         $cartData['id_address_delivery'] = $this->shippingAddress->id;
         // get currency
         $cartData['id_currency'] = (int) Currency::getIdByIsoCode((string) $this->orderData->currency->iso_a3);
