@@ -777,6 +777,11 @@ class LengowImportOrder
                 LengowOrder::FIELD_CUSTOMER_NAME => pSQL($this->getCustomerName()),
                 LengowOrder::FIELD_CUSTOMER_EMAIL => pSQL($this->getCustomerEmail()),
                 LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => pSQL($this->getVatNumberFromOrderData()),
+                LengowOrder::FIELD_MARKETPLACE_CUSTOMER_ID => pSQL(
+                    isset($this->orderData->marketplace_customer_id)
+                        ? (string) $this->orderData->marketplace_customer_id
+                        : ''
+                ),
                 LengowOrder::FIELD_CARRIER => pSQL($this->carrierName),
                 LengowOrder::FIELD_CARRIER_METHOD => pSQL($this->carrierMethod),
                 LengowOrder::FIELD_CARRIER_TRACKING => pSQL($this->trackingNumber),
@@ -972,6 +977,22 @@ class LengowImportOrder
             return $email;
         }
 
+        // check if a previous order from this marketplace buyer already exists in lengow_orders
+        // wrapped in try/catch for hotfix compatibility (column may not exist before upgrade)
+        try {
+            $previousEmail = LengowOrder::getCustomerEmailByMarketplaceCustomerId(
+                $marketplaceCustomerId,
+                $this->marketplace->name,
+                $this->idShop
+            );
+
+            if ($previousEmail) {
+                return $previousEmail;
+            }
+        } catch (Exception $e) {
+            // marketplace_customer_id column does not exist yet — fall through to lastname fallback
+        }
+
         // check if a customer already exists with this email in this shop
         $existingCustomer = new LengowCustomer();
         $existingCustomer->getByEmailAndShop($email, $this->idShop);
@@ -997,8 +1018,8 @@ class LengowImportOrder
             return $generatedEmail;
         }
 
-        // no stable customer yet — use lastname as tie-breaker to avoid
-        // splitting the first buyer who was created with the original relay email
+        // lastname fallback — used when the marketplace_customer_id column is not yet
+        // available (hotfix applied without DB upgrade) or for the first conflict detection
         $newLastName = Tools::strtolower(trim(isset($billingData['last_name']) ? (string) $billingData['last_name'] : ''));
         $existingLastName = Tools::strtolower(trim($existingCustomer->lastname));
 

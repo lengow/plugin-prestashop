@@ -55,6 +55,7 @@ class LengowOrder extends Order
     public const FIELD_CUSTOMER_NAME = 'customer_name';
     public const FIELD_CUSTOMER_EMAIL = 'customer_email';
     public const FIELD_CUSTOMER_VAT_NUMBER = 'customer_vat_number';
+    public const FIELD_MARKETPLACE_CUSTOMER_ID = 'marketplace_customer_id';
     public const FIELD_CARRIER = 'carrier';
     public const FIELD_CARRIER_METHOD = 'method';
     public const FIELD_CARRIER_TRACKING = 'tracking';
@@ -278,6 +279,7 @@ class LengowOrder extends Order
             lo.`currency`,
             lo.`total_paid`,
             lo.`customer_vat_number`,
+            lo.`marketplace_customer_id`,
             lo.`commission`,
             lo.`customer_name`,
             lo.`customer_email`,
@@ -385,6 +387,34 @@ class LengowOrder extends Order
         $result = Db::getInstance()->getRow($query);
         if ($result) {
             return (int) $result[self::FIELD_ID];
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the customer email used for a previous order with the same marketplace_customer_id
+     *
+     * @param string $marketplaceCustomerId marketplace customer identifier
+     * @param string $marketplace marketplace name
+     * @param int $idShop PrestaShop shop id
+     *
+     * @return string|false customer email if found, false otherwise
+     */
+    public static function getCustomerEmailByMarketplaceCustomerId($marketplaceCustomerId, $marketplace, $idShop)
+    {
+        $query = 'SELECT `customer_email` FROM `' . _DB_PREFIX_ . 'lengow_orders`
+            WHERE `marketplace_customer_id` = \'' . pSQL($marketplaceCustomerId) . '\'
+            AND `marketplace_name` = \'' . pSQL($marketplace) . '\'
+            AND `id_shop` = \'' . (int) $idShop . '\'
+            AND `customer_email` IS NOT NULL
+            AND `customer_email` != \'\'
+            ORDER BY `id` DESC
+            LIMIT 1';
+
+        $result = Db::getInstance()->getRow($query);
+        if ($result) {
+            return (string) $result[self::FIELD_CUSTOMER_EMAIL];
         }
 
         return false;
