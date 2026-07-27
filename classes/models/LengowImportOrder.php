@@ -960,6 +960,10 @@ class LengowImportOrder
      * per actual marketplace buyer to prevent unrelated orders from being
      * grouped under the same PrestaShop customer account.
      *
+     * Only activates when marketplace_customer_id is available in the API payload,
+     * as it is the only reliable discriminator. Without it, the original email is
+     * kept to avoid false positives (e.g., shared company inboxes, name corrections).
+     *
      * @param string $email Original email from API
      * @param array<string, mixed> $billingData Billing data containing customer name
      *
@@ -967,6 +971,15 @@ class LengowImportOrder
      */
     private function resolveSharedEmail(string $email, array $billingData): string
     {
+        // only activate when marketplace_customer_id is available as a reliable discriminator
+        $marketplaceCustomerId = isset($this->orderData->marketplace_customer_id)
+            ? (string) $this->orderData->marketplace_customer_id
+            : null;
+
+        if (empty($marketplaceCustomerId)) {
+            return $email;
+        }
+
         // check if a customer already exists with this email in this shop
         $existingCustomer = new LengowCustomer();
         $existingCustomer->getByEmailAndShop($email, $this->idShop);
@@ -975,7 +988,29 @@ class LengowImportOrder
             return $email;
         }
 
-        // compare last names to detect if this is actually a different end-customer
+        // generate the stable email for this marketplace buyer
+        $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
+        $domain = strtolower($domain);
+        $generatedEmail = substr(
+            hash('sha256', $marketplaceCustomerId . '-' . $this->marketplace->name),
+            0,
+            32
+        ) . '@' . $domain;
+
+        // if the existing customer already uses this stable email, it's the same buyer
+        if ($existingCustomer->email === $generatedEmail) {
+            return $generatedEmail;
+        }
+
+        // check if a customer was previously created with this buyer's stable email
+        $stableCustomer = new LengowCustomer();
+        $stableCustomer->getByEmailAndShop($generatedEmail, $this->idShop);
+        if ($stableCustomer->id) {
+            return $generatedEmail;
+        }
+
+        // no stable customer yet — use lastname as tie-breaker to avoid
+        // splitting the first buyer who was created with the original relay email
         $newLastName = Tools::strtolower(trim((string) ($billingData['last_name'] ?? '')));
         $existingLastName = Tools::strtolower(trim($existingCustomer->lastname));
 
@@ -983,53 +1018,15 @@ class LengowImportOrder
             return $email;
         }
 
-        // different customer with same email — shared/relay email detected
-        $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
-        $domain = strtolower($domain);
-
-        // use marketplace_customer_id if available (stable per marketplace buyer)
-        $marketplaceCustomerId = isset($this->orderData->marketplace_customer_id)
-            ? (string) $this->orderData->marketplace_customer_id
-            : null;
-
-        if (!empty($marketplaceCustomerId)) {
-            $generatedEmail = substr(
-                hash('sha256', $marketplaceCustomerId . '-' . $this->marketplace->name),
-                0,
-                32
-            ) . '@' . $domain;
-
-            LengowMain::log(
-                LengowLog::CODE_IMPORT,
-                LengowMain::setLogMessage(
-                    'log.import.shared_email_resolved_by_customer_id',
-                    [
-                        'original_email' => $email,
-                        'generated_email' => $generatedEmail,
-                        'marketplace_customer_id' => $marketplaceCustomerId,
-                    ]
-                ),
-                $this->logOutput,
-                $this->marketplaceSku
-            );
-
-            return $generatedEmail;
-        }
-
-        // no marketplace_customer_id — fallback to order-based unique email
-        $generatedEmail = substr(
-            hash('sha256', $this->marketplaceSku . '-' . $this->marketplace->name),
-            0,
-            32
-        ) . '@' . $domain;
-
+        // different buyer confirmed — use generated email
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage(
-                'log.import.shared_email_resolved_by_order',
+                'log.import.shared_email_resolved_by_customer_id',
                 [
                     'original_email' => $email,
                     'generated_email' => $generatedEmail,
+                    'marketplace_customer_id' => $marketplaceCustomerId,
                 ]
             ),
             $this->logOutput,
