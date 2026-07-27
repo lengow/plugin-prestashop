@@ -84,7 +84,6 @@ en:
       rewrite_shipping_cost: "rewrite amount without shipping cost"
       generate_unique_email: "generate a unique email %{email}"
       shared_email_resolved_by_customer_id: "shared relay email detected (%{original_email}), generated stable customer email %{generated_email} from marketplace_customer_id %{marketplace_customer_id}"
-      shared_email_resolved_by_order: "shared relay email detected (%{original_email}), no marketplace_customer_id available, generated order-specific email %{generated_email}"
       product_be_found: "product id %{id_full} found with field %{attribute_name} (%{attribute_value})"
       product_advanced_search: "product not found with field %{attribute_name} (%{attribute_value}). Using advanced search"
       product_state_canceled: "product %{product_id} could not be added to cart - status: %{state_product}"
