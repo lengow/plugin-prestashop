@@ -640,6 +640,7 @@ class LengowInstall
                 `currency` VARCHAR(3) NULL,
                 `total_paid` DECIMAL(17,2) UNSIGNED NULL,
                 `customer_vat_number` VARCHAR(100) NULL,
+                `marketplace_customer_id` VARCHAR(100) NULL,
                 `commission` DECIMAL(17,2) UNSIGNED NULL,
                 `customer_name` VARCHAR(255) NULL,
                 `customer_email` VARCHAR(255) NULL,
