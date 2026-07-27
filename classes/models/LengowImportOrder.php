@@ -953,6 +953,93 @@ class LengowImportOrder
     }
 
     /**
+     * Resolve shared/relay email addresses to avoid merging different end-customers.
+     *
+     * When a relay or technical email is shared across multiple end-customers
+     * (e.g., Octopia CDON/FYND via @clemarche.com), generates a unique email
+     * per actual marketplace buyer to prevent unrelated orders from being
+     * grouped under the same PrestaShop customer account.
+     *
+     * @param string $email Original email from API
+     * @param array<string, mixed> $billingData Billing data containing customer name
+     *
+     * @return string Resolved email (original or generated)
+     */
+    private function resolveSharedEmail(string $email, array $billingData): string
+    {
+        // check if a customer already exists with this email in this shop
+        $existingCustomer = new LengowCustomer();
+        $existingCustomer->getByEmailAndShop($email, $this->idShop);
+
+        if (!$existingCustomer->id) {
+            return $email;
+        }
+
+        // compare last names to detect if this is actually a different end-customer
+        $newLastName = Tools::strtolower(trim((string) ($billingData['last_name'] ?? '')));
+        $existingLastName = Tools::strtolower(trim($existingCustomer->lastname));
+
+        if ($newLastName === $existingLastName) {
+            return $email;
+        }
+
+        // different customer with same email — shared/relay email detected
+        $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
+        $domain = strtolower($domain);
+
+        // use marketplace_customer_id if available (stable per marketplace buyer)
+        $marketplaceCustomerId = isset($this->orderData->marketplace_customer_id)
+            ? (string) $this->orderData->marketplace_customer_id
+            : null;
+
+        if (!empty($marketplaceCustomerId)) {
+            $generatedEmail = substr(
+                hash('sha256', $marketplaceCustomerId . '-' . $this->marketplace->name),
+                0,
+                32
+            ) . '@' . $domain;
+
+            LengowMain::log(
+                LengowLog::CODE_IMPORT,
+                LengowMain::setLogMessage(
+                    'log.import.shared_email_resolved_by_customer_id',
+                    [
+                        'original_email' => $email,
+                        'generated_email' => $generatedEmail,
+                        'marketplace_customer_id' => $marketplaceCustomerId,
+                    ]
+                ),
+                $this->logOutput,
+                $this->marketplaceSku
+            );
+
+            return $generatedEmail;
+        }
+
+        // no marketplace_customer_id — fallback to order-based unique email
+        $generatedEmail = substr(
+            hash('sha256', $this->marketplaceSku . '-' . $this->marketplace->name),
+            0,
+            32
+        ) . '@' . $domain;
+
+        LengowMain::log(
+            LengowLog::CODE_IMPORT,
+            LengowMain::setLogMessage(
+                'log.import.shared_email_resolved_by_order',
+                [
+                    'original_email' => $email,
+                    'generated_email' => $generatedEmail,
+                ]
+            ),
+            $this->logOutput,
+            $this->marketplaceSku
+        );
+
+        return $generatedEmail;
+    }
+
+    /**
      * Checks if an order sent by the marketplace must be created or not
      *
      * @return bool
@@ -1236,6 +1323,9 @@ class LengowImportOrder
             } elseif (LengowConfiguration::getTypedGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 1) {
                 $billingData['email'] = $this->marketplaceSku . '-' . $this->marketplace->name . '@' . $domain;
             }
+        } else {
+            // resolve shared relay emails to prevent merging different customers
+            $billingData['email'] = $this->resolveSharedEmail($billingData['email'], $billingData);
         }
 
         LengowMain::log(
