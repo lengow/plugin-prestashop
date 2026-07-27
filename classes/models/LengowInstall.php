@@ -660,6 +660,7 @@ class LengowInstall
                 INDEX (`id_flux`),
                 INDEX (`marketplace_sku`),
                 INDEX (`marketplace_name`),
+                INDEX (`marketplace_customer_id`),
                 INDEX (`date_add`)
                 ) ENGINE=' . _MYSQL_ENGINE_ . ' DEFAULT CHARSET=utf8;';
             Db::getInstance()->execute($sql);

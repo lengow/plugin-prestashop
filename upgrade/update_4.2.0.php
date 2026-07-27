@@ -36,4 +36,9 @@ if (LengowInstall::checkTableExists(LengowOrder::TABLE_ORDER)) {
             'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD `marketplace_customer_id` VARCHAR(100) NULL'
         );
     }
+    if (!LengowInstall::checkIndexExists(LengowOrder::TABLE_ORDER, LengowOrder::FIELD_MARKETPLACE_CUSTOMER_ID)) {
+        Db::getInstance()->execute(
+            'ALTER TABLE ' . _DB_PREFIX_ . 'lengow_orders ADD INDEX (`marketplace_customer_id`)'
+        );
+    }
 }
