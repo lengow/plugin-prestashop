@@ -1345,6 +1345,11 @@ class LengowImportOrder
         } else {
             // resolve shared relay emails to prevent merging different customers
             $billingData['email'] = $this->resolveSharedEmail($billingData['email'], $billingData);
+            // persist the resolved email so future imports reuse it via marketplace_customer_id lookup
+            LengowOrder::updateOrderLengow(
+                $this->idOrderLengow,
+                [LengowOrder::FIELD_CUSTOMER_EMAIL => pSQL($billingData['email'])]
+            );
         }
 
         LengowMain::log(
