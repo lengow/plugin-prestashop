@@ -790,13 +790,12 @@ class LengowImportOrder
             LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($this->orderStateLengow),
             LengowOrder::FIELD_EXTRA => pSQL(json_encode($this->orderData), true),
         ];
-        // only include marketplace_customer_id if the column exists (hotfix compatibility)
-        if (LengowOrder::hasMarketplaceCustomerIdColumn()) {
-            $updateData[LengowOrder::FIELD_MARKETPLACE_CUSTOMER_ID] = pSQL(
-                isset($this->orderData->marketplace_customer_id)
-                    ? (string) $this->orderData->marketplace_customer_id
-                    : ''
-            );
+        // only persist marketplace_customer_id when the column exists and the API provides a non-empty value
+        if (LengowOrder::hasMarketplaceCustomerIdColumn() && isset($this->orderData->marketplace_customer_id)) {
+            $marketplaceCustomerId = (string) $this->orderData->marketplace_customer_id;
+            if ($marketplaceCustomerId !== '') {
+                $updateData[LengowOrder::FIELD_MARKETPLACE_CUSTOMER_ID] = pSQL($marketplaceCustomerId);
+            }
         }
         LengowOrder::updateOrderLengow($this->idOrderLengow, $updateData);
 
