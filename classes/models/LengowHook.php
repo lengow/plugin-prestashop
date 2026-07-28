@@ -132,16 +132,7 @@ class LengowHook
                 }
                 try {
                     $registered = $this->module->registerHook($hook);
-                } catch (PrestaShopDatabaseException $e) {
-                    if (!self::isDuplicateHookRegistrationException($e)) {
-                        throw $e;
-                    }
-                    LengowMain::log(
-                        LengowLog::CODE_INSTALL,
-                        LengowMain::setLogMessage('log.install.registering_hook_success', ['hook' => $hook])
-                    );
-                    continue;
-                } catch (PrestaShopException $e) {
+                } catch (PrestaShopDatabaseException | PrestaShopException $e) {
                     if (!self::isDuplicateHookRegistrationException($e)) {
                         throw $e;
                     }
