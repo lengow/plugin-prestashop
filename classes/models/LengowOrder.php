@@ -256,12 +256,35 @@ class LengowOrder extends Order
     }
 
     /**
+     * @var bool|null cached result of marketplace_customer_id column existence check
+     */
+    private static $hasMarketplaceCustomerIdColumn = null;
+
+    /**
+     * Check if the marketplace_customer_id column exists in lengow_orders (cached).
+     *
+     * @return bool
+     */
+    public static function hasMarketplaceCustomerIdColumn()
+    {
+        if (self::$hasMarketplaceCustomerIdColumn === null) {
+            self::$hasMarketplaceCustomerIdColumn = LengowInstall::checkFieldExists(
+                self::TABLE_ORDER,
+                self::FIELD_MARKETPLACE_CUSTOMER_ID
+            );
+        }
+
+        return self::$hasMarketplaceCustomerIdColumn;
+    }
+
+    /**
      * Load information from lengow_orders table
      *
      * @return bool
      */
     protected function loadLengowFields()
     {
+        $hasCustomerIdColumn = self::hasMarketplaceCustomerIdColumn();
         $query = 'SELECT
             lo.`id`,
             lo.`id_shop`,
@@ -278,9 +301,9 @@ class LengowOrder extends Order
             lo.`order_types`,
             lo.`currency`,
             lo.`total_paid`,
-            lo.`customer_vat_number`,
-            lo.`marketplace_customer_id`,
-            lo.`commission`,
+            lo.`customer_vat_number`,'
+            . ($hasCustomerIdColumn ? 'lo.`marketplace_customer_id`,' : '') .
+            'lo.`commission`,
             lo.`customer_name`,
             lo.`customer_email`,
             lo.`carrier`,

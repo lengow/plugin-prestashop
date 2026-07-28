@@ -787,7 +787,7 @@ class LengowImportOrder
             LengowOrder::FIELD_EXTRA => pSQL(json_encode($this->orderData), true),
         ];
         // only include marketplace_customer_id if the column exists (hotfix compatibility)
-        if (self::hasMarketplaceCustomerIdColumn()) {
+        if (LengowOrder::hasMarketplaceCustomerIdColumn()) {
             $updateData[LengowOrder::FIELD_MARKETPLACE_CUSTOMER_ID] = pSQL(
                 isset($this->orderData->marketplace_customer_id)
                     ? (string) $this->orderData->marketplace_customer_id
@@ -967,28 +967,6 @@ class LengowImportOrder
      *
      * @return string Resolved email (original or generated)
      */
-    /**
-     * @var bool|null cached result of marketplace_customer_id column existence check
-     */
-    private static $hasMarketplaceCustomerIdColumn = null;
-
-    /**
-     * Check if the marketplace_customer_id column exists in lengow_orders (cached).
-     *
-     * @return bool
-     */
-    private static function hasMarketplaceCustomerIdColumn()
-    {
-        if (self::$hasMarketplaceCustomerIdColumn === null) {
-            self::$hasMarketplaceCustomerIdColumn = LengowInstall::checkFieldExists(
-                LengowOrder::TABLE_ORDER,
-                LengowOrder::FIELD_MARKETPLACE_CUSTOMER_ID
-            );
-        }
-
-        return self::$hasMarketplaceCustomerIdColumn;
-    }
-
     private function resolveSharedEmail($email, $billingData)
     {
         // only activate when marketplace_customer_id is available as a reliable discriminator
@@ -1001,7 +979,7 @@ class LengowImportOrder
         }
 
         // check if a previous order from this marketplace buyer already exists in lengow_orders
-        if (self::hasMarketplaceCustomerIdColumn()) {
+        if (LengowOrder::hasMarketplaceCustomerIdColumn()) {
             $previousEmail = LengowOrder::getCustomerEmailByMarketplaceCustomerId(
                 $marketplaceCustomerId,
                 $this->marketplace->name,
