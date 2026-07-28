@@ -130,14 +130,22 @@ class LengowHook
     }
 
     /**
+     * Check if an exception is a duplicate hook registration (MySQL or MariaDB)
+     *
+     * MySQL >= 8.0.19: "Duplicate entry '...' for key 'hook_module.PRIMARY'"
+     * MariaDB / MySQL < 8.0.19: "Duplicate entry '...' for key 'PRIMARY'"
+     *
      * @param Exception $exception
      *
      * @return bool
      */
     private function isDuplicateHookRegistrationException(Exception $exception): bool
     {
-        return str_contains($exception->getMessage(), 'Duplicate entry')
-            && str_contains($exception->getMessage(), 'hook_module.PRIMARY');
+        $message = $exception->getMessage();
+
+        return str_contains($message, 'Duplicate entry')
+            && (str_contains($message, 'hook_module.PRIMARY')
+                || str_contains($message, "for key 'PRIMARY'"));
     }
 
     /**
