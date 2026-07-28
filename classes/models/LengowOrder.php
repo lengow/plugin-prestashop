@@ -412,7 +412,11 @@ class LengowOrder extends Order
             ORDER BY `id` DESC
             LIMIT 1';
 
-        $result = Db::getInstance()->getRow($query);
+        try {
+            $result = Db::getInstance()->getRow($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
         if ($result) {
             return (string) $result[self::FIELD_CUSTOMER_EMAIL];
         }

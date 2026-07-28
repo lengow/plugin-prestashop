@@ -768,32 +768,33 @@ class LengowImportOrder
         // load tracking data
         $this->loadTrackingData();
         // update Lengow order record with new data
-        LengowOrder::updateOrderLengow(
-            $this->idOrderLengow,
-            [
-                LengowOrder::FIELD_CURRENCY => (string) $this->orderData->currency->iso_a3,
-                LengowOrder::FIELD_TOTAL_PAID => $this->orderAmount,
-                LengowOrder::FIELD_ORDER_ITEM => $this->orderItems,
-                LengowOrder::FIELD_CUSTOMER_NAME => pSQL($this->getCustomerName()),
-                LengowOrder::FIELD_CUSTOMER_EMAIL => pSQL($this->getCustomerEmail()),
-                LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => pSQL($this->getVatNumberFromOrderData()),
-                LengowOrder::FIELD_MARKETPLACE_CUSTOMER_ID => pSQL(
-                    isset($this->orderData->marketplace_customer_id)
-                        ? (string) $this->orderData->marketplace_customer_id
-                        : ''
-                ),
-                LengowOrder::FIELD_CARRIER => pSQL($this->carrierName),
-                LengowOrder::FIELD_CARRIER_METHOD => pSQL($this->carrierMethod),
-                LengowOrder::FIELD_CARRIER_TRACKING => pSQL($this->trackingNumber),
-                LengowOrder::FIELD_CARRIER_RELAY_ID => pSQL($this->relayId),
-                LengowOrder::FIELD_SENT_MARKETPLACE => (int) $this->shippedByMp,
-                LengowOrder::FIELD_DELIVERY_COUNTRY_ISO => pSQL(
-                    (string) $this->packageData->delivery->common_country_iso_a2
-                ),
-                LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($this->orderStateLengow),
-                LengowOrder::FIELD_EXTRA => pSQL(json_encode($this->orderData), true),
-            ]
-        );
+        $updateData = [
+            LengowOrder::FIELD_CURRENCY => (string) $this->orderData->currency->iso_a3,
+            LengowOrder::FIELD_TOTAL_PAID => $this->orderAmount,
+            LengowOrder::FIELD_ORDER_ITEM => $this->orderItems,
+            LengowOrder::FIELD_CUSTOMER_NAME => pSQL($this->getCustomerName()),
+            LengowOrder::FIELD_CUSTOMER_EMAIL => pSQL($this->getCustomerEmail()),
+            LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => pSQL($this->getVatNumberFromOrderData()),
+            LengowOrder::FIELD_CARRIER => pSQL($this->carrierName),
+            LengowOrder::FIELD_CARRIER_METHOD => pSQL($this->carrierMethod),
+            LengowOrder::FIELD_CARRIER_TRACKING => pSQL($this->trackingNumber),
+            LengowOrder::FIELD_CARRIER_RELAY_ID => pSQL($this->relayId),
+            LengowOrder::FIELD_SENT_MARKETPLACE => (int) $this->shippedByMp,
+            LengowOrder::FIELD_DELIVERY_COUNTRY_ISO => pSQL(
+                (string) $this->packageData->delivery->common_country_iso_a2
+            ),
+            LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($this->orderStateLengow),
+            LengowOrder::FIELD_EXTRA => pSQL(json_encode($this->orderData), true),
+        ];
+        // only include marketplace_customer_id if the column exists (hotfix compatibility)
+        if (self::hasMarketplaceCustomerIdColumn()) {
+            $updateData[LengowOrder::FIELD_MARKETPLACE_CUSTOMER_ID] = pSQL(
+                isset($this->orderData->marketplace_customer_id)
+                    ? (string) $this->orderData->marketplace_customer_id
+                    : ''
+            );
+        }
+        LengowOrder::updateOrderLengow($this->idOrderLengow, $updateData);
 
         return true;
     }
@@ -966,6 +967,28 @@ class LengowImportOrder
      *
      * @return string Resolved email (original or generated)
      */
+    /**
+     * @var bool|null cached result of marketplace_customer_id column existence check
+     */
+    private static $hasMarketplaceCustomerIdColumn = null;
+
+    /**
+     * Check if the marketplace_customer_id column exists in lengow_orders (cached).
+     *
+     * @return bool
+     */
+    private static function hasMarketplaceCustomerIdColumn()
+    {
+        if (self::$hasMarketplaceCustomerIdColumn === null) {
+            self::$hasMarketplaceCustomerIdColumn = LengowInstall::checkFieldExists(
+                LengowOrder::TABLE_ORDER,
+                LengowOrder::FIELD_MARKETPLACE_CUSTOMER_ID
+            );
+        }
+
+        return self::$hasMarketplaceCustomerIdColumn;
+    }
+
     private function resolveSharedEmail($email, $billingData)
     {
         // only activate when marketplace_customer_id is available as a reliable discriminator
@@ -978,8 +1001,7 @@ class LengowImportOrder
         }
 
         // check if a previous order from this marketplace buyer already exists in lengow_orders
-        // wrapped in try/catch for hotfix compatibility (column may not exist before upgrade)
-        try {
+        if (self::hasMarketplaceCustomerIdColumn()) {
             $previousEmail = LengowOrder::getCustomerEmailByMarketplaceCustomerId(
                 $marketplaceCustomerId,
                 $this->marketplace->name,
@@ -989,8 +1011,6 @@ class LengowImportOrder
             if ($previousEmail) {
                 return $previousEmail;
             }
-        } catch (Exception $e) {
-            // marketplace_customer_id column does not exist yet — fall through to lastname fallback
         }
 
         // check if a customer already exists with this email in this shop
