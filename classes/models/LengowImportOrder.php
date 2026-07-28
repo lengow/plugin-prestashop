@@ -994,7 +994,8 @@ class LengowImportOrder
             $previousEmail = LengowOrder::getCustomerEmailByMarketplaceCustomerId(
                 $marketplaceCustomerId,
                 $this->marketplace->name,
-                $this->idShop
+                $this->idShop,
+                $this->idOrderLengow
             );
 
             if ($previousEmail) {

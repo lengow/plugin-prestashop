@@ -425,18 +425,21 @@ class LengowOrder extends Order
      * @param string $marketplaceCustomerId marketplace customer identifier
      * @param string $marketplace marketplace name
      * @param int $idShop PrestaShop shop id
+     * @param int $excludeIdOrderLengow Lengow order id to exclude (current order being imported)
      *
      * @return string|false customer email if found, false otherwise
      */
     public static function getCustomerEmailByMarketplaceCustomerId(
         string $marketplaceCustomerId,
         string $marketplace,
-        int $idShop
+        int $idShop,
+        int $excludeIdOrderLengow = 0
     ): string|false {
         $query = 'SELECT `customer_email` FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `marketplace_customer_id` = \'' . pSQL($marketplaceCustomerId) . '\'
             AND `marketplace_name` = \'' . pSQL($marketplace) . '\'
-            AND `id_shop` = \'' . (int) $idShop . '\'
+            AND `id_shop` = \'' . (int) $idShop . '\''
+            . ($excludeIdOrderLengow > 0 ? ' AND `id` != ' . (int) $excludeIdOrderLengow : '') . '
             AND `customer_email` IS NOT NULL
             AND `customer_email` != \'\'
             ORDER BY `id` DESC
