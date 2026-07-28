@@ -265,8 +265,29 @@ class LengowOrder extends Order
      *
      * @return bool
      */
+    /**
+     * @var bool|null cached result of marketplace_customer_id column existence check
+     */
+    private static ?bool $hasMarketplaceCustomerIdColumn = null;
+
+    /**
+     * Check if the marketplace_customer_id column exists in lengow_orders (cached).
+     */
+    public static function hasMarketplaceCustomerIdColumn(): bool
+    {
+        if (self::$hasMarketplaceCustomerIdColumn === null) {
+            self::$hasMarketplaceCustomerIdColumn = LengowInstall::checkFieldExists(
+                self::TABLE_ORDER,
+                self::FIELD_MARKETPLACE_CUSTOMER_ID
+            );
+        }
+
+        return self::$hasMarketplaceCustomerIdColumn;
+    }
+
     protected function loadLengowFields(): bool
     {
+        $hasCustomerIdColumn = self::hasMarketplaceCustomerIdColumn();
         $query = 'SELECT
             lo.`id`,
             lo.`id_shop`,
@@ -283,9 +304,9 @@ class LengowOrder extends Order
             lo.`order_types`,
             lo.`currency`,
             lo.`total_paid`,
-            lo.`customer_vat_number`,
-            lo.`marketplace_customer_id`,
-            lo.`commission`,
+            lo.`customer_vat_number`,'
+            . ($hasCustomerIdColumn ? 'lo.`marketplace_customer_id`,' : '') .
+            'lo.`commission`,
             lo.`customer_name`,
             lo.`customer_email`,
             lo.`carrier`,
@@ -319,7 +340,9 @@ class LengowOrder extends Order
             $this->lengowCurrency = $result[self::FIELD_CURRENCY] ?? '';
             $this->lengowTotalPaid = (float) ($result[self::FIELD_TOTAL_PAID] ?? 0.0);
             $this->lengowCustomerVatNumber = $result[self::FIELD_CUSTOMER_VAT_NUMBER] ?? '';
-            $this->lengowMarketplaceCustomerId = $result[self::FIELD_MARKETPLACE_CUSTOMER_ID] ?? '';
+            $this->lengowMarketplaceCustomerId = $hasCustomerIdColumn
+                ? ($result[self::FIELD_MARKETPLACE_CUSTOMER_ID] ?? '')
+                : '';
             $this->lengowCommission = (float) ($result[self::FIELD_COMMISSION] ?? 0.0);
             $this->lengowCustomerName = $result[self::FIELD_CUSTOMER_NAME] ?? '';
             $this->lengowCustomerEmail = $result[self::FIELD_CUSTOMER_EMAIL] ?? '';
