@@ -136,8 +136,13 @@ class LengowHook
      */
     private function isDuplicateHookRegistrationException(Exception $exception): bool
     {
+        // MySQL >= 8.0.19 qualifies the index name with the table ("hook_module.PRIMARY"),
+        // while MariaDB and MySQL < 8.0.19 only report "for key 'PRIMARY'".
         return str_contains($exception->getMessage(), 'Duplicate entry')
-            && str_contains($exception->getMessage(), 'hook_module.PRIMARY');
+            && (
+                str_contains($exception->getMessage(), 'hook_module.PRIMARY')
+                || str_contains($exception->getMessage(), "for key 'PRIMARY'")
+            );
     }
 
     /**
