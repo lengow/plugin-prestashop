@@ -1474,6 +1474,9 @@ class LengowImportOrder
         if (isset($addressData['phone_mobile']) && $addressData['phone_mobile'] === '__') {
             $addressData['phone_mobile'] = '';
         }
+        if (isset($addressData['phone_office']) && $addressData['phone_office'] === '__') {
+            $addressData['phone_office'] = '';
+        }
         if (empty($addressData['phone_home'])
             && empty($addressData['phone_mobile'])
             && empty($addressData['phone_office'])
