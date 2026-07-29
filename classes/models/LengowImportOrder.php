@@ -1343,15 +1343,20 @@ class LengowImportOrder
             $addressData['id_relay'] = $this->relayId;
         }
         
-        // Phone number fallback ---
-        // Replaces ‘__’ or an empty phone number with ‘0000000000’ to bypass strict regular expressions
-        $fallbackPhone = '0000000000';
-        
-        if (empty($addressData['phone_home']) || $addressData['phone_home'] === '__') {
-            $addressData['phone_home'] = $fallbackPhone;
+        // Phone number cleanup — normalize placeholder values so validateLengow() can apply its
+        // phone_office fallback. Only use ‘0000000000’ when all phone fields are absent or invalid.
+        if (isset($addressData[‘phone_home’]) && $addressData[‘phone_home’] === ‘__’) {
+            $addressData[‘phone_home’] = ‘’;
         }
-        if (empty($addressData['phone_mobile']) || $addressData['phone_mobile'] === '__') {
-            $addressData['phone_mobile'] = $fallbackPhone;
+        if (isset($addressData[‘phone_mobile’]) && $addressData[‘phone_mobile’] === ‘__’) {
+            $addressData[‘phone_mobile’] = ‘’;
+        }
+        if (empty($addressData[‘phone_home’])
+            && empty($addressData[‘phone_mobile’])
+            && empty($addressData[‘phone_office’])
+        ) {
+            $addressData[‘phone_home’] = ‘0000000000’;
+            $addressData[‘phone_mobile’] = ‘0000000000’;
         }
         
         $addressData['address_full'] = '';
