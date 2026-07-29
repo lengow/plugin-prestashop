@@ -845,9 +845,11 @@ class LengowImportOrder
         if ($this->orderData->total_order == -1) {
             $errorMessages[] = LengowMain::setLogMessage('lengow_log.error.no_change_rate');
         }
-        if ($this->orderData->billing_address === null) {
+        if (!isset($this->orderData->billing_address) || $this->orderData->billing_address === null) {
             $errorMessages[] = LengowMain::setLogMessage('lengow_log.error.no_billing_address');
-        } elseif ($this->orderData->billing_address->common_country_iso_a2 === null) {
+        } elseif (!isset($this->orderData->billing_address->common_country_iso_a2)
+            || $this->orderData->billing_address->common_country_iso_a2 === null
+        ) {
             $errorMessages[] = LengowMain::setLogMessage('lengow_log.error.no_country_for_billing_address');
         }
         if ($this->packageData->delivery->common_country_iso_a2 === null) {
@@ -1477,9 +1479,12 @@ class LengowImportOrder
         if (isset($addressData['phone_office']) && $addressData['phone_office'] === '__') {
             $addressData['phone_office'] = '';
         }
-        if (empty($addressData['phone_home'])
-            && empty($addressData['phone_mobile'])
-            && empty($addressData['phone_office'])
+        $cleanPhoneHome = LengowMain::cleanPhone((string) ($addressData['phone_home'] ?? ''));
+        $cleanPhoneMobile = LengowMain::cleanPhone((string) ($addressData['phone_mobile'] ?? ''));
+        $cleanPhoneOffice = LengowMain::cleanPhone((string) ($addressData['phone_office'] ?? ''));
+        if (empty($cleanPhoneHome)
+            && empty($cleanPhoneMobile)
+            && empty($cleanPhoneOffice)
         ) {
             $addressData['phone_home'] = '0000000000';
             $addressData['phone_mobile'] = '0000000000';
