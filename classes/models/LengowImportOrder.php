@@ -772,12 +772,18 @@ class LengowImportOrder
         // load tracking data
         $this->loadTrackingData();
         // update Lengow order record with new data
+        // preserve resolved customer email on reimport — do not overwrite with raw API relay email
+        $existingEmail = Db::getInstance()->getValue(
+            'SELECT `customer_email` FROM `' . _DB_PREFIX_ . 'lengow_orders`
+            WHERE `id` = ' . (int) $this->idOrderLengow
+        );
+        $customerEmail = !empty($existingEmail) ? $existingEmail : $this->getCustomerEmail();
         $updateData = [
             LengowOrder::FIELD_CURRENCY => (string) $this->orderData->currency->iso_a3,
             LengowOrder::FIELD_TOTAL_PAID => $this->orderAmount,
             LengowOrder::FIELD_ORDER_ITEM => $this->orderItems,
             LengowOrder::FIELD_CUSTOMER_NAME => pSQL($this->getCustomerName()),
-            LengowOrder::FIELD_CUSTOMER_EMAIL => pSQL($this->getCustomerEmail()),
+            LengowOrder::FIELD_CUSTOMER_EMAIL => pSQL($customerEmail),
             LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => pSQL($this->getVatNumberFromOrderData()),
             LengowOrder::FIELD_CARRIER => pSQL($this->carrierName),
             LengowOrder::FIELD_CARRIER_METHOD => pSQL($this->carrierMethod),
