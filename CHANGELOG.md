@@ -1,6 +1,20 @@
 # Changelog
 
 
+## [4.2.0](https://github.com/lengow/plugin-prestashop/compare/v4.1.0...v4.2.0) (2026-07-29)
+
+
+### Features
+
+* **shipping:** handle mondial relay version 4 ([#118](https://github.com/lengow/plugin-prestashop/issues/118)) ([a4ea216](https://github.com/lengow/plugin-prestashop/commit/a4ea216a704edd9e6ec3c6fe0e983ea106b71a76))
+
+
+### Bug Fixes
+
+* **import:** prevent customer merging on shared relay emails ([#120](https://github.com/lengow/plugin-prestashop/issues/120)) ([316fe4b](https://github.com/lengow/plugin-prestashop/commit/316fe4b45cf006b4eb62acdf652815c5666e4721))
+* **orders:** fallback billing address to shipping address and clean up phone placeholders ([#112](https://github.com/lengow/plugin-prestashop/issues/112)) ([035c433](https://github.com/lengow/plugin-prestashop/commit/035c4339e6a0efe032a9ba4cba774919205bd02d))
+* recognize MariaDB duplicate-key message when registering hooks ([#122](https://github.com/lengow/plugin-prestashop/issues/122)) ([516e6b4](https://github.com/lengow/plugin-prestashop/commit/516e6b422e7ce8d1cd5bf44ece0a3382cfbd8989))
+
 ## [4.1.0](https://github.com/lengow/plugin-prestashop/compare/v4.0.2...v4.1.0) (2026-06-18)
 
 
