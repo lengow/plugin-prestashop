@@ -55,6 +55,7 @@ class LengowOrder extends Order
     public const FIELD_CUSTOMER_NAME = 'customer_name';
     public const FIELD_CUSTOMER_EMAIL = 'customer_email';
     public const FIELD_CUSTOMER_VAT_NUMBER = 'customer_vat_number';
+    public const FIELD_MARKETPLACE_CUSTOMER_ID = 'marketplace_customer_id';
     public const FIELD_CARRIER = 'carrier';
     public const FIELD_CARRIER_METHOD = 'method';
     public const FIELD_CARRIER_TRACKING = 'tracking';
@@ -183,6 +184,11 @@ class LengowOrder extends Order
     public string $lengowCustomerVatNumber = '';
 
     /**
+     * @var string marketplace customer id
+     */
+    public string $lengowMarketplaceCustomerId = '';
+
+    /**
      * @var float commission on marketplace
      */
     public float $lengowCommission = 0.0;
@@ -259,8 +265,29 @@ class LengowOrder extends Order
      *
      * @return bool
      */
+    /**
+     * @var bool|null cached result of marketplace_customer_id column existence check
+     */
+    private static ?bool $hasMarketplaceCustomerIdColumn = null;
+
+    /**
+     * Check if the marketplace_customer_id column exists in lengow_orders (cached).
+     */
+    public static function hasMarketplaceCustomerIdColumn(): bool
+    {
+        if (self::$hasMarketplaceCustomerIdColumn === null) {
+            self::$hasMarketplaceCustomerIdColumn = LengowInstall::checkFieldExists(
+                self::TABLE_ORDER,
+                self::FIELD_MARKETPLACE_CUSTOMER_ID
+            );
+        }
+
+        return self::$hasMarketplaceCustomerIdColumn;
+    }
+
     protected function loadLengowFields(): bool
     {
+        $hasCustomerIdColumn = self::hasMarketplaceCustomerIdColumn();
         $query = 'SELECT
             lo.`id`,
             lo.`id_shop`,
@@ -277,8 +304,9 @@ class LengowOrder extends Order
             lo.`order_types`,
             lo.`currency`,
             lo.`total_paid`,
-            lo.`customer_vat_number`,
-            lo.`commission`,
+            lo.`customer_vat_number`,'
+            . ($hasCustomerIdColumn ? 'lo.`marketplace_customer_id`,' : '') .
+            'lo.`commission`,
             lo.`customer_name`,
             lo.`customer_email`,
             lo.`carrier`,
@@ -312,6 +340,9 @@ class LengowOrder extends Order
             $this->lengowCurrency = $result[self::FIELD_CURRENCY] ?? '';
             $this->lengowTotalPaid = (float) ($result[self::FIELD_TOTAL_PAID] ?? 0.0);
             $this->lengowCustomerVatNumber = $result[self::FIELD_CUSTOMER_VAT_NUMBER] ?? '';
+            $this->lengowMarketplaceCustomerId = $hasCustomerIdColumn
+                ? ($result[self::FIELD_MARKETPLACE_CUSTOMER_ID] ?? '')
+                : '';
             $this->lengowCommission = (float) ($result[self::FIELD_COMMISSION] ?? 0.0);
             $this->lengowCustomerName = $result[self::FIELD_CUSTOMER_NAME] ?? '';
             $this->lengowCustomerEmail = $result[self::FIELD_CUSTOMER_EMAIL] ?? '';
@@ -383,6 +414,44 @@ class LengowOrder extends Order
         $result = Db::getInstance()->getRow($query);
         if ($result) {
             return (int) $result[self::FIELD_ID];
+        }
+
+        return false;
+    }
+
+    /**
+     * Get the customer email used for a previous order with the same marketplace_customer_id
+     *
+     * @param string $marketplaceCustomerId marketplace customer identifier
+     * @param string $marketplace marketplace name
+     * @param int $idShop PrestaShop shop id
+     * @param int $excludeIdOrderLengow Lengow order id to exclude (current order being imported)
+     *
+     * @return string|false customer email if found, false otherwise
+     */
+    public static function getCustomerEmailByMarketplaceCustomerId(
+        string $marketplaceCustomerId,
+        string $marketplace,
+        int $idShop,
+        int $excludeIdOrderLengow = 0
+    ): string|false {
+        $query = 'SELECT `customer_email` FROM `' . _DB_PREFIX_ . 'lengow_orders`
+            WHERE `marketplace_customer_id` = \'' . pSQL($marketplaceCustomerId) . '\'
+            AND `marketplace_name` = \'' . pSQL($marketplace) . '\'
+            AND `id_shop` = \'' . (int) $idShop . '\''
+            . ($excludeIdOrderLengow > 0 ? ' AND `id` != ' . (int) $excludeIdOrderLengow : '') . '
+            AND `customer_email` IS NOT NULL
+            AND `customer_email` != \'\'
+            ORDER BY `id` DESC
+            LIMIT 1';
+
+        try {
+            $result = Db::getInstance()->getRow($query);
+        } catch (\PrestaShopDatabaseException $e) {
+            return false;
+        }
+        if ($result) {
+            return (string) $result[self::FIELD_CUSTOMER_EMAIL];
         }
 
         return false;

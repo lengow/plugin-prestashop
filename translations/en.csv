@@ -561,6 +561,7 @@ log.import.rewrite_processing_fee|rewrite amount without processing fee
 log.import.rewrite_shipping_cost|rewrite amount without shipping cost
 log.import.generate_unique_email|generate a unique email %{email}
 log.import.fallback_billing_address|billing address is missing, using shipping address as fallback
+log.import.shared_email_resolved_by_customer_id|shared relay email detected (%{original_email}), generated stable customer email %{generated_email} from marketplace_customer_id %{marketplace_customer_id}
 log.import.product_be_found|product id %{id_full} found with field %{attribute_name} (%{attribute_value})
 log.import.product_advanced_search|product not found with field %{attribute_name} (%{attribute_value}). Using advanced search
 log.import.product_state_canceled|product %{product_id} could not be added to cart - status: %{state_product}
@@ -578,6 +579,7 @@ log.import.error_colissimo_pickup_point_save|cannot save Colissimo pickup point 
 log.import.error_default_carrier_not_active|import failed - default carrier not active
 log.import.carrier_compatibility_ensured|carrier compatibility ensured with carrier "%{carrier_name}"
 log.import.carrier_compatibility_colissimo_ensured|carrier compatibility ensured with Colissimo module (colissimo v2+/v3)
+log.import.carrier_compatibility_not_ensured|WARNING ! Carrier compatibility not ensured for relay id %{id_relay} with carrier "%{carrier_name}" (CARRIER ID %{id_carrier}) - the shipping module may not support this order (label generation could fail), check the module version
 log.import.order_synchronized_with_lengow|order successfully synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.order_not_synchronized_with_lengow|WARNING ! Order could NOT be synchronised with Lengow webservice (ORDER ID %{order_id})
 log.import.launch_validate_order_hook|launch validateOrder hook for other plugins

@@ -1,6 +1,23 @@
 # Changelog
 
 
+## [4.1.0](https://github.com/lengow/plugin-prestashop/compare/v4.0.2...v4.1.0) (2026-06-18)
+
+
+### Features
+
+* **colissimo:** add support for colissimo v2/v3 ([#111](https://github.com/lengow/plugin-prestashop/issues/111)) ([bd63794](https://github.com/lengow/plugin-prestashop/commit/bd6379459b29e6f850df361a422d84abde693cc5))
+
+
+### Bug Fixes
+
+* add back webservice php files and redirect to front controllers ([#104](https://github.com/lengow/plugin-prestashop/issues/104)) ([b6a16c9](https://github.com/lengow/plugin-prestashop/commit/b6a16c945aeca1e711d6c297ace9ef062182ca51))
+* **admin:** [PCMT-1557] fix processing_fees not displaying as Processing Fees ([#102](https://github.com/lengow/plugin-prestashop/issues/102)) ([99e7493](https://github.com/lengow/plugin-prestashop/commit/99e749390b694f234cc22cde0b2db6ff24d81e84))
+* **cancel:** fix cancel reasons not applied on cancel events, also move the selectors to the top when the relevant order state is selected, only if applicable. ([#84](https://github.com/lengow/plugin-prestashop/issues/84)) ([163ad47](https://github.com/lengow/plugin-prestashop/commit/163ad47118b0338af5230c30316b63cb80731fa3))
+* prevent SQL duplicate error while installing hooks ([#110](https://github.com/lengow/plugin-prestashop/issues/110)) ([a24ef12](https://github.com/lengow/plugin-prestashop/commit/a24ef12733b1309e0d1d58d32293ebe1c93761f4))
+* **shipping:** fix shipping method always send to Amazon ([#88](https://github.com/lengow/plugin-prestashop/issues/88)) ([bff6f7f](https://github.com/lengow/plugin-prestashop/commit/bff6f7ff67cd28f4f5dda05e05c03a28afc6cb77))
+* **shipping:** only send carrier_name when carrier code is "Other" for Amazon compatibility ([#114](https://github.com/lengow/plugin-prestashop/issues/114)) ([07cb3db](https://github.com/lengow/plugin-prestashop/commit/07cb3db8a880dec78ec7fb899e492fbfe49b4336))
+
 ## [4.0.2](https://github.com/lengow/plugin-prestashop/compare/v4.0.1...v4.0.2) (2026-06-03)
 
 

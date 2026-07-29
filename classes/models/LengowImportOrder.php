@@ -772,27 +772,38 @@ class LengowImportOrder
         // load tracking data
         $this->loadTrackingData();
         // update Lengow order record with new data
-        LengowOrder::updateOrderLengow(
-            $this->idOrderLengow,
-            [
-                LengowOrder::FIELD_CURRENCY => (string) $this->orderData->currency->iso_a3,
-                LengowOrder::FIELD_TOTAL_PAID => $this->orderAmount,
-                LengowOrder::FIELD_ORDER_ITEM => $this->orderItems,
-                LengowOrder::FIELD_CUSTOMER_NAME => pSQL($this->getCustomerName()),
-                LengowOrder::FIELD_CUSTOMER_EMAIL => pSQL($this->getCustomerEmail()),
-                LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => pSQL($this->getVatNumberFromOrderData()),
-                LengowOrder::FIELD_CARRIER => pSQL($this->carrierName),
-                LengowOrder::FIELD_CARRIER_METHOD => pSQL($this->carrierMethod),
-                LengowOrder::FIELD_CARRIER_TRACKING => pSQL($this->trackingNumber),
-                LengowOrder::FIELD_CARRIER_RELAY_ID => pSQL($this->relayId),
-                LengowOrder::FIELD_SENT_MARKETPLACE => (int) $this->shippedByMp,
-                LengowOrder::FIELD_DELIVERY_COUNTRY_ISO => pSQL(
-                    (string) $this->packageData->delivery->common_country_iso_a2
-                ),
-                LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($this->orderStateLengow),
-                LengowOrder::FIELD_EXTRA => pSQL(json_encode($this->orderData), true),
-            ]
+        // preserve resolved customer email on reimport — do not overwrite with raw API relay email
+        $existingEmail = Db::getInstance()->getValue(
+            'SELECT `customer_email` FROM `' . _DB_PREFIX_ . 'lengow_orders`
+            WHERE `id` = ' . (int) $this->idOrderLengow
         );
+        $customerEmail = !empty($existingEmail) ? $existingEmail : $this->getCustomerEmail();
+        $updateData = [
+            LengowOrder::FIELD_CURRENCY => (string) $this->orderData->currency->iso_a3,
+            LengowOrder::FIELD_TOTAL_PAID => $this->orderAmount,
+            LengowOrder::FIELD_ORDER_ITEM => $this->orderItems,
+            LengowOrder::FIELD_CUSTOMER_NAME => pSQL($this->getCustomerName()),
+            LengowOrder::FIELD_CUSTOMER_EMAIL => pSQL($customerEmail),
+            LengowOrder::FIELD_CUSTOMER_VAT_NUMBER => pSQL($this->getVatNumberFromOrderData()),
+            LengowOrder::FIELD_CARRIER => pSQL($this->carrierName),
+            LengowOrder::FIELD_CARRIER_METHOD => pSQL($this->carrierMethod),
+            LengowOrder::FIELD_CARRIER_TRACKING => pSQL($this->trackingNumber),
+            LengowOrder::FIELD_CARRIER_RELAY_ID => pSQL($this->relayId),
+            LengowOrder::FIELD_SENT_MARKETPLACE => (int) $this->shippedByMp,
+            LengowOrder::FIELD_DELIVERY_COUNTRY_ISO => pSQL(
+                (string) $this->packageData->delivery->common_country_iso_a2
+            ),
+            LengowOrder::FIELD_ORDER_LENGOW_STATE => pSQL($this->orderStateLengow),
+            LengowOrder::FIELD_EXTRA => pSQL(json_encode($this->orderData), true),
+        ];
+        // only persist marketplace_customer_id when the column exists and the API provides a non-empty value
+        if (LengowOrder::hasMarketplaceCustomerIdColumn() && isset($this->orderData->marketplace_customer_id)) {
+            $marketplaceCustomerId = (string) $this->orderData->marketplace_customer_id;
+            if ($marketplaceCustomerId !== '') {
+                $updateData[LengowOrder::FIELD_MARKETPLACE_CUSTOMER_ID] = pSQL($marketplaceCustomerId);
+            }
+        }
+        LengowOrder::updateOrderLengow($this->idOrderLengow, $updateData);
 
         return true;
     }
@@ -962,6 +973,110 @@ class LengowImportOrder
         return $this->orderData->billing_address->email !== null
             ? (string) $this->orderData->billing_address->email
             : (string) $this->packageData->delivery->email;
+    }
+
+    /**
+     * Resolve shared/relay email addresses to avoid merging different end-customers.
+     *
+     * When a relay or technical email is shared across multiple end-customers
+     * (e.g., Octopia CDON/FYND via @clemarche.com), generates a unique email
+     * per actual marketplace buyer to prevent unrelated orders from being
+     * grouped under the same PrestaShop customer account.
+     *
+     * Only activates when marketplace_customer_id is available in the API payload,
+     * as it is the only reliable discriminator. Without it, the original email is
+     * kept to avoid false positives (e.g., shared company inboxes, name corrections).
+     *
+     * Uses the persisted marketplace_customer_id in lengow_orders to look up the
+     * email used for previous orders from the same marketplace buyer, ensuring
+     * stable customer mapping without relying on name comparison heuristics.
+     *
+     * @param string $email Original email from API
+     * @param array<string, mixed> $billingData Billing address data (used for lastname fallback)
+     *
+     * @return string Resolved email (original or generated)
+     */
+    private function resolveSharedEmail(string $email, array $billingData): string
+    {
+        // only activate when marketplace_customer_id is available as a reliable discriminator
+        $marketplaceCustomerId = isset($this->orderData->marketplace_customer_id)
+            ? (string) $this->orderData->marketplace_customer_id
+            : null;
+
+        if (empty($marketplaceCustomerId)) {
+            return $email;
+        }
+
+        // check if a previous order from this marketplace buyer already exists in lengow_orders
+        if (LengowOrder::hasMarketplaceCustomerIdColumn()) {
+            $previousEmail = LengowOrder::getCustomerEmailByMarketplaceCustomerId(
+                $marketplaceCustomerId,
+                $this->marketplace->name,
+                $this->idShop,
+                $this->idOrderLengow
+            );
+
+            if ($previousEmail) {
+                return $previousEmail;
+            }
+        }
+
+        // check if a customer already exists with this email in this shop
+        $existingCustomer = new LengowCustomer();
+        $existingCustomer->getByEmailAndShop($email, $this->idShop);
+
+        if (!$existingCustomer->id) {
+            return $email;
+        }
+
+        // generate the stable email for this marketplace buyer
+        $domain = !LengowMain::getHost() ? 'prestashop.shop' : LengowMain::getHost();
+        $domain = strtolower($domain);
+        $generatedEmail = substr(
+            hash('sha256', $marketplaceCustomerId . '-' . $this->marketplace->name),
+            0,
+            32
+        ) . '@' . $domain;
+
+        // if the existing customer already uses this stable email, it's the same buyer
+        if ($existingCustomer->email === $generatedEmail) {
+            return $generatedEmail;
+        }
+
+        // check if a customer was previously created with this buyer's stable email
+        $stableCustomer = new LengowCustomer();
+        $stableCustomer->getByEmailAndShop($generatedEmail, $this->idShop);
+        if ($stableCustomer->id) {
+            return $generatedEmail;
+        }
+
+        // lastname fallback — used only when the marketplace_customer_id column is not yet
+        // available (hotfix applied without DB upgrade)
+        if (!LengowOrder::hasMarketplaceCustomerIdColumn()) {
+            $newLastName = Tools::strtolower(trim((string) ($billingData['last_name'] ?? '')));
+            $existingLastName = Tools::strtolower(trim($existingCustomer->lastname));
+
+            if ($newLastName === $existingLastName) {
+                return $email;
+            }
+        }
+
+        // different buyer — use generated email
+        LengowMain::log(
+            LengowLog::CODE_IMPORT,
+            LengowMain::setLogMessage(
+                'log.import.shared_email_resolved_by_customer_id',
+                [
+                    'original_email' => $email,
+                    'generated_email' => $generatedEmail,
+                    'marketplace_customer_id' => $marketplaceCustomerId,
+                ]
+            ),
+            $this->logOutput,
+            $this->marketplaceSku
+        );
+
+        return $generatedEmail;
     }
 
     /**
@@ -1248,6 +1363,14 @@ class LengowImportOrder
             } elseif (LengowConfiguration::getTypedGlobalValue(LengowConfiguration::TYPE_ANONYMIZE_EMAIL) === 1) {
                 $billingData['email'] = $this->marketplaceSku . '-' . $this->marketplace->name . '@' . $domain;
             }
+        } else {
+            // resolve shared relay emails to prevent merging different customers
+            $billingData['email'] = $this->resolveSharedEmail($billingData['email'], $billingData);
+            // persist the resolved email so future imports reuse it via marketplace_customer_id lookup
+            LengowOrder::updateOrderLengow(
+                $this->idOrderLengow,
+                [LengowOrder::FIELD_CUSTOMER_EMAIL => pSQL($billingData['email'])]
+            );
         }
 
         LengowMain::log(
@@ -1607,8 +1730,8 @@ class LengowImportOrder
                 $order->id_carrier,
                 $this->shippingAddress
             );
+            $carrier = new Carrier($order->id_carrier);
             if ($carrierCompatibility > 0) {
-                $carrier = new Carrier($order->id_carrier);
                 LengowMain::log(
                     LengowLog::CODE_IMPORT,
                     LengowMain::setLogMessage(
@@ -1618,6 +1741,21 @@ class LengowImportOrder
                     $this->logOutput,
                     $this->marketplaceSku
                 );
+            } elseif (!empty($this->shippingAddress->idRelay)) {
+                // the marketplace explicitly requires a relay point but no shipping module
+                // (SoColissimo/Mondial Relay) ensured compatibility for it: without this, the
+                // failure would otherwise stay completely silent even though the order and its
+                // carrier were resolved successfully.
+                $message = LengowMain::setLogMessage(
+                    'log.import.carrier_compatibility_not_ensured',
+                    [
+                        'id_relay' => $this->shippingAddress->idRelay,
+                        'carrier_name' => $carrier->name,
+                        'id_carrier' => $order->id_carrier,
+                    ]
+                );
+                LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput, $this->marketplaceSku);
+                LengowOrderError::addOrderLog($this->idOrderLengow, $message, LengowOrderError::TYPE_ERROR_SEND);
             }
         } catch (LengowException $e) {
             LengowMain::log(LengowLog::CODE_IMPORT, $e->getMessage(), $this->logOutput, $this->marketplaceSku);
