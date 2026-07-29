@@ -817,7 +817,7 @@ class LengowImportOrder
     {
         $errorMessages = [];
         // --- Fallback: Billing -> Delivery ---
-        if ($this->orderData->billing_address === null && isset($this->packageData->delivery)) {
+        if ((!isset($this->orderData->billing_address) || $this->orderData->billing_address === null) && isset($this->packageData->delivery)) {
             // Copy the shipping information to the invoice
             $this->orderData->billing_address = clone $this->packageData->delivery;
             
