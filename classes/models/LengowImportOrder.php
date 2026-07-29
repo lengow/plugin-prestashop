@@ -816,6 +816,18 @@ class LengowImportOrder
     private function checkOrderData(): bool
     {
         $errorMessages = [];
+        // --- Fallback: Billing -> Delivery ---
+        if ((!isset($this->orderData->billing_address) || $this->orderData->billing_address === null) && isset($this->packageData->delivery)) {
+            // Copy the shipping information to the invoice
+            $this->orderData->billing_address = clone $this->packageData->delivery;
+
+            LengowMain::log(
+                LengowLog::CODE_IMPORT,
+                LengowMain::setLogMessage('log.import.fallback_billing_address'),
+                $this->logOutput,
+                $this->marketplaceSku
+            );
+        }
         if (empty($this->packageData->cart)) {
             $errorMessages[] = LengowMain::setLogMessage('lengow_log.error.no_product');
         }
@@ -833,9 +845,11 @@ class LengowImportOrder
         if ($this->orderData->total_order == -1) {
             $errorMessages[] = LengowMain::setLogMessage('lengow_log.error.no_change_rate');
         }
-        if ($this->orderData->billing_address === null) {
+        if (!isset($this->orderData->billing_address) || $this->orderData->billing_address === null) {
             $errorMessages[] = LengowMain::setLogMessage('lengow_log.error.no_billing_address');
-        } elseif ($this->orderData->billing_address->common_country_iso_a2 === null) {
+        } elseif (!isset($this->orderData->billing_address->common_country_iso_a2)
+            || $this->orderData->billing_address->common_country_iso_a2 === null
+        ) {
             $errorMessages[] = LengowMain::setLogMessage('lengow_log.error.no_country_for_billing_address');
         }
         if ($this->packageData->delivery->common_country_iso_a2 === null) {
@@ -1453,6 +1467,29 @@ class LengowImportOrder
         if ($shippingData && $this->relayId !== null) {
             $addressData['id_relay'] = $this->relayId;
         }
+
+        // Phone number cleanup — normalize placeholder values so validateLengow() can apply its
+        // phone_office fallback. Only use '0000000000' when all phone fields are absent or invalid.
+        if (isset($addressData['phone_home']) && $addressData['phone_home'] === '__') {
+            $addressData['phone_home'] = '';
+        }
+        if (isset($addressData['phone_mobile']) && $addressData['phone_mobile'] === '__') {
+            $addressData['phone_mobile'] = '';
+        }
+        if (isset($addressData['phone_office']) && $addressData['phone_office'] === '__') {
+            $addressData['phone_office'] = '';
+        }
+        $cleanPhoneHome = LengowMain::cleanPhone((string) ($addressData['phone_home'] ?? ''));
+        $cleanPhoneMobile = LengowMain::cleanPhone((string) ($addressData['phone_mobile'] ?? ''));
+        $cleanPhoneOffice = LengowMain::cleanPhone((string) ($addressData['phone_office'] ?? ''));
+        if (empty($cleanPhoneHome)
+            && empty($cleanPhoneMobile)
+            && empty($cleanPhoneOffice)
+        ) {
+            $addressData['phone_home'] = '0000000000';
+            $addressData['phone_mobile'] = '0000000000';
+        }
+
         $addressData['address_full'] = '';
         // construct field address_full
         $addressData['address_full'] .= !empty($addressData['first_line']) ? $addressData['first_line'] . ' ' : '';
