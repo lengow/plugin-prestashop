@@ -1023,16 +1023,18 @@ class LengowImportOrder
             return $generatedEmail;
         }
 
-        // lastname fallback — used when the marketplace_customer_id column is not yet
-        // available (hotfix applied without DB upgrade) or for the first conflict detection
-        $newLastName = Tools::strtolower(trim(isset($billingData['last_name']) ? (string) $billingData['last_name'] : ''));
-        $existingLastName = Tools::strtolower(trim($existingCustomer->lastname));
+        // lastname fallback — used only when the marketplace_customer_id column is not yet
+        // available (hotfix applied without DB upgrade)
+        if (!LengowOrder::hasMarketplaceCustomerIdColumn()) {
+            $newLastName = Tools::strtolower(trim(isset($billingData['last_name']) ? (string) $billingData['last_name'] : ''));
+            $existingLastName = Tools::strtolower(trim($existingCustomer->lastname));
 
-        if ($newLastName === $existingLastName) {
-            return $email;
+            if ($newLastName === $existingLastName) {
+                return $email;
+            }
         }
 
-        // different buyer confirmed — use generated email
+        // different buyer — use generated email
         LengowMain::log(
             LengowLog::CODE_IMPORT,
             LengowMain::setLogMessage(
