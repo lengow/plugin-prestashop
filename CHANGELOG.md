@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [3.11.0](https://github.com/lengow/plugin-prestashop/compare/v3.10.0...v3.11.0) (2026-07-30)
+
+
+### Features
+
+* **shipping:** handle mondial relay vesion 4 ([#116](https://github.com/lengow/plugin-prestashop/issues/116)) ([6b47325](https://github.com/lengow/plugin-prestashop/commit/6b47325004df51557a6b0150ba03772e191f61a9))
+
+
+### Bug Fixes
+
+* **import:** prevent customer merging on shared relay emails (3.x backport) ([#121](https://github.com/lengow/plugin-prestashop/issues/121)) ([0e4ad65](https://github.com/lengow/plugin-prestashop/commit/0e4ad6572673680278d744081faa4bd89fe9bb31))
+* **install:** prevent duplicate hook registration crash on MySQL and MariaDB (3.x backport) ([#123](https://github.com/lengow/plugin-prestashop/issues/123)) ([02d3060](https://github.com/lengow/plugin-prestashop/commit/02d3060f63650f81f5c2c281e5d95fa5fc5c3301))
+
 ## [3.10.0](https://github.com/lengow/plugin-prestashop/compare/v3.9.5...v3.10.0) (2026-06-18)
 
 
