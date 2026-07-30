@@ -1306,11 +1306,12 @@ class LengowCarrier extends Carrier
         $filePath = _PS_MODULE_DIR_ . $moduleName . $sep . 'classes' . $sep . 'module.classes.php';
         $loaded = include_once $filePath;
         if (!$loaded) {
-            throw new LengowException(
-                LengowMain::setLogMessage('log.import.error_colissimo_new_missing_file', ['file_path' => $filePath])
-            );
+            throw new LengowException(LengowMain::setLogMessage('log.import.error_colissimo_new_missing_file', ['file_path' => $filePath]));
         }
         $carrier = new Carrier($idCarrier);
+        if (!class_exists('ColissimoService') || !class_exists('ColissimoPickupPoint') || !class_exists('ColissimoCartPickupPoint')) {
+            throw new LengowException(LengowMain::setLogMessage('log.import.error_colissimo_new_missing_file', ['file_path' => $filePath]));
+        }
         $serviceType = ColissimoService::getServiceTypeByIdCarrier((int) $carrier->id_reference);
         if ($serviceType === ColissimoService::TYPE_RELAIS && !empty($shippingAddress->idRelay)) {
             $colissimoId = Tools::substr((string) $shippingAddress->idRelay, 0, 8);
@@ -1341,7 +1342,7 @@ class LengowCarrier extends Carrier
                 $isoCountry = Country::getIsoById($shippingAddress->id_country);
                 $pickupPoint->iso_country = $isoCountry;
                 $countryName = Country::getNameById(
-                    (int) Context::getContext()->language->id,
+                    (int) LengowContext::getContext()->language->id,
                     (int) $shippingAddress->id_country
                 );
                 $pickupPoint->country = Tools::substr($countryName ?: $isoCountry, 0, 64);

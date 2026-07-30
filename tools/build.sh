@@ -174,7 +174,9 @@ echo -e "- Create files checksum : ${VERT}DONE${NORMAL}"
 # remove TMP FOLDER
 remove_directory "$FOLDER_TMP"
 # copy files
-rsync -a --exclude='.DS_Store' "$FOLDER/" "$FOLDER_TMP/"
+rsync -a --exclude='.DS_Store' --exclude='*.py' --exclude='lenwgoCustom.php' --exclude='debug_*.php' --exclude='image-*.png' "$FOLDER/" "$FOLDER_TMP/"
+# remove loose txt files at root (keep license.txt and mails)
+find "$FOLDER_TMP" -maxdepth 1 -name '*.txt' ! -name 'license.txt' -delete
 # remove dod
 remove_files "$FOLDER_TMP" "dod.md"
 # remove Readme

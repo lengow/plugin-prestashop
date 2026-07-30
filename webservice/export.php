@@ -18,14 +18,16 @@
  * @copyright 2017 Lengow SAS
  * @license   http://www.apache.org/licenses/LICENSE-2.0
  */
-$_GET['fc'] = 'module';
-$_GET['module'] = 'lengow';
-$_GET['controller'] = 'export';
+if (!defined('_PS_VERSION_')) {
+    $_GET['fc'] = 'module';
+    $_GET['module'] = 'lengow';
+    $_GET['controller'] = 'export';
 
-$index = rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/\\') . '/index.php';
-if (!is_file($index)) {
-    header('HTTP/1.1 500 Internal Server Error');
-    exit('Unable to dispatch Lengow front controller');
+    $index = rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/\\') . '/index.php';
+    if (!is_file($index)) {
+        header('HTTP/1.1 500 Internal Server Error');
+        exit('Unable to dispatch Lengow front controller');
+    }
+
+    require $index;
 }
-
-require $index;

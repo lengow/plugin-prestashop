@@ -433,7 +433,7 @@ class LengowOrder extends Order
         string $marketplaceCustomerId,
         string $marketplace,
         int $idShop,
-        int $excludeIdOrderLengow = 0
+        int $excludeIdOrderLengow = 0,
     ): string|false {
         $query = 'SELECT `customer_email` FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `marketplace_customer_id` = \'' . pSQL($marketplaceCustomerId) . '\'
@@ -447,7 +447,7 @@ class LengowOrder extends Order
 
         try {
             $result = Db::getInstance()->getRow($query);
-        } catch (\PrestaShopDatabaseException $e) {
+        } catch (PrestaShopDatabaseException $e) {
             return false;
         }
         if ($result) {
