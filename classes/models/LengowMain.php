@@ -883,6 +883,20 @@ class LengowMain
     }
 
     /**
+     * Check if Mondial Relay v4 is installed, active and if version is supported
+     *
+     * v4.x keeps the same relay selection API (SelectRelayActions, MondialrelayCarrierMethod,
+     * MondialrelaySelectedRelay, MondialrelayClasslib namespace) as v3.x, so it is handled by
+     * the same LengowCarrier::handleMRRelayV3() code path.
+     *
+     * @return bool
+     */
+    public static function isMondialRelayV4Available()
+    {
+        return self::isMondialRelayVersionAvailable('4.0.0', '5.0.0');
+    }
+
+    /**
      * Check is soColissimo is installed, activated and if version is supported
      *
      * @return bool
