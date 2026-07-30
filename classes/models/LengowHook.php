@@ -130,7 +130,19 @@ class LengowHook
                 if ($this->module->isRegisteredInHook($hook)) {
                     continue;
                 }
-                if (!$this->module->registerHook($hook)) {
+                try {
+                    $registered = $this->module->registerHook($hook);
+                } catch (PrestaShopDatabaseException | PrestaShopException $e) {
+                    if (!self::isDuplicateHookRegistrationException($e)) {
+                        throw $e;
+                    }
+                    LengowMain::log(
+                        LengowLog::CODE_INSTALL,
+                        LengowMain::setLogMessage('log.install.registering_hook_success', ['hook' => $hook])
+                    );
+                    continue;
+                }
+                if (!$registered) {
                     LengowMain::log(
                         LengowLog::CODE_INSTALL,
                         LengowMain::setLogMessage('log.install.registering_hook_error', ['hook' => $hook])
@@ -146,6 +158,25 @@ class LengowHook
         }
 
         return !$error;
+    }
+
+    /**
+     * Check if an exception is a duplicate hook registration (MySQL or MariaDB)
+     *
+     * MySQL >= 8.0.19: "Duplicate entry '...' for key 'hook_module.PRIMARY'"
+     * MariaDB / MySQL < 8.0.19: "Duplicate entry '...' for key 'PRIMARY'"
+     *
+     * @param Exception $exception
+     *
+     * @return bool
+     */
+    private static function isDuplicateHookRegistrationException($exception)
+    {
+        $message = $exception->getMessage();
+
+        return strpos($message, 'Duplicate entry') !== false
+            && (strpos($message, 'hook_module.PRIMARY') !== false
+                || strpos($message, "for key 'PRIMARY'") !== false);
     }
 
     /**
