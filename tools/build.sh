@@ -79,8 +79,11 @@ load_module_key()
         --output "${variables_file}" --decrypt "${SCRIPT_DIRECTORY}/vars.enc" >/dev/null 2>&1 \
         || die 'Unable to decrypt tools/vars.enc'
 
+    # vars.enc retains legacy shell expressions that may read unset positional parameters.
+    set +u
     # shellcheck source=/dev/null
     source "${variables_file}"
+    set -u
     rm -f -- "${variables_file}"
 
     [[ -n "${MODULE_KEY:-}" ]] || die 'MODULE_KEY is missing from tools/vars.enc'
