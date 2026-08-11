@@ -376,6 +376,8 @@ class LengowFeed
      */
     public static function formatFields(?string $str, ?string $format, bool $legacy = false): string
     {
+        $str ??= '';
+
         switch ($format) {
             case self::FORMAT_CSV:
                 if ($legacy) {
