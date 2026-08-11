@@ -9,6 +9,7 @@ config/marketplaces.json
 tools/vars.sh
 .php_cs.cache
 .php-cs-fixer.cache
+dist/
 
 # Personal / temp files (must not leak into builds)
 /*.py
