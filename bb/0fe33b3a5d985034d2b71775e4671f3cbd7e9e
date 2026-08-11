@@ -1,0 +1,19 @@
+classes/models/LengowConnector.php
+  s_defd2863657db9::t_ceb3eccd162526 110
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "bb0fe33b3a5d985034d2b71775e4671f3cbd7e9e",
+  "prompts": {},
+  "sessions": {
+    "s_defd2863657db9": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "705063dc-49b8-46e5-a357-7f4b617031bb",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
