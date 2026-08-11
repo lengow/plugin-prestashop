@@ -1,0 +1,19 @@
+tools/build.sh
+  s_defd2863657db9::t_03c8044619cd15 82-83,86
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "7861e3e954dea7cd13a36e33c2561c81d6a4ffc1",
+  "prompts": {},
+  "sessions": {
+    "s_defd2863657db9": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "705063dc-49b8-46e5-a357-7f4b617031bb",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
