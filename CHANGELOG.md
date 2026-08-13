@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [4.2.1](https://github.com/lengow/plugin-prestashop/compare/v4.2.0...v4.2.1) (2026-08-13)
+
+
+### Bug Fixes
+
+* **export:** handle null field names ([#130](https://github.com/lengow/plugin-prestashop/issues/130)) ([7621fc0](https://github.com/lengow/plugin-prestashop/commit/7621fc06e118827ad0fb3e9965dd8cb9fb859331))
+* **install:** [PCMT-1837] decode compressed API responses ([#131](https://github.com/lengow/plugin-prestashop/issues/131)) ([a975b92](https://github.com/lengow/plugin-prestashop/commit/a975b92688c4ed55337e656fddfb1d23e8e311fa))
+
+
+### Miscellaneous
+
+* rewrite build archive script ([#133](https://github.com/lengow/plugin-prestashop/issues/133)) ([81c405b](https://github.com/lengow/plugin-prestashop/commit/81c405ba51e07683df295c7576a3b971144ac0ca))
+
 ## [4.2.0](https://github.com/lengow/plugin-prestashop/compare/v4.1.0...v4.2.0) (2026-07-29)
 
 
