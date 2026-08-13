@@ -1,6 +1,18 @@
 # Changelog
 
 
+## [3.11.1](https://github.com/lengow/plugin-prestashop/compare/v3.11.0...v3.11.1) (2026-08-13)
+
+
+### Bug Fixes
+
+* **install:** [PCMT-1837] decode compressed API responses ([#132](https://github.com/lengow/plugin-prestashop/issues/132)) ([07e9ee0](https://github.com/lengow/plugin-prestashop/commit/07e9ee013fe43dca4b49ec3fce3d8391a5724e3f))
+
+
+### Miscellaneous
+
+* rewrite build archive script ([#134](https://github.com/lengow/plugin-prestashop/issues/134)) ([bfecc49](https://github.com/lengow/plugin-prestashop/commit/bfecc49432ccee3dfe84386bbf69497986b67953))
+
 ## [3.11.0](https://github.com/lengow/plugin-prestashop/compare/v3.10.0...v3.11.0) (2026-07-30)
 
 
