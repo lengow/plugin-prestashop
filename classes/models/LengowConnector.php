@@ -107,6 +107,7 @@ class LengowConnector
         CURLOPT_CONNECTTIMEOUT => 10,
         CURLOPT_RETURNTRANSFER => true,
         CURLOPT_TIMEOUT => 10,
+        CURLOPT_ENCODING => '',
         CURLOPT_USERAGENT => 'lengow-cms-prestashop',
     ];
 
