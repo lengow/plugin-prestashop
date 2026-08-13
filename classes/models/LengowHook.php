@@ -67,7 +67,7 @@ class LengowHook
             'displayPaymentTop' => '1.4',
             'displayAdminOrder' => '1.4',
             'actionOrderStatusUpdate' => '1.4',
-            'orderConfirmation' => '1.4',
+            'displayOrderConfirmation' => '1.4',
             // version 1.5
             'actionObjectUpdateAfter' => '1.5',
             // version 1.6
