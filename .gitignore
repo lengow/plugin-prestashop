@@ -10,3 +10,12 @@ tools/vars.sh
 .php_cs.cache
 .php-cs-fixer.cache
 .php-cs-fixer.dist.php
+dist/
+
+# Personal / temp files (must not leak into builds)
+/*.py
+/lenwgoCustom.php
+/debug_*.php
+/*.txt
+!/license.txt
+/image-*.png
