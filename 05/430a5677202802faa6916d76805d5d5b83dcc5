@@ -1,0 +1,58 @@
+translations/yml/it.yml
+  s_8b5d37d5352cde::t_6366bbc33c5184 126-127,381-384
+classes/controllers/LengowFeedController.php
+  s_8b5d37d5352cde::t_a5b6c2ce6589dd 181-241,357-368
+translations/yml/es.yml
+  s_8b5d37d5352cde::t_6366bbc33c5184 126-127,381-384
+translations/yml/fr.yml
+  s_8b5d37d5352cde::t_6366bbc33c5184 126-127,381-384
+translations/es.csv
+  s_8b5d37d5352cde::t_a3d5d68201ccc4 110-111,350-353
+classes/models/LengowProduct.php
+  s_8b5d37d5352cde::t_9123f4bed07bf8 508-511,513,515,519-522,524-525,527-529,531-540,544,546-548,550,560-561,564-566,568-596
+  s_8b5d37d5352cde::t_62afe7fdcc8394 562
+  s_8b5d37d5352cde::t_97682d71df5fe9 523,526,530,563,597
+  s_8b5d37d5352cde::t_cc02ad45eb012f 56-60,81-85,129,512,541-543,545,549,551-559,567,598-653,656
+translations/en.csv
+  s_8b5d37d5352cde::t_a3d5d68201ccc4 110-111,350-353
+classes/models/LengowConfiguration.php
+  s_8b5d37d5352cde::t_64aee770cc1d51 57-58,147-148,399-414
+translations/fr.csv
+  s_8b5d37d5352cde::t_a3d5d68201ccc4 110-111,350-353
+classes/models/LengowExport.php
+  s_8b5d37d5352cde::t_64aee770cc1d51 341-352,382-389,589
+views/templates/admin/lengow_feed/view.html.twig
+  s_8b5d37d5352cde::t_9123f4bed07bf8 132-133,156-157
+  s_8b5d37d5352cde::t_56b7f3e35e8b92 113-131,134-155,158-159
+views/js/lengow/feed.js
+  s_8b5d37d5352cde::t_56b7f3e35e8b92 71-72,76-94,101-102,109-110,140-146
+  s_8b5d37d5352cde::t_467ae0540ff6a4 118-119,121-129,132-137
+translations/it.csv
+  s_8b5d37d5352cde::t_a3d5d68201ccc4 110-111,350-353
+translations/yml/en.yml
+  s_0258eccd31090b::t_d6cc8685384657 126-127,381-384
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "05430a5677202802faa6916d76805d5d5b83dcc5",
+  "prompts": {},
+  "sessions": {
+    "s_0258eccd31090b": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "d54668c4-de9d-4a5b-bd21-a41b56004552",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    },
+    "s_8b5d37d5352cde": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "1b22f8e7-a1f2-43c7-8114-c7198495053d",
+        "model": "unknown"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
