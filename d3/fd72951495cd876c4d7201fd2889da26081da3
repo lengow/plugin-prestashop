@@ -12,14 +12,6 @@
         "model": "gpt-5.6-terra"
       },
       "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
-    },
-    "s_53610fddfa813d": {
-      "agent_id": {
-        "tool": "github-copilot-cli",
-        "id": "49550a8d-c7d3-4042-91b1-b92b8b14ae5d",
-        "model": "gpt-5.4"
-      },
-      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
     }
   }
 }
