@@ -1,0 +1,37 @@
+classes/models/LengowHook.php
+  s_1a83bdc91e4350::t_7fcae3ebe086d6 265-274,284
+translations/en.csv
+  s_1a83bdc91e4350::t_408374d694a36c 456
+translations/es.csv
+  s_1a83bdc91e4350::t_f50f5e47d8e20f 456
+translations/fr.csv
+  s_1a83bdc91e4350::t_b2daac8ada5575 456
+translations/it.csv
+  s_1a83bdc91e4350::t_d4874e8b9fb0e4 456
+translations/yml/en.yml
+  s_1a83bdc91e4350::t_48acf596880fae 495
+translations/yml/es.yml
+  s_1a83bdc91e4350::t_3715b6fe3f3d4c 495
+translations/yml/fr.yml
+  s_1a83bdc91e4350::t_a15a84d6566dde 495
+translations/yml/it.yml
+  s_1a83bdc91e4350::t_a182bdaba0a686 495
+classes/models/LengowOrder.php
+  s_1a83bdc91e4350::t_75a9bc9edf9f5a 1209-1239,1250
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "f40140a2ea27098137104b84a556df4d0fa5d6ac",
+  "prompts": {},
+  "sessions": {
+    "s_1a83bdc91e4350": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "4c25d80c-92be-418c-afeb-f52b601a8f39",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
