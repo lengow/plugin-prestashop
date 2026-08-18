@@ -567,6 +567,8 @@ log.import.product_state_canceled|product %{product_id} could not be added to ca
 log.import.match_carrier_found|carrier "%{carrier_name}" (CARRIER ID %{id_carrier}) found with field %{field_name} (%{field_value})
 log.import.match_default_carrier|no carrier matching found, carrier "%{carrier_name}" (CARRIER ID %{id_carrier}) selected by default
 log.import.error_order_state_updated|error while updating status: %{error_message}
+log.import.check_reconcile_orders|check stuck orders to reconcile with Lengow API
+log.import.order_state_reconciled|order reconciled from Lengow API - status updated to %{state_name}
 log.import.error_no_package|import order failed - Lengow error: no package in the order
 log.import.error_wrong_package_number|import order failed - wrong package number
 log.import.error_no_delivery_address|import order failed - Lengow error: no delivery address in the order
@@ -601,6 +603,7 @@ log.order_action.action_saved|call tracking saved in lengow_actions table
 log.order_action.call_tracking|call tracking with parameters: %{parameters}
 log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
+log.order_action.order_state_reconciled|order reconciled from Lengow API - state updated to %{state}
 log.connector.call_api|call %{call_type} %{curl_url}
 log.connector.error_api|API call failed - %{error_code} - %{error_message}
 log.connector.timeout_api|API call has been blocked by a timeout

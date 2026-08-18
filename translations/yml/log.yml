@@ -90,6 +90,8 @@ en:
       match_carrier_found: "carrier \"%{carrier_name}\" (CARRIER ID %{id_carrier}) found with field %{field_name} (%{field_value})"
       match_default_carrier: "no carrier matching found, carrier \"%{carrier_name}\" (CARRIER ID %{id_carrier}) selected by default"
       error_order_state_updated: "error while updating status: %{error_message}"
+      check_reconcile_orders: "check stuck orders to reconcile with Lengow API"
+      order_state_reconciled: "order reconciled from Lengow API - status updated to %{state_name}"
       error_no_package: "import order failed - Lengow error: no package in the order"
       error_wrong_package_number: "import order failed - wrong package number"
       error_no_delivery_address: "import order failed - Lengow error: no delivery address in the order"
@@ -125,6 +127,7 @@ en:
       call_tracking: "call tracking with parameters: %{parameters}"
       can_not_load_order: "order action failed - Can't load order"
       call_action_failed: "order action failed - %{decoded_message}"
+      order_state_reconciled: "order reconciled from Lengow API - state updated to %{state}"
     connector:
       call_api: "call %{call_type} %{curl_url}"
       error_api: "API call failed - %{error_code} - %{error_message}"

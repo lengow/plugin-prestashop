@@ -689,30 +689,82 @@ class LengowAction
         // get all old order action (+ 3 days)
         $actions = self::getOldActions();
         if ($actions) {
+            $accountId = LengowConfiguration::getGlobalValue(LengowConfiguration::ACCOUNT_ID);
             foreach ($actions as $action) {
                 // finish action in lengow_action table
                 self::finishAction($action[self::FIELD_ID]);
                 $orderLengow = new LengowOrder($action[self::FIELD_ORDER_ID]);
                 if ($orderLengow->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
-                    // if action is denied -> create order error
-                    $errorMessage = LengowMain::setLogMessage('lengow_log.exception.action_is_too_old');
-                    LengowOrderError::addOrderLog(
-                        $orderLengow->lengowId,
-                        $errorMessage,
-                        LengowOrderError::TYPE_ERROR_SEND
+                    // compatibility V2: normalize marketplace name before API call
+                    if ($orderLengow->lengowIdFlux !== null) {
+                        $orderLengow->checkAndChangeMarketplaceName();
+                    }
+                    // before logging as too old, check current state on Lengow API
+                    $apiResult = LengowConnector::queryApi(
+                        LengowConnector::GET,
+                        LengowConnector::API_ORDER,
+                        [
+                            LengowImport::ARG_MARKETPLACE_ORDER_ID => $orderLengow->lengowMarketplaceSku,
+                            LengowImport::ARG_MARKETPLACE => $orderLengow->lengowMarketplaceName,
+                            LengowImport::ARG_ACCOUNT_ID => $accountId,
+                        ]
                     );
-                    $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
-                    LengowMain::log(
-                        LengowLog::CODE_ACTION,
-                        LengowMain::setLogMessage(
-                            'log.order_action.call_action_failed',
-                            ['decoded_message' => $decodedMessage]
-                        ),
-                        $logOutput,
-                        $orderLengow->lengowMarketplaceSku
-                    );
+                    if (is_object($apiResult)
+                        && isset($apiResult->results[0]->lengow_status)
+                        && LengowOrder::getOrderProcessState($apiResult->results[0]->lengow_status)
+                            === LengowOrder::PROCESS_STATE_FINISH
+                        && !empty($apiResult->results[0]->packages)
+                    ) {
+                        $packageData = $apiResult->results[0]->packages[0];
+                        try {
+                            $updated = $orderLengow->updateState((string) $apiResult->results[0]->lengow_status, $packageData);
+                        } catch (Exception $e) {
+                            LengowMain::log(
+                                LengowLog::CODE_ACTION,
+                                LengowMain::setLogMessage(
+                                    'log.order_action.call_action_failed',
+                                    ['decoded_message' => $e->getMessage()]
+                                ),
+                                $logOutput,
+                                $orderLengow->lengowMarketplaceSku
+                            );
+                            unset($orderLengow);
+                            usleep(250000);
+                            continue;
+                        }
+                        if ($updated) {
+                            LengowMain::log(
+                                LengowLog::CODE_ACTION,
+                                LengowMain::setLogMessage(
+                                    'log.order_action.order_state_reconciled',
+                                    ['state' => $orderLengow->getCurrentStateName()]
+                                ),
+                                $logOutput,
+                                $orderLengow->lengowMarketplaceSku
+                            );
+                        }
+                    } else {
+                        // action genuinely timed out without resolution -> create order error
+                        $errorMessage = LengowMain::setLogMessage('lengow_log.exception.action_is_too_old');
+                        LengowOrderError::addOrderLog(
+                            $orderLengow->lengowId,
+                            $errorMessage,
+                            LengowOrderError::TYPE_ERROR_SEND
+                        );
+                        $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
+                        LengowMain::log(
+                            LengowLog::CODE_ACTION,
+                            LengowMain::setLogMessage(
+                                'log.order_action.call_action_failed',
+                                ['decoded_message' => $decodedMessage]
+                            ),
+                            $logOutput,
+                            $orderLengow->lengowMarketplaceSku
+                        );
+                    }
                 }
                 unset($orderLengow);
+                usleep(250000);
             }
 
             return true;
@@ -731,7 +783,9 @@ class LengowAction
         $date = date(LengowMain::DATE_FULL, time() - self::MAX_INTERVAL_TIME);
         $query = 'SELECT * FROM ' . _DB_PREFIX_ . 'lengow_actions
                 WHERE created_at <= "' . $date . '"
-                AND state = ' . self::STATE_NEW;
+                AND state = ' . self::STATE_NEW . '
+                ORDER BY created_at ASC
+                LIMIT 50';
         try {
             $results = Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {

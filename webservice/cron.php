@@ -143,6 +143,7 @@ if (Tools::getIsset(LengowImport::PARAM_GET_SYNC) && Tools::getValue(LengowImpor
     if (!$sync || $sync === LengowSync::SYNC_ACTION) {
         LengowAction::checkFinishAction($logOutput);
         LengowAction::checkOldAction($logOutput);
+        LengowOrder::checkAndReconcileOrders($logOutput);
         LengowAction::checkActionNotSent($logOutput);
     }
     // sync options between Lengow and PrestaShop
