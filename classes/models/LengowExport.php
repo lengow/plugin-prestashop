@@ -846,6 +846,9 @@ class LengowExport
         // get product Features
         $features = Feature::getFeatures($this->language->id);
         foreach ($features as $feature) {
+            if (!isset($feature['name']) || !is_string($feature['name']) || $feature['name'] === '') {
+                continue;
+            }
             $formattedFeature = LengowFeed::formatFields($feature['name'], $this->format, $this->legacy);
             if (!in_array($formattedFeature, $formattedFields, true)) {
                 $fields[] = $feature['name'];
@@ -860,8 +863,7 @@ class LengowExport
         if ($this->variation) {
             $attributes = AttributeGroup::getAttributesGroups($this->language->id);
             foreach ($attributes as $attribute) {
-                // don't export empty attributes
-                if ($attribute['name'] === '') {
+                if (!isset($attribute['name']) || !is_string($attribute['name']) || $attribute['name'] === '') {
                     continue;
                 }
                 $formattedAttribute = LengowFeed::formatFields($attribute['name'], $this->format, $this->legacy);
