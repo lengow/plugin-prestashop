@@ -1,13 +1,13 @@
 classes/models/LengowCarrier.php
-  s_c5e0545e9dedd5::t_dbb511c95ab45a 1071-1084
-  s_c5e0545e9dedd5::t_0afd4e96c15f5e 1288-1385
+  s_c5e0545e9dedd5::t_dbb511c95ab45a 1071-1084,1072-1084
+  s_c5e0545e9dedd5::t_0afd4e96c15f5e 1288-1385,1289-1301,1303-1318,1319-1366,1367-1385
   s_1a83bdc91e4350::t_d642b0a0a9b35e 1287
 translations/fr.csv
   s_c5e0545e9dedd5::t_96e410108b50c2 103,155
 translations/it.csv
   s_c5e0545e9dedd5::t_96e410108b50c2 68,251,352
 classes/models/LengowMain.php
-  s_c5e0545e9dedd5::t_2d4cbcec2d3f30 937-959
+  s_c5e0545e9dedd5::t_2d4cbcec2d3f30 937-959,939-941,943-951,955-956,958-959
   s_1a83bdc91e4350::t_af558ba29f6475 936
 translations/es.csv
   s_c5e0545e9dedd5::t_96e410108b50c2 72,136,421,425,433
