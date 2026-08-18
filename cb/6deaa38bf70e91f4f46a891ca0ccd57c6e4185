@@ -1,0 +1,19 @@
+classes/models/LengowExport.php
+  s_e3511e933c5356::t_1893c032220e7b 849-851,866
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "cb6deaa38bf70e91f4f46a891ca0ccd57c6e4185",
+  "prompts": {},
+  "sessions": {
+    "s_e3511e933c5356": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "d4df0ea3-70bd-487d-ba81-63658a933e72",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
