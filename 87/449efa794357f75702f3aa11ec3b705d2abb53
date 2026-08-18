@@ -1,0 +1,29 @@
+.github/.release-please-manifest.json
+  s_1a83bdc91e4350::t_a3f36acbd50a02 2
+CHANGELOG.md
+  s_1a83bdc91e4350::t_462405ee1f5e95 4-15
+README.md
+  s_1a83bdc91e4350::t_2489655835ecf7 6
+composer.json
+  s_1a83bdc91e4350::t_e8d62366c892c4 4
+config/checkmd5.csv
+  s_1a83bdc91e4350::t_4b0f4a97335fcd 5,46
+lengow.php
+  s_1a83bdc91e4350::t_26f63927bf2027 48
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "87449efa794357f75702f3aa11ec3b705d2abb53",
+  "prompts": {},
+  "sessions": {
+    "s_1a83bdc91e4350": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "4c25d80c-92be-418c-afeb-f52b601a8f39",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
