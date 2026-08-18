@@ -1,0 +1,31 @@
+classes/models/LengowOrder.php
+  s_35beb95de6a089::t_412a05472f7158 691-697,699
+  s_35beb95de6a089::t_5ed3e33373b67e 783-785
+  s_35beb95de6a089::t_feb2088eb16092 637-653,662-665
+tools/build.sh
+  s_1a83bdc91e4350::t_9eaba90e715d96 254
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.10",
+  "base_commit_sha": "63e7f60ac0f1171025a5d3fe7354a2238c9ad57a",
+  "prompts": {},
+  "sessions": {
+    "s_1a83bdc91e4350": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "4c25d80c-92be-418c-afeb-f52b601a8f39",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    },
+    "s_35beb95de6a089": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "cd874832-8a26-4884-abd1-bb33156cd005",
+        "model": "claude-sonnet-4.6"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
