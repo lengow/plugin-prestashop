@@ -850,6 +850,9 @@ class LengowExport
                 continue;
             }
             $formattedFeature = LengowFeed::formatFields($feature['name'], $this->format, $this->legacy);
+            if ($formattedFeature === '') {
+                continue;
+            }
             if (!in_array($formattedFeature, $formattedFields, true)) {
                 $fields[] = $feature['name'];
                 $formattedFields[] = $formattedFeature;
@@ -867,6 +870,9 @@ class LengowExport
                     continue;
                 }
                 $formattedAttribute = LengowFeed::formatFields($attribute['name'], $this->format, $this->legacy);
+                if ($formattedAttribute === '') {
+                    continue;
+                }
                 if (!in_array($formattedAttribute, $formattedFields, true)) {
                     $fields[] = $attribute['name'];
                     $formattedFields[] = $formattedAttribute;
