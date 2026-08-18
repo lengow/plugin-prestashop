@@ -1,0 +1,25 @@
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "08dd4dafdfde85abc41ddf248e0f1143430ac612",
+  "prompts": {},
+  "sessions": {
+    "s_1a83bdc91e4350": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "4c25d80c-92be-418c-afeb-f52b601a8f39",
+        "model": "gpt-5.6-terra"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    },
+    "s_53610fddfa813d": {
+      "agent_id": {
+        "tool": "github-copilot-cli",
+        "id": "49550a8d-c7d3-4042-91b1-b92b8b14ae5d",
+        "model": "gpt-5.4"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
