@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.11.2](https://github.com/lengow/plugin-prestashop/compare/v3.11.1...v3.11.2) (2026-08-19)
+
+
+### Bug Fixes
+
+* **cancel:** allow final cancellation transitions ([#138](https://github.com/lengow/plugin-prestashop/issues/138)) ([b0ac793](https://github.com/lengow/plugin-prestashop/commit/b0ac793597d80717fac15eb073aba4d6ab2bf8a4))
+
 ## [3.11.1](https://github.com/lengow/plugin-prestashop/compare/v3.11.0...v3.11.1) (2026-08-13)
 
 
