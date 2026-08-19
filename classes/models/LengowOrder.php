@@ -580,11 +580,12 @@ class LengowOrder extends Order
         }
         // get PrestaShop equivalent state id to Lengow API state
         $idOrderState = LengowMain::getOrderState($orderStateLengow);
+        $currentOrderState = (int) $this->getCurrentState();
         // if state is different between API and PrestaShop
-        if ((int) $this->getCurrentState() !== $idOrderState) {
+        if ($currentOrderState !== $idOrderState) {
             // change state process to shipped
             if (($orderStateLengow === self::STATE_SHIPPED || $orderStateLengow === self::STATE_CLOSED)
-                && (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_ACCEPTED)
+                && $currentOrderState === LengowMain::getOrderState(self::STATE_ACCEPTED)
             ) {
                 // create a new order history
                 $history = new OrderHistory();
@@ -601,9 +602,14 @@ class LengowOrder extends Order
                 return Tools::ucfirst(self::STATE_SHIPPED);
             }
             if (($orderStateLengow === self::STATE_CANCELED || $orderStateLengow === self::STATE_REFUSED)
-                && (
-                    (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_ACCEPTED)
-                    || (int) $this->getCurrentState() === LengowMain::getOrderState(self::STATE_SHIPPED)
+                && !in_array(
+                    $currentOrderState,
+                    [
+                        LengowMain::getOrderState(self::STATE_CANCELED),
+                        LengowMain::getOrderState(self::STATE_REFUNDED),
+                        LengowMain::getOrderState(self::STATE_PARTIALLY_REFUNDED),
+                    ],
+                    true
                 )
             ) {
                 // create a new order history
