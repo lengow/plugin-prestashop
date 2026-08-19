@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [4.2.2](https://github.com/lengow/plugin-prestashop/compare/v4.2.1...v4.2.2) (2026-08-19)
+
+
+### Bug Fixes
+
+* **export:** skip invalid dynamic field names ([#137](https://github.com/lengow/plugin-prestashop/issues/137)) ([9205078](https://github.com/lengow/plugin-prestashop/commit/9205078b5888834e2886e15c9a183f8f843d1c16))
+
 ## [4.2.1](https://github.com/lengow/plugin-prestashop/compare/v4.2.0...v4.2.1) (2026-08-13)
 
 
