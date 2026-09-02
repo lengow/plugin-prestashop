@@ -1036,10 +1036,9 @@ class LengowImportOrder
     /**
      * Resolve shared/relay email addresses to avoid merging different end-customers.
      *
-     * When a relay or technical email is shared across multiple end-customers
-     * (e.g., Octopia CDON/FYND via @clemarche.com), generates a unique email
-     * per actual marketplace buyer to prevent unrelated orders from being
-     * grouped under the same PrestaShop customer account.
+     * When a relay or technical email is shared across multiple end-customers,
+     * generates a unique email per actual marketplace buyer to prevent unrelated
+     * orders from being grouped under the same PrestaShop customer account.
      *
      * Only activates when marketplace_customer_id is available in the API payload,
      * as it is the only reliable discriminator. Without it, the original email is
