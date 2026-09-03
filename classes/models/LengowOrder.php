@@ -1493,10 +1493,23 @@ class LengowOrder extends Order
             ];
         }
 
+        $savedReason = $result['refund_reason'] ?? '';
+        $refundReason = $savedReason;
+        $cancelReason = $savedReason;
+        $marketplace = LengowMain::getMarketplaceSingleton($marketplaceName);
+        if ($marketplace !== null) {
+            $refundReason = $marketplace->isValidReasonForAction($savedReason, LengowAction::TYPE_REFUND)
+                ? $savedReason
+                : '';
+            $cancelReason = $marketplace->isValidReasonForAction($savedReason, LengowAction::TYPE_CANCEL)
+                ? $savedReason
+                : '';
+        }
+
         return [
-            'refund_reason' => $result['refund_reason'] ?? '',
+            'refund_reason' => $refundReason,
             'refund_mode' => $result['refund_mode'] ?? '',
-            'cancel_reason' => $result['refund_reason'] ?? '',
+            'cancel_reason' => $cancelReason,
         ];
     }
 
