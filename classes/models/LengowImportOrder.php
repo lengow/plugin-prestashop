@@ -1118,9 +1118,14 @@ class LengowImportOrder
             // no proof of sharing: fall back on the buyer name. An existing customer with the
             // same name is the same person placing a new order, their real email is kept
             // (a marketplace sending one email per buyer must never be split into two accounts)
-            $newLastName = Tools::strtolower(trim((string) ($billingData['last_name'] ?? '')));
+            $newLastName = $this->getBuyerLastName($billingData);
             $existingLastName = Tools::strtolower(trim($existingCustomer->lastname));
 
+            // without an exploitable name on either side, keep the real email: an unusable
+            // comparison is not a proof that the buyers are different
+            if ($newLastName === '' || $existingLastName === '' || $existingLastName === '--') {
+                return $email;
+            }
             if ($newLastName === $existingLastName) {
                 return $email;
             }
@@ -1142,6 +1147,33 @@ class LengowImportOrder
         );
 
         return $generatedEmail;
+    }
+
+    /**
+     * Get the buyer last name the way LengowCustomer builds it
+     *
+     * Marketplaces such as Amazon only send full_name, and LengowCustomer::validateEmptyLengow()
+     * then derives firstname/lastname from it. The same derivation is required here, otherwise
+     * an empty last_name would never match the stored customer and every returning buyer would
+     * be taken for a new one.
+     *
+     * @param array<string, mixed> $billingData billing address data from the API
+     *
+     * @return string
+     */
+    private function getBuyerLastName(array $billingData): string
+    {
+        $lastName = trim((string) ($billingData['last_name'] ?? ''));
+        if ($lastName === '') {
+            $names = LengowAddress::extractNames(trim((string) ($billingData['first_name'] ?? '')));
+            $lastName = (string) $names['lastname'];
+        }
+        if ($lastName === '') {
+            $names = LengowAddress::extractNames(trim((string) ($billingData['full_name'] ?? '')));
+            $lastName = (string) $names['lastname'];
+        }
+
+        return Tools::strtolower(trim($lastName));
     }
 
     /**
