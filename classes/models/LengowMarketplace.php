@@ -598,8 +598,8 @@ class LengowMarketplace
                 case LengowAction::ARG_REFUND_REASON:
                 case LengowAction::ARG_REASON:
                     $savedReason = $lengowOrder->getRefundReasonByPrestashopId((int) $lengowOrder->lengowId);
-                    $reasonValue = $savedReason ?: $this->getDefaultValue((string) $arg, $action);
-                    if ($reasonValue !== false && $reasonValue !== '') {
+                    $reasonValue = $this->getValidatedReason((string) $arg, $action, $savedReason);
+                    if ($reasonValue !== '') {
                         $params[$arg] = $reasonValue;
                     } elseif (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
                         break;
@@ -647,8 +647,12 @@ class LengowMarketplace
             switch ($arg) {
                 case LengowAction::ARG_REFUND_REASON:
                 case LengowAction::ARG_REASON:
-                    $params[$arg] = $lengowOrder->getRefundReasonByPrestashopId((int) $lengowOrder->lengowId)
-                        ?? $this->getDefaultValue((string) $arg, LengowAction::TYPE_REFUND);
+                    $savedReason = $lengowOrder->getRefundReasonByPrestashopId((int) $lengowOrder->lengowId);
+                    $params[$arg] = $this->getValidatedReason(
+                        (string) $arg,
+                        LengowAction::TYPE_REFUND,
+                        $savedReason
+                    );
                     break;
                 case LengowAction::ARG_REFUND_PRICE:
                     $params[$arg] = $decodedExtra['total_order'] ?? 0.00;
@@ -958,30 +962,103 @@ class LengowMarketplace
     }
 
     /**
+     * Get the reason codes the marketplace declares for a given action
+     *
+     * The descriptor exposes the refund list under the refund_reason argument, with reason as a
+     * fallback for older descriptors, and the cancel list under the reason argument. An empty
+     * result means the marketplace declares no restricted list for this action.
+     *
+     * @param string $action Lengow order actions type (cancel or refund)
+     *
+     * @return array<string, string> reason labels indexed by reason code
+     */
+    protected function getReasonValidValues(string $action): array
+    {
+        if (!$this->getAction($action)) {
+            return [];
+        }
+        $argNames = $action === LengowAction::TYPE_REFUND
+            ? [LengowAction::ARG_REFUND_REASON, LengowAction::ARG_REASON]
+            : [LengowAction::ARG_REASON];
+        $arguments = $this->getMarketplaceArguments($action);
+        foreach ($argNames as $argName) {
+            if (!in_array($argName, $arguments)) {
+                continue;
+            }
+            $reasons = $this->argValues[$action][$argName]['valid_values'] ?? [];
+            if (!empty($reasons)) {
+                return $reasons;
+            }
+        }
+
+        return [];
+    }
+
+    /**
+     * Check if a reason code can be sent for a given action
+     *
+     * Cancel and refund reasons share a single storage column, so a reason saved for one action
+     * is read back for the other. A code is refused only when the marketplace declares a
+     * restricted list for the action and the code is absent from it: without such a list there is
+     * no evidence the code is wrong, and it is kept.
+     *
+     * @param string $reason reason code to check
+     * @param string $action Lengow order actions type (cancel or refund)
+     *
+     * @return bool
+     */
+    public function isValidReasonForAction(string $reason, string $action): bool
+    {
+        if ($reason === '') {
+            return false;
+        }
+        $validValues = $this->getReasonValidValues($action);
+        if (empty($validValues)) {
+            return true;
+        }
+
+        return array_key_exists($reason, $validValues);
+    }
+
+    /**
+     * Get the reason to send for a given action
+     *
+     * Falls back to the value the marketplace declares as default for this very action when the
+     * saved reason is not valid for it, and to no reason at all when that default is not valid
+     * either.
+     *
+     * @param string $arg marketplace argument being built (reason or refund_reason)
+     * @param string $action Lengow order actions type (cancel or refund)
+     * @param string|null $savedReason reason saved for the order
+     *
+     * @return string empty when no valid reason can be sent for this action
+     */
+    public function getValidatedReason(string $arg, string $action, ?string $savedReason): string
+    {
+        $savedReason = trim((string) $savedReason);
+        if ($this->isValidReasonForAction($savedReason, $action)) {
+            return $savedReason;
+        }
+        // scoped to the action on purpose: getDefaultValue() falls back to the other actions,
+        // which is one more way for a refund reason to end up in a cancel payload
+        $defaultValue = (string) ($this->argValues[$action][$arg]['default_value'] ?? '');
+
+        return $this->isValidReasonForAction($defaultValue, $action) ? $defaultValue : '';
+    }
+
+    /**
      * Get all refund reasons choices
      *
      * @return array<string, mixed>
      */
     public function getRefundReasons(): array
     {
-        $action = $this->getAction(LengowAction::TYPE_REFUND);
-        if (!$action) {
+        $reasons = $this->getReasonValidValues(LengowAction::TYPE_REFUND);
+        if (empty($reasons)) {
             return [];
         }
         $locale = new LengowTranslation();
         $choices = [$locale->t('order.screen.refund_reason_label') => ''];
-        $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_REFUND);
-        $reasons = in_array(LengowAction::ARG_REFUND_REASON, $arguments)
-            ? ($this->argValues[LengowAction::TYPE_REFUND][LengowAction::ARG_REFUND_REASON]['valid_values'] ?? [])
-            : [];
-        if (empty($reasons)) {
-            $reasons = in_array(LengowAction::ARG_REASON, $arguments)
-                ? ($this->argValues[LengowAction::TYPE_REFUND][LengowAction::ARG_REASON]['valid_values'] ?? [])
-                : [];
-        }
-        if (empty($reasons)) {
-            return [];
-        }
         foreach ($reasons as $key => $reason) {
             $choices[$reason] = $key;
         }
@@ -996,19 +1073,12 @@ class LengowMarketplace
      */
     public function getCancelReasons(): array
     {
-        $action = $this->getAction(LengowAction::TYPE_CANCEL);
-        if (!$action) {
+        $reasons = $this->getReasonValidValues(LengowAction::TYPE_CANCEL);
+        if (empty($reasons)) {
             return [];
         }
         $locale = new LengowTranslation();
         $choices = [$locale->t('order.screen.cancel_reason_label') => ''];
-        $arguments = $this->getMarketplaceArguments(LengowAction::TYPE_CANCEL);
-        $reasons = in_array(LengowAction::ARG_REASON, $arguments)
-            ? ($this->argValues[LengowAction::TYPE_CANCEL][LengowAction::ARG_REASON]['valid_values'] ?? [])
-            : [];
-        if (empty($reasons)) {
-            return [];
-        }
         foreach ($reasons as $key => $reason) {
             $choices[$reason] = $key;
         }
