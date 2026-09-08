@@ -466,6 +466,7 @@ class LengowOrder extends Order
      * several end customers; without it, the customer is the same buyer placing a new order.
      *
      * @param int $idCustomer PrestaShop customer id
+     * @param int $idShop PrestaShop shop id
      * @param string $marketplace marketplace name
      * @param string $marketplaceCustomerId marketplace customer identifier of the current order
      *
@@ -473,6 +474,7 @@ class LengowOrder extends Order
      */
     public static function customerBelongsToAnotherMarketplaceBuyer(
         int $idCustomer,
+        int $idShop,
         string $marketplace,
         string $marketplaceCustomerId,
     ): bool {
@@ -482,6 +484,7 @@ class LengowOrder extends Order
         $query = 'SELECT lo.`marketplace_customer_id` FROM `' . _DB_PREFIX_ . 'lengow_orders` lo
             INNER JOIN `' . _DB_PREFIX_ . 'orders` o ON o.`id_order` = lo.`id_order`
             WHERE o.`id_customer` = ' . (int) $idCustomer . '
+            AND o.`id_shop` = ' . (int) $idShop . '
             AND lo.`marketplace_name` = \'' . pSQL($marketplace) . '\'
             AND lo.`marketplace_customer_id` IS NOT NULL
             AND lo.`marketplace_customer_id` != \'\'

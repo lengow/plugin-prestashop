@@ -1056,6 +1056,7 @@ class LengowImportOrder
         // orders placed by another marketplace buyer
         $sharedEmailProven = LengowOrder::customerBelongsToAnotherMarketplaceBuyer(
             (int) $existingCustomer->id,
+            $this->idShop,
             $this->marketplace->name,
             $marketplaceCustomerId
         );
