@@ -1107,11 +1107,19 @@ class LengowImportOrder
     /**
      * Get the buyer last name the way LengowCustomer builds it
      *
-     * Some marketplaces send only full_name, and LengowCustomer::validateEmptyLengow() then
-     * derives firstname and lastname from it before saving. Reading last_name directly would
-     * yield an empty string for those buyers, and an empty name is treated as an unusable
-     * comparison, which keeps the real address and merges two people into one account when the
-     * address is in fact shared.
+     * The comparison is against customer.lastname as LengowCustomer stored it, so this has to
+     * reproduce how that value was produced. When either name field is empty,
+     * validateEmptyLengow() runs LengowAddress::extractNames() over whichever one is populated
+     * and keeps only the surname it extracts; when both are empty it falls back to full_name.
+     *
+     * Reading last_name as-is breaks in both directions. A marketplace sending the whole name in
+     * first_name yields an empty surname, and an empty name counts as an unusable comparison,
+     * which keeps a genuinely shared address and merges two people into one account. A
+     * marketplace sending the whole name in last_name yields "Jean Dupont" against a stored
+     * "Dupont", which reads as a different buyer and splits a returning one.
+     *
+     * Both name fields populated is the case validateEmptyLengow() never sees: last_name is
+     * then stored untouched, so it is used untouched here.
      *
      * @param array<string, mixed> $billingData billing address data from the API
      *
@@ -1119,9 +1127,19 @@ class LengowImportOrder
      */
     private function getBuyerLastName(array $billingData): string
     {
+        $firstName = trim((string) ($billingData['first_name'] ?? ''));
         $lastName = trim((string) ($billingData['last_name'] ?? ''));
-        if ($lastName === '') {
-            $names = LengowAddress::extractNames(trim((string) ($billingData['first_name'] ?? '')));
+
+        // A placeholder must not be parsed: extractNames() turns "not provided by the
+        // marketplace" into "provided by the marketplace", which would stop being recognised as
+        // a missing name and would then be compared as if it were a surname.
+        $normalized = Tools::strtolower($lastName);
+        if ($normalized !== '' && $this->isUnusableBuyerName($normalized)) {
+            return $normalized;
+        }
+
+        if ($firstName === '' || $lastName === '') {
+            $names = LengowAddress::extractNames($lastName !== '' ? $lastName : $firstName);
             $lastName = (string) $names['lastname'];
         }
         if ($lastName === '') {
