@@ -1063,7 +1063,7 @@ class LengowImportOrder
             // no proof of sharing: fall back on the buyer name. An existing customer with the
             // same name is the same person placing a new order, so the real email is kept. A
             // marketplace sending one email per buyer must never be split into two accounts.
-            $newLastName = Tools::strtolower(trim((string) ($billingData['last_name'] ?? '')));
+            $newLastName = $this->getBuyerLastName($billingData);
             $existingLastName = Tools::strtolower(trim($existingCustomer->lastname));
 
             // with no exploitable name on either side, keep the real email: a comparison that
@@ -1092,6 +1092,34 @@ class LengowImportOrder
         );
 
         return $generatedEmail;
+    }
+
+    /**
+     * Get the buyer last name the way LengowCustomer builds it
+     *
+     * Some marketplaces send only full_name, and LengowCustomer::validateEmptyLengow() then
+     * derives firstname and lastname from it before saving. Reading last_name directly would
+     * yield an empty string for those buyers, and an empty name is treated as an unusable
+     * comparison, which keeps the real address and merges two people into one account when the
+     * address is in fact shared.
+     *
+     * @param array<string, mixed> $billingData billing address data from the API
+     *
+     * @return string
+     */
+    private function getBuyerLastName(array $billingData): string
+    {
+        $lastName = trim((string) ($billingData['last_name'] ?? ''));
+        if ($lastName === '') {
+            $names = LengowAddress::extractNames(trim((string) ($billingData['first_name'] ?? '')));
+            $lastName = (string) $names['lastname'];
+        }
+        if ($lastName === '') {
+            $names = LengowAddress::extractNames(trim((string) ($billingData['full_name'] ?? '')));
+            $lastName = (string) $names['lastname'];
+        }
+
+        return Tools::strtolower(trim($lastName));
     }
 
     /**
