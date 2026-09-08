@@ -23,7 +23,11 @@ if (!defined('_PS_VERSION_')) {
     $_GET['module'] = 'lengow';
     $_GET['controller'] = 'export';
 
-    $index = rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/\\') . '/index.php';
+    $index = rtrim((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''), '/\\') . '/index.php';
+    if (!is_file($index)) {
+        // Fallback for hosting setups where DOCUMENT_ROOT does not match the shop root.
+        $index = dirname(__DIR__, 3) . '/index.php';
+    }
     if (!is_file($index)) {
         header('HTTP/1.1 500 Internal Server Error');
         exit('Unable to dispatch Lengow front controller');

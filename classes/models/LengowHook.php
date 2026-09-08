@@ -91,7 +91,7 @@ class LengowHook
                 }
                 try {
                     $registered = $this->module->registerHook($hook);
-                } catch (PrestaShopDatabaseException|PrestaShopException $e) {
+                } catch (PDOException|PrestaShopDatabaseException|PrestaShopException $e) {
                     if (!$this->isDuplicateHookRegistrationException($e)) {
                         throw $e;
                     }
