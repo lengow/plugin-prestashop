@@ -300,6 +300,21 @@ class LengowImportOrder
             $this->marketplace->name,
             $this->marketplace->legacyCode
         );
+        // checks if the order is not anonymized or too old
+        // the check also covers orders already recorded in the Lengow order table but never
+        // imported: without it, such an order is retried at every synchronization
+        // it runs before the pending error guard on purpose: an order that will never be imported
+        // must reach the error closing below even when it already carries an error, otherwise it
+        // stays reported as in error forever
+        if (!$idOrder && !$this->canCreateOrder()) {
+            // this order will never be imported: close its pending errors so that it stops being
+            // reported as an order in error
+            if ($this->idOrderLengow) {
+                LengowOrderError::finishOrderLogs($this->idOrderLengow);
+            }
+
+            return $this->returnResult(self::RESULT_IGNORED);
+        }
         // checks if an order already has an error in progress
         // a pending import error must not block the status synchronization of an order that is
         // already present in PrestaShop
@@ -316,18 +331,6 @@ class LengowImportOrder
             if (!$this->isReimported) {
                 return $this->returnResult(self::RESULT_IGNORED);
             }
-        }
-        // checks if the order is not anonymized or too old
-        // the check also covers orders already recorded in the Lengow order table but never
-        // imported: without it, such an order is retried at every synchronization
-        if (!$idOrder && !$this->canCreateOrder()) {
-            // this order will never be imported: close its pending errors so that it stops being
-            // reported as an order in error
-            if ($this->idOrderLengow) {
-                LengowOrderError::finishOrderLogs($this->idOrderLengow);
-            }
-
-            return $this->returnResult(self::RESULT_IGNORED);
         }
         // checks if an external id already exists
         if (!$this->idOrderLengow && $this->externalIdAlreadyExist()) {
