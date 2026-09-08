@@ -974,8 +974,25 @@ class LengowMarketplace
      */
     protected function getReasonValidValues(string $action): array
     {
+        $reasonDescriptor = $this->getReasonDescriptorForAction($action);
+
+        return $reasonDescriptor['valid_values'];
+    }
+
+    /**
+     * Get reason descriptor metadata for a given action
+     *
+     * @param string $action Lengow order actions type (cancel or refund)
+     *
+     * @return array{accept_free_values: bool, valid_values: array<string, string>}
+     */
+    protected function getReasonDescriptorForAction(string $action): array
+    {
         if (!$this->getAction($action)) {
-            return [];
+            return [
+                'accept_free_values' => true,
+                'valid_values' => [],
+            ];
         }
         $argNames = $action === LengowAction::TYPE_REFUND
             ? [LengowAction::ARG_REFUND_REASON, LengowAction::ARG_REASON]
@@ -985,13 +1002,16 @@ class LengowMarketplace
             if (!in_array($argName, $arguments)) {
                 continue;
             }
-            $reasons = $this->argValues[$action][$argName]['valid_values'] ?? [];
-            if (!empty($reasons)) {
-                return $reasons;
-            }
+            return [
+                'accept_free_values' => (bool) ($this->argValues[$action][$argName]['accept_free_values'] ?? true),
+                'valid_values' => $this->argValues[$action][$argName]['valid_values'] ?? [],
+            ];
         }
 
-        return [];
+        return [
+            'accept_free_values' => true,
+            'valid_values' => [],
+        ];
     }
 
     /**
@@ -1012,7 +1032,12 @@ class LengowMarketplace
         if ($reason === '') {
             return false;
         }
-        $validValues = $this->getReasonValidValues($action);
+        $reasonDescriptor = $this->getReasonDescriptorForAction($action);
+        if ($reasonDescriptor['accept_free_values']) {
+            return true;
+        }
+
+        $validValues = $reasonDescriptor['valid_values'];
         if (empty($validValues)) {
             return true;
         }
