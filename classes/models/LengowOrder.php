@@ -458,46 +458,6 @@ class LengowOrder extends Order
     }
 
     /**
-     * Check whether a PrestaShop customer already belongs to another marketplace buyer
-     *
-     * Looks for a Lengow order attached to this customer carrying a different, non empty
-     * marketplace_customer_id. That is the only positive proof that the email is shared by
-     * several end customers; without it, the customer is the same buyer placing a new order.
-     *
-     * @param int $idCustomer PrestaShop customer id
-     * @param int $idShop PrestaShop shop id
-     * @param string $marketplace marketplace name
-     * @param string $marketplaceCustomerId marketplace customer identifier of the current order
-     *
-     * @return bool
-     */
-    public static function customerBelongsToAnotherMarketplaceBuyer(
-        int $idCustomer,
-        int $idShop,
-        string $marketplace,
-        string $marketplaceCustomerId,
-    ): bool {
-        if (!self::hasMarketplaceCustomerIdColumn()) {
-            return false;
-        }
-        $query = 'SELECT lo.`marketplace_customer_id` FROM `' . _DB_PREFIX_ . 'lengow_orders` lo
-            INNER JOIN `' . _DB_PREFIX_ . 'orders` o ON o.`id_order` = lo.`id_order`
-            WHERE o.`id_customer` = ' . (int) $idCustomer . '
-            AND o.`id_shop` = ' . (int) $idShop . '
-            AND lo.`marketplace_name` = \'' . pSQL($marketplace) . '\'
-            AND lo.`marketplace_customer_id` IS NOT NULL
-            AND lo.`marketplace_customer_id` != \'\'
-            AND lo.`marketplace_customer_id` != \'' . pSQL($marketplaceCustomerId) . '\'';
-        try {
-            $result = Db::getInstance()->getRow($query);
-        } catch (PrestaShopDatabaseException $e) {
-            return false;
-        }
-
-        return (bool) $result;
-    }
-
-    /**
      * Check if a lengow order
      *
      * @param int $idOrder PrestaShop order id
