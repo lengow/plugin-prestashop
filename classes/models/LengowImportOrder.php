@@ -61,6 +61,16 @@ class LengowImportOrder
     public const RESULT_FAILED = 'failed';
     public const RESULT_IGNORED = 'ignored';
 
+    /* Buyer identity */
+
+    /** Written by LengowCustomer when no name could be derived from the marketplace data */
+    private const MISSING_NAME_PLACEHOLDER = '--';
+
+    /**
+     * @var array<int, string>|null lowercased labels standing for a name the marketplace never sent
+     */
+    private static ?array $notProvidedNames = null;
+
     /**
      * @var int|null PrestaShop shop id
      */
@@ -1069,7 +1079,7 @@ class LengowImportOrder
 
             // with no exploitable name on either side, keep the real email: a comparison that
             // cannot be made is not proof that the buyers are different
-            if ($newLastName === '' || $existingLastName === '' || $existingLastName === '--') {
+            if ($this->isUnusableBuyerName($newLastName) || $this->isUnusableBuyerName($existingLastName)) {
                 return $email;
             }
             if ($newLastName === $existingLastName) {
@@ -1121,6 +1131,62 @@ class LengowImportOrder
         }
 
         return Tools::strtolower(trim($lastName));
+    }
+
+    /**
+     * Check whether a last name can tell two buyers apart
+     *
+     * Three values stand for a name the marketplace never sent: the empty string, the '--'
+     * placeholder LengowCustomer writes when it cannot derive a name, and the "not provided"
+     * label LengowAddress::hydrateAddress() injects on orders delivered by the marketplace.
+     * The billing data reaching resolveSharedEmail() is post-hydration, so the label appears on
+     * the incoming side too, not only on the stored customer. Comparing any of them against a
+     * real surname reads as two different buyers and splits a returning customer into a second
+     * account - the exact failure this method exists to prevent.
+     *
+     * @param string $lastName lowercased last name
+     *
+     * @return bool
+     */
+    private function isUnusableBuyerName(string $lastName): bool
+    {
+        if ($lastName === '' || $lastName === self::MISSING_NAME_PLACEHOLDER) {
+            return true;
+        }
+
+        return in_array($lastName, $this->getNotProvidedNames(), true);
+    }
+
+    /**
+     * Get the "not provided" label in every language the module ships
+     *
+     * The stored name was written with the locale in use at import time, which is not
+     * necessarily the current one, so translating the label once in the current locale would
+     * miss a customer imported under another. The four shipped labels are all distinct.
+     *
+     * The injected context is used rather than the default constructor: the latter resolves
+     * LengowContext, which throws when the module is not loaded.
+     *
+     * @return array<int, string> lowercased labels
+     */
+    private function getNotProvidedNames(): array
+    {
+        if (self::$notProvidedNames === null) {
+            $locale = new LengowTranslation($this->context);
+            $isoCodes = [
+                LengowTranslation::ISO_CODE_EN,
+                LengowTranslation::ISO_CODE_FR,
+                LengowTranslation::ISO_CODE_ES,
+                LengowTranslation::ISO_CODE_IT,
+            ];
+            $names = [];
+            foreach ($isoCodes as $isoCode) {
+                $names[] = Tools::strtolower(trim($locale->t('order.screen.not_provided', [], $isoCode)));
+            }
+            self::$notProvidedNames = array_values(array_unique($names));
+        }
+
+        return self::$notProvidedNames;
     }
 
     /**
