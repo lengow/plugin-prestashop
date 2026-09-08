@@ -435,6 +435,8 @@ class LengowOrder extends Order
         int $idShop,
         int $excludeIdOrderLengow = 0,
     ): string|false {
+        // no LIMIT clause here: Db::getRow() always appends its own ' LIMIT 1', which would
+        // produce an invalid 'LIMIT 1 LIMIT 1' statement
         $query = 'SELECT `customer_email` FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `marketplace_customer_id` = \'' . pSQL($marketplaceCustomerId) . '\'
             AND `marketplace_name` = \'' . pSQL($marketplace) . '\'
@@ -442,8 +444,7 @@ class LengowOrder extends Order
             . ($excludeIdOrderLengow > 0 ? ' AND `id` != ' . (int) $excludeIdOrderLengow : '') . '
             AND `customer_email` IS NOT NULL
             AND `customer_email` != \'\'
-            ORDER BY `id` DESC
-            LIMIT 1';
+            ORDER BY `id` DESC';
 
         try {
             $result = Db::getInstance()->getRow($query);
@@ -455,6 +456,43 @@ class LengowOrder extends Order
         }
 
         return false;
+    }
+
+    /**
+     * Check whether a PrestaShop customer already belongs to another marketplace buyer
+     *
+     * Looks for a Lengow order attached to this customer carrying a different, non empty
+     * marketplace_customer_id. That is the only positive proof that the email is shared by
+     * several end customers; without it, the customer is the same buyer placing a new order.
+     *
+     * @param int $idCustomer PrestaShop customer id
+     * @param string $marketplace marketplace name
+     * @param string $marketplaceCustomerId marketplace customer identifier of the current order
+     *
+     * @return bool
+     */
+    public static function customerBelongsToAnotherMarketplaceBuyer(
+        int $idCustomer,
+        string $marketplace,
+        string $marketplaceCustomerId,
+    ): bool {
+        if (!self::hasMarketplaceCustomerIdColumn()) {
+            return false;
+        }
+        $query = 'SELECT lo.`marketplace_customer_id` FROM `' . _DB_PREFIX_ . 'lengow_orders` lo
+            INNER JOIN `' . _DB_PREFIX_ . 'orders` o ON o.`id_order` = lo.`id_order`
+            WHERE o.`id_customer` = ' . (int) $idCustomer . '
+            AND lo.`marketplace_name` = \'' . pSQL($marketplace) . '\'
+            AND lo.`marketplace_customer_id` IS NOT NULL
+            AND lo.`marketplace_customer_id` != \'\'
+            AND lo.`marketplace_customer_id` != \'' . pSQL($marketplaceCustomerId) . '\'';
+        try {
+            $result = Db::getInstance()->getRow($query);
+        } catch (PrestaShopDatabaseException $e) {
+            return false;
+        }
+
+        return (bool) $result;
     }
 
     /**
