@@ -294,16 +294,33 @@ class LengowImportOrder
             $this->marketplaceSku,
             $this->marketplace->name
         );
-        // checks if an order already has an error in progress
-        if ($this->idOrderLengow && $this->orderErrorAlreadyExist()) {
-            return $this->returnResult(self::RESULT_IGNORED);
-        }
         // recovery id if the order has already been imported
         $idOrder = LengowOrder::getOrderIdFromLengowOrders(
             $this->marketplaceSku,
             $this->marketplace->name,
             $this->marketplace->legacyCode
         );
+        // checks if the order is not anonymized or too old
+        // the check also covers orders already recorded in the Lengow order table but never
+        // imported: without it, such an order is retried at every synchronization
+        // it runs before the pending error guard on purpose: an order that will never be imported
+        // must reach the error closing below even when it already carries an error, otherwise it
+        // stays reported as in error forever
+        if (!$idOrder && !$this->canCreateOrder()) {
+            // this order will never be imported: close its pending errors so that it stops being
+            // reported as an order in error
+            if ($this->idOrderLengow) {
+                LengowOrderError::finishOrderLogs($this->idOrderLengow);
+            }
+
+            return $this->returnResult(self::RESULT_IGNORED);
+        }
+        // checks if an order already has an error in progress
+        // a pending import error must not block the status synchronization of an order that is
+        // already present in PrestaShop
+        if (!$idOrder && $this->idOrderLengow && $this->orderErrorAlreadyExist()) {
+            return $this->returnResult(self::RESULT_IGNORED);
+        }
 
         // update order state if already imported
         if ($idOrder) {
@@ -314,10 +331,6 @@ class LengowImportOrder
             if (!$this->isReimported) {
                 return $this->returnResult(self::RESULT_IGNORED);
             }
-        }
-        // checks if the order is not anonymized or too old
-        if (!$this->idOrderLengow && !$this->canCreateOrder()) {
-            return $this->returnResult(self::RESULT_IGNORED);
         }
         // checks if an external id already exists
         if (!$this->idOrderLengow && $this->externalIdAlreadyExist()) {
@@ -494,16 +507,21 @@ class LengowImportOrder
                     $this->marketplaceSku
                 );
             }
-            $vatNumberData = $this->getVatNumberFromOrderData();
+            // cast to string to compare an empty VAT number stored in database (null read as '')
+            // with the null the API returns for an order that carries no VAT number
+            $vatNumberData = (string) $this->getVatNumberFromOrderData();
             if ($order->lengowCustomerVatNumber !== $vatNumberData) {
-                $this->checkAndUpdateLengowOrderData();
-                $orderUpdated = true;
-                LengowMain::log(
-                    LengowLog::CODE_IMPORT,
-                    LengowMain::setLogMessage('log.import.lengow_order_updated'),
-                    $this->logOutput,
-                    $this->marketplaceSku
-                );
+                // the order is already present in PrestaShop: incomplete API data must not record
+                // an import error that would block its future synchronization
+                if ($this->checkAndUpdateLengowOrderData(false)) {
+                    $orderUpdated = true;
+                    LengowMain::log(
+                        LengowLog::CODE_IMPORT,
+                        LengowMain::setLogMessage('log.import.lengow_order_updated'),
+                        $this->logOutput,
+                        $this->marketplaceSku
+                    );
+                }
             }
         } catch (Exception $e) {
             $errorMessage = $e->getMessage() . '"' . $e->getFile() . '|' . $e->getLine();
@@ -757,10 +775,10 @@ class LengowImportOrder
      *
      * @return bool
      */
-    private function checkAndUpdateLengowOrderData()
+    private function checkAndUpdateLengowOrderData($reportErrors = true)
     {
         // Checks if all necessary order data are present
-        if (!$this->checkOrderData()) {
+        if (!$this->checkOrderData($reportErrors)) {
             return false;
         }
         // load order amount, processing fees and shipping costs
@@ -810,9 +828,10 @@ class LengowImportOrder
      *
      * @return bool
      */
-    private function checkOrderData()
+    private function checkOrderData($reportErrors = true)
     {
         $errorMessages = [];
+        $deliveryAddress = isset($this->packageData->delivery) ? $this->packageData->delivery : null;
         if (empty($this->packageData->cart)) {
             $errorMessages[] = LengowMain::setLogMessage('lengow_log.error.no_product');
         }
@@ -835,15 +854,31 @@ class LengowImportOrder
         } elseif ($this->orderData->billing_address->common_country_iso_a2 === null) {
             $errorMessages[] = LengowMain::setLogMessage('lengow_log.error.no_country_for_billing_address');
         }
-        if ($this->packageData->delivery->common_country_iso_a2 === null) {
+        if (!isset($deliveryAddress->common_country_iso_a2)
+            || $deliveryAddress->common_country_iso_a2 === null
+        ) {
             $errorMessages[] = LengowMain::setLogMessage('lengow_log.error.no_country_for_delivery_address');
         }
         if (empty($errorMessages)) {
             return true;
         }
         foreach ($errorMessages as $errorMessage) {
-            LengowOrderError::addOrderLog($this->idOrderLengow, $errorMessage);
             $decodedMessage = LengowMain::decodeLogMessage($errorMessage, LengowTranslation::DEFAULT_ISO_CODE);
+            if (!$reportErrors) {
+                // data refresh of an order already imported: trace the incomplete data without
+                // recording an order error
+                LengowMain::log(
+                    LengowLog::CODE_IMPORT,
+                    LengowMain::setLogMessage(
+                        'log.import.order_data_update_skipped',
+                        ['decoded_message' => $decodedMessage]
+                    ),
+                    $this->logOutput,
+                    $this->marketplaceSku
+                );
+                continue;
+            }
+            LengowOrderError::addOrderLog($this->idOrderLengow, $errorMessage);
             $this->errors[] = $decodedMessage;
             LengowMain::log(
                 LengowLog::CODE_IMPORT,
