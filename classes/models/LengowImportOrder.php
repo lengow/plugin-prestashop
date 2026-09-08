@@ -1052,9 +1052,18 @@ class LengowImportOrder
             return $generatedEmail;
         }
 
-        // lastname fallback — used only when the marketplace_customer_id column is not yet
-        // available (hotfix applied without DB upgrade)
-        if (!LengowOrder::hasMarketplaceCustomerIdColumn()) {
+        // positive proof that the email is shared: the existing customer already carries Lengow
+        // orders placed by another marketplace buyer
+        $sharedEmailProven = LengowOrder::customerBelongsToAnotherMarketplaceBuyer(
+            (int) $existingCustomer->id,
+            $this->idShop,
+            $this->marketplace->name,
+            $marketplaceCustomerId
+        );
+        if (!$sharedEmailProven) {
+            // no proof of sharing: fall back on the buyer name. An existing customer with the
+            // same name is the same person placing a new order, so the real email is kept. A
+            // marketplace sending one email per buyer must never be split into two accounts.
             $newLastName = Tools::strtolower(trim((string) ($billingData['last_name'] ?? '')));
             $existingLastName = Tools::strtolower(trim($existingCustomer->lastname));
 
