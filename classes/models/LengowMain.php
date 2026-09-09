@@ -1044,7 +1044,7 @@ class LengowMain
      */
     public static function getExportUrl(?int $idShop = null): string
     {
-        return self::getLengowBaseUrl($idShop) . 'webservice/export.php?'
+        return self::getShopBaseUrl($idShop) . 'index.php?fc=module&module=lengow&controller=export&'
             . LengowExport::PARAM_TOKEN . '=' . self::getToken($idShop);
     }
 
@@ -1055,7 +1055,7 @@ class LengowMain
      */
     public static function getCronUrl(): string
     {
-        return self::getLengowBaseUrl() . 'webservice/cron.php?'
+        return self::getShopBaseUrl() . 'index.php?fc=module&module=lengow&controller=cron&'
             . LengowImport::PARAM_TOKEN . '=' . self::getToken();
     }
 
@@ -1066,8 +1066,28 @@ class LengowMain
      */
     public static function getToolboxUrl(): string
     {
-        return self::getLengowBaseUrl() . 'webservice/toolbox.php?'
+        return self::getShopBaseUrl() . 'index.php?fc=module&module=lengow&controller=toolbox&'
             . LengowToolbox::PARAM_TOKEN . '=' . self::getToken();
+    }
+
+    /**
+     * Get base shop URL
+     *
+     * @param int|null $idShop PrestaShop shop id
+     *
+     * @return string
+     */
+    public static function getShopBaseUrl(?int $idShop = null): string
+    {
+        $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 's' : '';
+        try {
+            $idShop = $idShop === null ? LengowContext::getContext()->shop->id : $idShop;
+            $shopUrl = self::getMainShopUrl($idShop);
+
+            return 'http' . $isHttps . '://' . $shopUrl->domain . $shopUrl->physical_uri . $shopUrl->virtual_uri;
+        } catch (Exception $e) {
+            return _PS_BASE_URL_ . __PS_BASE_URI__;
+        }
     }
 
     /**
@@ -1079,16 +1099,7 @@ class LengowMain
      */
     public static function getLengowBaseUrl(?int $idShop = null): string
     {
-        $isHttps = isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] ? 's' : '';
-        try {
-            $idShop = $idShop === null ? LengowContext::getContext()->shop->id : $idShop;
-            $shopUrl = self::getMainShopUrl($idShop);
-            $base = 'http' . $isHttps . '://' . $shopUrl->domain . $shopUrl->physical_uri . $shopUrl->virtual_uri;
-        } catch (Exception $e) {
-            $base = _PS_BASE_URL_ . __PS_BASE_URI__;
-        }
-
-        return $base . 'modules/lengow/';
+        return self::getShopBaseUrl($idShop) . 'modules/lengow/';
     }
 
     /**

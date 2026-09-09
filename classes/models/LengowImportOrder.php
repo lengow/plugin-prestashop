@@ -61,6 +61,16 @@ class LengowImportOrder
     public const RESULT_FAILED = 'failed';
     public const RESULT_IGNORED = 'ignored';
 
+    /* Buyer identity */
+
+    /** Written by LengowCustomer when no name could be derived from the marketplace data */
+    private const MISSING_NAME_PLACEHOLDER = '--';
+
+    /**
+     * @var array<int, string>|null lowercased labels standing for a name the marketplace never sent
+     */
+    private static ?array $notProvidedNames = null;
+
     /**
      * @var int|null PrestaShop shop id
      */
@@ -1123,9 +1133,14 @@ class LengowImportOrder
             // no proof of sharing: fall back on the buyer name. An existing customer with the
             // same name is the same person placing a new order, so the real email is kept. A
             // marketplace sending one email per buyer must never be split into two accounts.
-            $newLastName = Tools::strtolower(trim((string) ($billingData['last_name'] ?? '')));
+            $newLastName = $this->getBuyerLastName($billingData);
             $existingLastName = Tools::strtolower(trim($existingCustomer->lastname));
 
+            // with no exploitable name on either side, keep the real email: a comparison that
+            // cannot be made is not proof that the buyers are different
+            if ($this->isUnusableBuyerName($newLastName) || $this->isUnusableBuyerName($existingLastName)) {
+                return $email;
+            }
             if ($newLastName === $existingLastName) {
                 return $email;
             }
@@ -1147,6 +1162,108 @@ class LengowImportOrder
         );
 
         return $generatedEmail;
+    }
+
+    /**
+     * Get the buyer last name the way LengowCustomer builds it
+     *
+     * The comparison is against customer.lastname as LengowCustomer stored it, so this has to
+     * reproduce how that value was produced. When either name field is empty,
+     * validateEmptyLengow() runs LengowAddress::extractNames() over whichever one is populated
+     * and keeps only the surname it extracts; when both are empty it falls back to full_name.
+     *
+     * Reading last_name as-is breaks in both directions. A marketplace sending the whole name in
+     * first_name yields an empty surname, and an empty name counts as an unusable comparison,
+     * which keeps a genuinely shared address and merges two people into one account. A
+     * marketplace sending the whole name in last_name yields "Jean Dupont" against a stored
+     * "Dupont", which reads as a different buyer and splits a returning one.
+     *
+     * Both name fields populated is the case validateEmptyLengow() never sees: last_name is
+     * then stored untouched, so it is used untouched here.
+     *
+     * @param array<string, mixed> $billingData billing address data from the API
+     *
+     * @return string
+     */
+    private function getBuyerLastName(array $billingData): string
+    {
+        $firstName = trim((string) ($billingData['first_name'] ?? ''));
+        $lastName = trim((string) ($billingData['last_name'] ?? ''));
+
+        // A placeholder must not be parsed: extractNames() turns "not provided by the
+        // marketplace" into "provided by the marketplace", which would stop being recognised as
+        // a missing name and would then be compared as if it were a surname.
+        $normalized = Tools::strtolower($lastName);
+        if ($normalized !== '' && $this->isUnusableBuyerName($normalized)) {
+            return $normalized;
+        }
+
+        if ($firstName === '' || $lastName === '') {
+            $names = LengowAddress::extractNames($lastName !== '' ? $lastName : $firstName);
+            $lastName = (string) $names['lastname'];
+        }
+        if ($lastName === '') {
+            $names = LengowAddress::extractNames(trim((string) ($billingData['full_name'] ?? '')));
+            $lastName = (string) $names['lastname'];
+        }
+
+        return Tools::strtolower(trim($lastName));
+    }
+
+    /**
+     * Check whether a last name can tell two buyers apart
+     *
+     * Three values stand for a name the marketplace never sent: the empty string, the '--'
+     * placeholder LengowCustomer writes when it cannot derive a name, and the "not provided"
+     * label LengowAddress::hydrateAddress() injects on orders delivered by the marketplace.
+     * The billing data reaching resolveSharedEmail() is post-hydration, so the label appears on
+     * the incoming side too, not only on the stored customer. Comparing any of them against a
+     * real surname reads as two different buyers and splits a returning customer into a second
+     * account - the exact failure this method exists to prevent.
+     *
+     * @param string $lastName lowercased last name
+     *
+     * @return bool
+     */
+    private function isUnusableBuyerName(string $lastName): bool
+    {
+        if ($lastName === '' || $lastName === self::MISSING_NAME_PLACEHOLDER) {
+            return true;
+        }
+
+        return in_array($lastName, $this->getNotProvidedNames(), true);
+    }
+
+    /**
+     * Get the "not provided" label in every language the module ships
+     *
+     * The stored name was written with the locale in use at import time, which is not
+     * necessarily the current one, so translating the label once in the current locale would
+     * miss a customer imported under another. The four shipped labels are all distinct.
+     *
+     * The injected context is used rather than the default constructor: the latter resolves
+     * LengowContext, which throws when the module is not loaded.
+     *
+     * @return array<int, string> lowercased labels
+     */
+    private function getNotProvidedNames(): array
+    {
+        if (self::$notProvidedNames === null) {
+            $locale = new LengowTranslation($this->context);
+            $isoCodes = [
+                LengowTranslation::ISO_CODE_EN,
+                LengowTranslation::ISO_CODE_FR,
+                LengowTranslation::ISO_CODE_ES,
+                LengowTranslation::ISO_CODE_IT,
+            ];
+            $names = [];
+            foreach ($isoCodes as $isoCode) {
+                $names[] = Tools::strtolower(trim($locale->t('order.screen.not_provided', [], $isoCode)));
+            }
+            self::$notProvidedNames = array_values(array_unique($names));
+        }
+
+        return self::$notProvidedNames;
     }
 
     /**

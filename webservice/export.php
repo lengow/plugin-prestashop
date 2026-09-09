@@ -23,7 +23,16 @@ if (!defined('_PS_VERSION_')) {
     $_GET['module'] = 'lengow';
     $_GET['controller'] = 'export';
 
-    $index = rtrim((string) $_SERVER['DOCUMENT_ROOT'], '/\\') . '/index.php';
+    // This file lives in modules/lengow/webservice/, so the shop root is three levels up and
+    // is the only path we actually know. DOCUMENT_ROOT is a fallback: on a host serving several
+    // webroots it can point at a different application that also has an index.php, and booting
+    // that one is worse than not booting at all.
+    $index = dirname(__DIR__, 3) . '/index.php';
+    if (!is_file($index)) {
+        $documentRoot = rtrim((string) ($_SERVER['DOCUMENT_ROOT'] ?? ''), '/\\');
+        // only when it is set: an empty document root would probe /index.php at the filesystem root
+        $index = $documentRoot === '' ? $index : $documentRoot . '/index.php';
+    }
     if (!is_file($index)) {
         header('HTTP/1.1 500 Internal Server Error');
         exit('Unable to dispatch Lengow front controller');

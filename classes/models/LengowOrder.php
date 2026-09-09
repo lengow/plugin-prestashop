@@ -435,6 +435,8 @@ class LengowOrder extends Order
         int $idShop,
         int $excludeIdOrderLengow = 0,
     ): string|false {
+        // no LIMIT clause here: Db::getRow() always appends its own ' LIMIT 1', which would
+        // produce an invalid 'LIMIT 1 LIMIT 1' statement
         $query = 'SELECT `customer_email` FROM `' . _DB_PREFIX_ . 'lengow_orders`
             WHERE `marketplace_customer_id` = \'' . pSQL($marketplaceCustomerId) . '\'
             AND `marketplace_name` = \'' . pSQL($marketplace) . '\'
@@ -442,8 +444,7 @@ class LengowOrder extends Order
             . ($excludeIdOrderLengow > 0 ? ' AND `id` != ' . (int) $excludeIdOrderLengow : '') . '
             AND `customer_email` IS NOT NULL
             AND `customer_email` != \'\'
-            ORDER BY `id` DESC
-            LIMIT 1';
+            ORDER BY `id` DESC';
 
         try {
             $result = Db::getInstance()->getRow($query);
