@@ -289,7 +289,7 @@ class AdminOrderController extends OrderController
             'refundReasonSelected' => $refundSelectedDatas['refund_reason'] ?? '',
             'refundModeSelected' => $refundSelectedDatas['refund_mode'] ?? '',
             'cancelReasons' => $cancelReasons ?? [],
-            'cancelReasonSelected' => $refundSelectedDatas['refund_reason'] ?? '',
+            'cancelReasonSelected' => $refundSelectedDatas['cancel_reason'] ?? '',
             'cancelStateId' => $cancelStateId ?? 0,
             'refundStateId' => $refundStateId ?? 0,
         ]);

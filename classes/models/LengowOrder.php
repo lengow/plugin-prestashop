@@ -1507,12 +1507,29 @@ class LengowOrder extends Order
             return [
                 'refund_reason' => [],
                 'refund_mode' => [],
+                'cancel_reason' => '',
             ];
         }
 
+        // both selectors write into the same column: a saved reason must only pre-select the
+        // selector of the action it is actually valid for
+        $savedReason = (string) ($result['refund_reason'] ?? '');
+        $refundReason = $savedReason;
+        $cancelReason = $savedReason;
+        $marketplace = LengowMain::getMarketplaceSingleton($marketplaceName);
+        if ($marketplace !== null) {
+            $refundReason = $marketplace->isValidReasonForAction($savedReason, LengowAction::TYPE_REFUND)
+                ? $savedReason
+                : '';
+            $cancelReason = $marketplace->isValidReasonForAction($savedReason, LengowAction::TYPE_CANCEL)
+                ? $savedReason
+                : '';
+        }
+
         return [
-            'refund_reason' => $result['refund_reason'] ?? [],
+            'refund_reason' => $refundReason,
             'refund_mode' => $result['refund_mode'] ?? [],
+            'cancel_reason' => $cancelReason,
         ];
     }
 
