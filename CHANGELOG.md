@@ -1,6 +1,20 @@
 # Changelog
 
 
+## [4.3.0](https://github.com/lengow/plugin-prestashop/compare/v4.2.2...v4.3.0) (2026-09-09)
+
+
+### Features
+
+* align reviewer assignment ([#139](https://github.com/lengow/plugin-prestashop/issues/139)) ([7e52006](https://github.com/lengow/plugin-prestashop/commit/7e52006b084595d66bdf96caaade9b0c2cbbfdbf))
+
+
+### Bug Fixes
+
+* **actions:** [PCMT-1900] validate order action reasons against their own action ([#145](https://github.com/lengow/plugin-prestashop/issues/145)) ([6cd8d0c](https://github.com/lengow/plugin-prestashop/commit/6cd8d0ce736a5ad0f4699e8038a21052e030cf85))
+* **import:** [PCMT-1895] stop recording import errors on healthy orders ([#146](https://github.com/lengow/plugin-prestashop/issues/146)) ([0a7b909](https://github.com/lengow/plugin-prestashop/commit/0a7b9097945333c1b6a37a4248a82248df8f6a99))
+* **import:** stop splitting returning buyers into duplicate customer accounts ([#148](https://github.com/lengow/plugin-prestashop/issues/148)) ([e21fc69](https://github.com/lengow/plugin-prestashop/commit/e21fc692fba289e320688da155689d528237bd09))
+
 ## [4.2.2](https://github.com/lengow/plugin-prestashop/compare/v4.2.1...v4.2.2) (2026-08-19)
 
 
