@@ -1,6 +1,15 @@
 # Changelog
 
 
+## [3.11.3](https://github.com/lengow/plugin-prestashop/compare/v3.11.2...v3.11.3) (2026-09-09)
+
+
+### Bug Fixes
+
+* **actions:** [PCMT-1900] validate order action reasons against their own action ([#150](https://github.com/lengow/plugin-prestashop/issues/150)) ([f9376fb](https://github.com/lengow/plugin-prestashop/commit/f9376fb47ae1326f4c3282cc87197ec0d76eb619))
+* **import:** [PCMT-1895] stop recording import errors on healthy orders ([#151](https://github.com/lengow/plugin-prestashop/issues/151)) ([9277312](https://github.com/lengow/plugin-prestashop/commit/9277312546852435ab2748dba635c669d51c8f50))
+* **import:** stop splitting returning buyers into duplicate customer accounts ([#152](https://github.com/lengow/plugin-prestashop/issues/152)) ([7e664f6](https://github.com/lengow/plugin-prestashop/commit/7e664f6898ea93b26159b1c067fd1898ff4b7252))
+
 ## [3.11.2](https://github.com/lengow/plugin-prestashop/compare/v3.11.1...v3.11.2) (2026-08-19)
 
 
