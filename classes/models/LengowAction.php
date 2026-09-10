@@ -640,46 +640,82 @@ class LengowAction
                 continue;
             }
             $apiAction = $apiActions[$action[self::FIELD_ACTION_ID]];
-            if (isset($apiAction->queued, $apiAction->processed, $apiAction->errors) && $apiAction->queued == false) {
-                // order action is waiting to return from the marketplace
-                if ($apiAction->processed == false && empty($apiAction->errors)) {
-                    continue;
-                }
-                // finish action in lengow_action table
-                self::finishAction($action[self::FIELD_ID]);
-                $orderLengow = new LengowOrder($action[self::FIELD_ORDER_ID]);
-                // finish all order logs send
-                LengowOrderError::finishOrderLogs((int) $orderLengow->lengowId, LengowOrderError::TYPE_ERROR_SEND);
-                if ($orderLengow->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
-                    // if action is accepted -> close order and finish all order actions
-                    if ($apiAction->processed == true && empty($apiAction->errors)) {
-                        LengowOrder::updateOrderLengow(
-                            (int) $orderLengow->lengowId,
-                            [LengowOrder::FIELD_ORDER_PROCESS_STATE => LengowOrder::PROCESS_STATE_FINISH]
-                        );
-                        self::finishAllActions($orderLengow->id);
-                    } else {
-                        // if action is denied -> create order logs and finish all order actions
-                        LengowOrderError::addOrderLog(
-                            (int) $orderLengow->lengowId,
-                            $apiAction->errors,
-                            LengowOrderError::TYPE_ERROR_SEND
-                        );
-                        LengowMain::log(
-                            LengowLog::CODE_ACTION,
-                            LengowMain::setLogMessage(
-                                'log.order_action.call_action_failed',
-                                ['decoded_message' => $apiAction->errors]
-                            ),
-                            $logOutput,
-                            $orderLengow->lengowMarketplaceSku
-                        );
-                    }
-                }
-                unset($orderLengow);
-            }
+            self::processApiActionResult($apiAction, $action, $logOutput);
         }
         LengowConfiguration::updateGlobalValue(LengowConfiguration::LAST_UPDATE_ACTION_SYNCHRONIZATION, time());
+
+        return true;
+    }
+
+    /**
+     * Process API action status and synchronize local action/order states.
+     *
+     * @param object $apiAction api action data
+     * @param array<string, mixed> $action local action row
+     * @param bool $logOutput see log or not
+     *
+     * @return bool
+     */
+    private static function processApiActionResult(
+        object $apiAction,
+        array $action,
+        bool $logOutput,
+        bool $logSuccess = false
+    ): bool
+    {
+        if (!isset($apiAction->queued, $apiAction->processed, $apiAction->errors) || $apiAction->queued == true) {
+            return false;
+        }
+        // order action is waiting to return from the marketplace
+        if ($apiAction->processed == false && empty($apiAction->errors)) {
+            return false;
+        }
+        // finish action in lengow_action table
+        self::finishAction((int) $action[self::FIELD_ID]);
+        $orderLengow = new LengowOrder((int) $action[self::FIELD_ORDER_ID]);
+        // finish all order logs send
+        LengowOrderError::finishOrderLogs((int) $orderLengow->lengowId, LengowOrderError::TYPE_ERROR_SEND);
+        if ($orderLengow->lengowProcessState !== LengowOrder::PROCESS_STATE_FINISH) {
+            // if action is accepted -> close order and finish all order actions
+            if ($apiAction->processed == true && empty($apiAction->errors)) {
+                LengowOrder::updateOrderLengow(
+                    (int) $orderLengow->lengowId,
+                    [LengowOrder::FIELD_ORDER_PROCESS_STATE => LengowOrder::PROCESS_STATE_FINISH]
+                );
+                self::finishAllActions($orderLengow->id);
+                if ($logSuccess) {
+                    LengowMain::log(
+                        LengowLog::CODE_ACTION,
+                        LengowMain::setLogMessage(
+                            'log.order_action.action_send',
+                            [
+                                'action' => $action[self::FIELD_ACTION_TYPE],
+                                'order_id' => $orderLengow->id,
+                            ]
+                        ),
+                        $logOutput,
+                        $orderLengow->lengowMarketplaceSku
+                    );
+                }
+            } else {
+                // if action is denied -> create order logs and finish all order actions
+                LengowOrderError::addOrderLog(
+                    (int) $orderLengow->lengowId,
+                    $apiAction->errors,
+                    LengowOrderError::TYPE_ERROR_SEND
+                );
+                LengowMain::log(
+                    LengowLog::CODE_ACTION,
+                    LengowMain::setLogMessage(
+                        'log.order_action.call_action_failed',
+                        ['decoded_message' => $apiAction->errors]
+                    ),
+                    $logOutput,
+                    $orderLengow->lengowMarketplaceSku
+                );
+            }
+        }
+        unset($orderLengow);
 
         return true;
     }
@@ -705,6 +741,11 @@ class LengowAction
         $actions = self::getOldActions();
         if ($actions) {
             foreach ($actions as $action) {
+                $apiAction = self::getApiActionByOldAction($action, $logOutput);
+                if (is_object($apiAction) && self::processApiActionResult($apiAction, $action, $logOutput, true)) {
+                    usleep(250000);
+                    continue;
+                }
                 // finish action in lengow_action table
                 self::finishAction($action[self::FIELD_ID]);
                 $orderLengow = new LengowOrder($action[self::FIELD_ORDER_ID]);
@@ -728,6 +769,7 @@ class LengowAction
                     );
                 }
                 unset($orderLengow);
+                usleep(250000);
             }
 
             return true;
@@ -754,6 +796,93 @@ class LengowAction
         }
 
         return $results ?: false;
+    }
+
+    /**
+     * Retrieve old action status from API.
+     *
+     * @param array<string, mixed> $action local action row
+     * @param bool $logOutput see log or not
+     *
+     * @return object|null
+     */
+    private static function getApiActionByOldAction(array $action, bool $logOutput): ?object
+    {
+        $actionId = isset($action[self::FIELD_ACTION_ID]) ? (int) $action[self::FIELD_ACTION_ID] : 0;
+        if ($actionId > 0) {
+            $results = LengowConnector::queryApi(
+                LengowConnector::GET,
+                LengowConnector::API_ORDER_ACTION,
+                [self::FIELD_ACTION_ID => $actionId],
+                '',
+                $logOutput
+            );
+            $apiAction = self::extractApiActionFromResults($results, $actionId);
+            if (is_object($apiAction)) {
+                return $apiAction;
+            }
+        }
+        $parameters = json_decode((string) $action[self::FIELD_PARAMETERS], true);
+        if (!is_array($parameters)) {
+            return null;
+        }
+        $getParams = [];
+        foreach (
+            [
+                LengowImport::ARG_MARKETPLACE_ORDER_ID,
+                LengowImport::ARG_MARKETPLACE,
+                self::ARG_ACTION_TYPE,
+                self::ARG_LINE,
+            ] as $parameterName
+        ) {
+            if (isset($parameters[$parameterName])) {
+                $getParams[$parameterName] = $parameters[$parameterName];
+            }
+        }
+        if (empty($getParams)) {
+            return null;
+        }
+        $results = LengowConnector::queryApi(
+            LengowConnector::GET,
+            LengowConnector::API_ORDER_ACTION,
+            $getParams,
+            '',
+            $logOutput
+        );
+
+        return self::extractApiActionFromResults($results, $actionId);
+    }
+
+    /**
+     * Extract one API action from connector response.
+     *
+     * @param mixed $results api response
+     * @param int $actionId expected action id
+     *
+     * @return object|null
+     */
+    private static function extractApiActionFromResults(mixed $results, int $actionId): ?object
+    {
+        if (!is_object($results)) {
+            return null;
+        }
+        if (isset($results->id) && ($actionId === 0 || (int) $results->id === $actionId)) {
+            return $results;
+        }
+        $resultsData = (array) $results;
+        if (isset($resultsData['error']) || empty($resultsData['results']) || !is_iterable($resultsData['results'])) {
+            return null;
+        }
+        foreach ($resultsData['results'] as $apiAction) {
+            if (!is_object($apiAction) || !isset($apiAction->id)) {
+                continue;
+            }
+            if ($actionId === 0 || (int) $apiAction->id === $actionId) {
+                return $apiAction;
+            }
+        }
+
+        return null;
     }
 
     /**
