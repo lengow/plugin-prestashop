@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [4.4.0](https://github.com/lengow/plugin-prestashop/compare/v4.3.0...v4.4.0) (2026-10-02)
+
+
+### Features
+
+* **cicd:** Add Ask ship show review policy ([#157](https://github.com/lengow/plugin-prestashop/issues/157)) ([efa50e6](https://github.com/lengow/plugin-prestashop/commit/efa50e6fa57d7879d7caa0c3d6f072940309f64f))
+
 ## [4.3.0](https://github.com/lengow/plugin-prestashop/compare/v4.2.2...v4.3.0) (2026-09-09)
 
 
