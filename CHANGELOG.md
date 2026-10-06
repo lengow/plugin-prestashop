@@ -1,6 +1,19 @@
 # Changelog
 
 
+## [4.3.1](https://github.com/lengow/plugin-prestashop/compare/v4.3.0...v4.3.1) (2026-10-06)
+
+
+### Features
+
+* **cicd:** Add Ask ship show review policy ([#157](https://github.com/lengow/plugin-prestashop/issues/157)) ([efa50e6](https://github.com/lengow/plugin-prestashop/commit/efa50e6fa57d7879d7caa0c3d6f072940309f64f))
+
+
+### Bug Fixes
+
+* **action:** prevent stale not sent status when old actions are already finalized ([#156](https://github.com/lengow/plugin-prestashop/issues/156)) ([b5de398](https://github.com/lengow/plugin-prestashop/commit/b5de398951897819ee69409dba9fdb154723166f))
+* set release version to v4.3.1 ([#160](https://github.com/lengow/plugin-prestashop/issues/160)) ([afa4135](https://github.com/lengow/plugin-prestashop/commit/afa4135170e526ac73f438f5d05aab07803d3229))
+
 ## [4.3.0](https://github.com/lengow/plugin-prestashop/compare/v4.2.2...v4.3.0) (2026-09-09)
 
 
