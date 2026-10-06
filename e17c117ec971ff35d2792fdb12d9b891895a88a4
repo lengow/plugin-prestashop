@@ -1,0 +1,16 @@
+.github/reviewers.yaml
+  h_f1bc121a0b2c55 15-16
+.github/workflows/auto-assign-reviewer.yaml
+  h_f1bc121a0b2c55 4-8,14,17,19,22
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "e17c117ec971ff35d2792fdb12d9b891895a88a4",
+  "prompts": {},
+  "humans": {
+    "h_f1bc121a0b2c55": {
+      "author": "Clement Idelon <clement.idelon@lengow.com>"
+    }
+  }
+}

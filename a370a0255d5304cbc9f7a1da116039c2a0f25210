@@ -1,0 +1,19 @@
+.github/reviewers.yml
+  s_d2e454986651cf::t_1294a672473f22 15-16
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.6.22",
+  "base_commit_sha": "a370a0255d5304cbc9f7a1da116039c2a0f25210",
+  "prompts": {},
+  "sessions": {
+    "s_d2e454986651cf": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a01629-81d6-78c1-8697-14d8108acef3",
+        "model": "gpt-5.6-luna"
+      },
+      "human_author": "Clement Idelon <clement.idelon@lengow.com>"
+    }
+  }
+}

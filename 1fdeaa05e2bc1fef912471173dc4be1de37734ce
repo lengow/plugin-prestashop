@@ -1,0 +1,14 @@
+.github/workflows/auto-assign-reviewer.yaml
+  h_986cd2789d2f0b 1,8,10-18,21-34,36,38-41,50-60
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.4",
+  "base_commit_sha": "1fdeaa05e2bc1fef912471173dc4be1de37734ce",
+  "prompts": {},
+  "humans": {
+    "h_986cd2789d2f0b": {
+      "author": "Adrien Le Moine <adrien.lemoine@lengow.com>"
+    }
+  }
+}
