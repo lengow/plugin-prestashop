@@ -336,9 +336,10 @@ class LengowInstall
         // create all Lengow tables
         $this->createLengowTables();
         // run sql script and configuration upgrade for specific version
-        $upgradeFiles = array_diff(scandir(_PS_MODULE_LENGOW_DIR_ . 'upgrade'), ['..', '.', 'index.php']);
+        $moduleDir = LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR;
+        $upgradeFiles = array_diff(scandir($moduleDir . 'upgrade'), ['..', '.', 'index.php']);
         foreach ($upgradeFiles as $file) {
-            include _PS_MODULE_LENGOW_DIR_ . 'upgrade/' . $file;
+            include $moduleDir . 'upgrade/' . $file;
             $numberVersion = preg_replace('/update_|\.php$/', '', $file);
             LengowMain::log(
                 LengowLog::CODE_INSTALL,
@@ -519,8 +520,9 @@ class LengowInstall
      */
     public static function removeFile(string $file): void
     {
-        $filePath = _PS_MODULE_LENGOW_DIR_ . $file;
-        if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+        $moduleDir = LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR;
+        $filePath = $moduleDir . $file;
+        if (!LengowMain::isPathAllowed($filePath, $moduleDir)) {
             return;
         }
         if (file_exists($filePath)) {
@@ -541,8 +543,9 @@ class LengowInstall
      */
     public static function deleteDir(string $dirPath): bool
     {
-        $length = Tools::strlen(_PS_MODULE_LENGOW_DIR_);
-        if (Tools::substr($dirPath, 0, $length) !== _PS_MODULE_LENGOW_DIR_) {
+        $moduleDir = LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR;
+        $length = Tools::strlen($moduleDir);
+        if (Tools::substr($dirPath, 0, $length) !== $moduleDir) {
             return false;
         }
         if (Tools::substr($dirPath, Tools::strlen($dirPath) - 1, 1) != '/') {
@@ -1155,7 +1158,7 @@ class LengowInstall
      */
     private function removeConfigFiles(): void
     {
-        $files = scandir(_PS_MODULE_LENGOW_DIR_);
+        $files = scandir(LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR);
         foreach ($files as $file) {
             if (preg_match('/^config[_a-zA-Z]*\.xml$/', $file)) {
                 self::removeFile($file);
@@ -1170,8 +1173,9 @@ class LengowInstall
      */
     private function saveOverride(): void
     {
-        $directoryBackup = _PS_MODULE_LENGOW_DIR_ . 'backup/';
-        $directory = _PS_MODULE_LENGOW_DIR_ . 'override/';
+        $moduleDir = LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR;
+        $directoryBackup = $moduleDir . 'backup/';
+        $directory = $moduleDir . 'override/';
         if (file_exists($directory)) {
             $listFile = array_diff(scandir($directory), ['..', '.']);
             if (!empty($listFile)) {

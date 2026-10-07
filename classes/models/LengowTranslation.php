@@ -146,7 +146,7 @@ class LengowTranslation
                 . $sep . LengowMain::FOLDER_TRANSLATION . $sep . $isoCode . '.csv';
         }
         $translation = [];
-        if (!LengowMain::isPathAllowed($filename, _PS_MODULE_LENGOW_DIR_)) {
+        if (!LengowMain::isPathAllowed($filename, LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR)) {
             return false;
         }
         if (file_exists($filename)) {
