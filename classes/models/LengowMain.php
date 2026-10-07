@@ -598,10 +598,11 @@ class LengowMain
      * Replace all accented chars by their equivalent non accented chars.
      *
      * @param string $str string to have its characters replaced
+     * @param bool $legacy preserve historical mappings used by export identifiers
      *
      * @return string
      */
-    public static function replaceAccentedChars(string $str): string
+    public static function replaceAccentedChars(string $str, bool $legacy = true): string
     {
         /* One source among others:
           http://www.tachyonsoft.com/uc0000.htm
@@ -718,8 +719,8 @@ class LengowMain
             'ss',
             't',
             'u',
-            'y',
-            'w',
+            $legacy ? 'y' : 'w',
+            $legacy ? 'w' : 'y',
             'z',
             'ae',
             'oe',
@@ -739,6 +740,7 @@ class LengowMain
             'S',
             'T',
             'U',
+            ...($legacy ? [] : ['W', 'Y']),
             'Z',
             'AE',
             'OE',

@@ -395,7 +395,8 @@ class LengowAddress extends Address
     public static function cleanName(string $name): string
     {
         return LengowMain::replaceAccentedChars(
-            trim(preg_replace('/[0-9!<>,;?=+()@#"�{}_$%:]/', '', (string) $name))
+            trim(preg_replace('/[0-9!<>,;?=+()@#"�{}_$%:]/u', '', (string) $name)),
+            false
         );
     }
 
