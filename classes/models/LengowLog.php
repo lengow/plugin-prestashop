@@ -122,7 +122,7 @@ class LengowLog extends LengowFile
     {
         $sep = DIRECTORY_SEPARATOR;
 
-        return _PS_MODULE_LENGOW_DIR_ . LengowMain::FOLDER_LOG . $sep . $this->fileName;
+        return LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR . LengowMain::FOLDER_LOG . $sep . $this->fileName;
     }
 
     /**
@@ -150,7 +150,7 @@ class LengowLog extends LengowFile
             $file = 'logs-' . $date . '.txt';
             $fileName = $date . '.txt';
             $sep = DIRECTORY_SEPARATOR;
-            $filePath = _PS_MODULE_LENGOW_DIR_ . LengowMain::FOLDER_LOG . $sep . $file;
+            $filePath = LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR . LengowMain::FOLDER_LOG . $sep . $file;
             if (file_exists($filePath)) {
                 try {
                     $logFiles = [new LengowFile(LengowMain::FOLDER_LOG, $file)];
@@ -176,7 +176,7 @@ class LengowLog extends LengowFile
                 if (strrpos($fileInfo['basename'], 'logs') === false) {
                     continue;
                 }
-                if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+                if (!LengowMain::isPathAllowed($filePath, LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR)) {
                     continue;
                 }
                 $handle = fopen($filePath, 'rb');

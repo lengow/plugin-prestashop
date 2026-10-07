@@ -113,7 +113,7 @@ class LengowFile
      */
     public static function getResource(string $path, string $mode = 'a+'): mixed
     {
-        if (!LengowMain::isPathAllowed($path, _PS_MODULE_LENGOW_DIR_)) {
+        if (!LengowMain::isPathAllowed($path, LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR)) {
             return false;
         }
 

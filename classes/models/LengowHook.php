@@ -190,7 +190,7 @@ class LengowHook
     public function hookDisplayBackOfficeHeader(): void
     {
         $this->context->controller->addCss(
-            _PS_MODULE_LENGOW_DIR_ . 'views/css/lengow-tab.css?v=' . $this->module->version
+            LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR . 'views/css/lengow-tab.css?v=' . $this->module->version
         );
     }
 
@@ -306,7 +306,9 @@ class LengowHook
             ];
             $this->context->smarty->assign($templateData);
 
-            return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/admin/order/info.tpl');
+            $moduleDir = LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR;
+
+            return $this->module->display($moduleDir, 'views/templates/admin/order/info.tpl');
         }
 
         return '';
@@ -341,7 +343,9 @@ class LengowHook
             'lengow_locale' => $locale,
         ]);
 
-        return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/hook/order/admin_order_side.tpl');
+        $moduleDir = LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR;
+
+        return $this->module->display($moduleDir, 'views/templates/hook/order/admin_order_side.tpl');
     }
 
     /**
@@ -518,7 +522,9 @@ class LengowHook
             'carriers' => $isActiveReturnCarrier ? LengowCarrier::getCarriersChoices($this->context->language->id) : [],
         ]);
 
-        return $this->module->display(_PS_MODULE_LENGOW_DIR_, 'views/templates/hook/order/admin_order_tab.tpl');
+        $moduleDir = LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR;
+
+        return $this->module->display($moduleDir, 'views/templates/hook/order/admin_order_tab.tpl');
     }
 
     /**

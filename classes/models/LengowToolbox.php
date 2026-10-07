@@ -486,7 +486,7 @@ class LengowToolbox
         $fileName = LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_CHECKMD5;
         if (file_exists($fileName)) {
             $md5Available = true;
-            if (!LengowMain::isPathAllowed($fileName, _PS_MODULE_LENGOW_DIR_)) {
+            if (!LengowMain::isPathAllowed($fileName, LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR)) {
                 return [
                     self::CHECKSUM_AVAILABLE => false,
                     self::CHECKSUM_SUCCESS => false,
@@ -500,7 +500,7 @@ class LengowToolbox
                     ++$fileCounter;
                     $shortPath = $data[0];
                     $filePath = LengowMain::getLengowFolder() . $data[0];
-                    if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+                    if (!LengowMain::isPathAllowed($filePath, LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR)) {
                         continue;
                     }
                     if (file_exists($filePath)) {
@@ -552,7 +552,7 @@ class LengowToolbox
 
         if (file_exists($fileName)) {
             $md5Available = true;
-            if (!LengowMain::isPathAllowed($fileName, _PS_MODULE_LENGOW_DIR_)) {
+            if (!LengowMain::isPathAllowed($fileName, LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR)) {
                 return [
                     self::CHECKSUM_AVAILABLE => false,
                     self::CHECKSUM_SUCCESS => false,
@@ -566,7 +566,7 @@ class LengowToolbox
                     ++$fileCounter;
                     $shortPath = $data[0];
                     $filePath = LengowMain::getLengowFolder() . $data[0];
-                    if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+                    if (!LengowMain::isPathAllowed($filePath, LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR)) {
                         continue;
                     }
                     if (file_exists($filePath)) {
@@ -645,7 +645,7 @@ class LengowToolbox
     {
         $sep = DIRECTORY_SEPARATOR;
         $filePath = LengowMain::getLengowFolder() . $sep . LengowMain::FOLDER_CONFIG . $sep . self::FILE_TEST;
-        if (!LengowMain::isPathAllowed($filePath, _PS_MODULE_LENGOW_DIR_)) {
+        if (!LengowMain::isPathAllowed($filePath, LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR)) {
             return false;
         }
         try {
