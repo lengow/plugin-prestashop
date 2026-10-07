@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [4.3.2](https://github.com/lengow/plugin-prestashop/compare/v4.3.1...v4.3.2) (2026-10-07)
+
+
+### Bug Fixes
+
+* **import:** [PCMT-1944] preserve Unicode customer names ([#161](https://github.com/lengow/plugin-prestashop/issues/161)) ([569e7ea](https://github.com/lengow/plugin-prestashop/commit/569e7ea74c2984f446d6ca1951e0a66b8f32b35f))
+* **install:** drop _PS_MODULE_LENGOW_DIR_ in models to pass addons validator ([#162](https://github.com/lengow/plugin-prestashop/issues/162)) ([b4c552e](https://github.com/lengow/plugin-prestashop/commit/b4c552eb4393168d2e547430627dbe141c6726d8))
+
 ## [4.3.1](https://github.com/lengow/plugin-prestashop/compare/v4.3.0...v4.3.1) (2026-10-06)
 
 
