@@ -1,0 +1,24 @@
+tests/name-normalization.php
+  s_e541ec7b2a7aa6::t_b20edc472025e0 83
+  s_e541ec7b2a7aa6::t_fd3b5d40548449 1-82
+classes/models/LengowAddress.php
+  s_e541ec7b2a7aa6::t_0779750290b92c 398-399
+classes/models/LengowMain.php
+  s_e541ec7b2a7aa6::t_0779750290b92c 601,605,722-723,743
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8c11f452a891f0f882b97351cdc990c05b66bd31",
+  "prompts": {},
+  "sessions": {
+    "s_e541ec7b2a7aa6": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a1163f-be77-7130-899a-f57e30fd750b",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
