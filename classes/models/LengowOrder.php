@@ -762,7 +762,7 @@ class LengowOrder extends Order
                     false
                 );
                 if (!$activeAction
-                    && !$orderLogs
+                    && $orderLogs === []
                     && !array_key_exists($result[self::FIELD_ORDER_ID], $unsentOrders)
                 ) {
                     $action = (int) $result['id_order_state'] === LengowMain::getOrderState(self::STATE_CANCELED)
