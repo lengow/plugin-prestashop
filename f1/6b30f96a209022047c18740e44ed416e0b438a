@@ -1,0 +1,21 @@
+classes/models/LengowOrder.php
+  s_23bd9fa15aa08a::t_60ff5991554458 765
+classes/models/LengowOrderError.php
+  s_23bd9fa15aa08a::t_60ff5991554458 113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "f16b30f96a209022047c18740e44ed416e0b438a",
+  "prompts": {},
+  "sessions": {
+    "s_23bd9fa15aa08a": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a116a4-73a6-7b61-86ea-d73695a957a6",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
