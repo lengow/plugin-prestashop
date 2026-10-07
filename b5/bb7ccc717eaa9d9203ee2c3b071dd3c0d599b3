@@ -1,0 +1,38 @@
+classes/models/LengowInstall.php
+  s_e2fb0a086c881e::t_dce2e4cf31e83e 339-340,342,523-525,546-548,1176-1178
+  s_e2fb0a086c881e::t_80be7d4659795e 1161
+classes/models/LengowSync.php
+  s_e2fb0a086c881e::t_80be7d4659795e 351
+classes/models/LengowHook.php
+  s_e2fb0a086c881e::t_080f71a54ce4a1 309-310,346-347,525
+  s_e2fb0a086c881e::t_3e467a088a898a 311
+  s_e2fb0a086c881e::t_80be7d4659795e 193
+  s_e2fb0a086c881e::t_dce2e4cf31e83e 348,527
+  s_e2fb0a086c881e::t_22f7e6122b6b51 526
+classes/models/LengowNameParser.php
+  s_e2fb0a086c881e::t_80be7d4659795e 122
+classes/models/LengowTranslation.php
+  s_e2fb0a086c881e::t_80be7d4659795e 149
+classes/models/LengowFile.php
+  s_e2fb0a086c881e::t_80be7d4659795e 116
+classes/models/LengowToolbox.php
+  s_e2fb0a086c881e::t_80be7d4659795e 489,503,555,569,648
+classes/models/LengowLog.php
+  s_e2fb0a086c881e::t_80be7d4659795e 125,153,179
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "b5bb7ccc717eaa9d9203ee2c3b071dd3c0d599b3",
+  "prompts": {},
+  "sessions": {
+    "s_e2fb0a086c881e": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "cb5503f9-53a2-4740-80e7-928befcd8c7b",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
