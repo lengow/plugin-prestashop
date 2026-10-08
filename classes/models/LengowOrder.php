@@ -754,6 +754,7 @@ class LengowOrder extends Order
         }
         if ($results) {
             $unsentOrders = [];
+            $errorLookupFailureLogged = false;
             foreach ($results as $result) {
                 $activeAction = LengowAction::getActionsByOrderId($result[self::FIELD_ORDER_ID], true);
                 $orderLogs = LengowOrderError::getOrderLogs(
@@ -761,6 +762,16 @@ class LengowOrder extends Order
                     LengowOrderError::TYPE_ERROR_SEND,
                     false
                 );
+                if ($orderLogs === false) {
+                    if (!$errorLookupFailureLogged) {
+                        LengowMain::log(
+                            LengowLog::CODE_ACTION,
+                            'Automatic action retries skipped for orders whose send-error lookup failed.'
+                        );
+                        $errorLookupFailureLogged = true;
+                    }
+                    continue;
+                }
                 if (!$activeAction
                     && $orderLogs === []
                     && !array_key_exists($result[self::FIELD_ORDER_ID], $unsentOrders)
