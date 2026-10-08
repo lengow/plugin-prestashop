@@ -271,7 +271,7 @@ class LengowMarketplace
     }
 
     /**
-     * Is marketplace contain order Line
+     * Whether the action must be sent per order line
      *
      * @param string $action (ship / cancel / refund)
      *
@@ -287,7 +287,9 @@ class LengowMarketplace
             ) {
                 return true;
             }
-            if (isset($actions['optional_args'])
+            // Send shipments for the whole order when line selection is optional.
+            if ($action !== LengowAction::TYPE_SHIP
+                && isset($actions['optional_args'])
                 && is_array($actions['optional_args'])
                 && in_array(LengowAction::ARG_LINE, $actions['optional_args'], true)
             ) {
