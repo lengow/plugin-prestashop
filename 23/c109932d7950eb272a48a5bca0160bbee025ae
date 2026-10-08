@@ -1,0 +1,19 @@
+classes/models/LengowMarketplace.php
+  s_0e464daa1245e0::t_941e30fa4f0718 274,290-292
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "23c109932d7950eb272a48a5bca0160bbee025ae",
+  "prompts": {},
+  "sessions": {
+    "s_0e464daa1245e0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "01a11ad8-33f9-76f3-bc68-6ec604c02e6f",
+        "model": "gpt-6.1-sol"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
