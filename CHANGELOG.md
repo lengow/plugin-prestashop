@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [4.3.3](https://github.com/lengow/plugin-prestashop/compare/v4.3.2...v4.3.3) (2026-10-15)
+
+
+### Bug Fixes
+
+* **orders:** [PCMT-1934] stop retrying actions with open errors ([#164](https://github.com/lengow/plugin-prestashop/issues/164)) ([d19a3d5](https://github.com/lengow/plugin-prestashop/commit/d19a3d578774c139adccfe29b764d8ce69f517ba))
+* **shipping:** [PCMT-1931] send optional-line shipments once per order ([#165](https://github.com/lengow/plugin-prestashop/issues/165)) ([292ce9d](https://github.com/lengow/plugin-prestashop/commit/292ce9d9eb541d1f99f27dd6ba6cf185f3df0510))
+
 ## [4.3.2](https://github.com/lengow/plugin-prestashop/compare/v4.3.1...v4.3.2) (2026-10-07)
 
 
