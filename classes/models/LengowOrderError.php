@@ -110,7 +110,7 @@ class LengowOrderError
         try {
             return Db::getInstance()->executeS($query);
         } catch (PrestaShopDatabaseException $e) {
-            return [];
+            return false;
         }
     }
 
