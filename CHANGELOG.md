@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.11.4](https://github.com/lengow/plugin-prestashop/compare/v3.11.3...v3.11.4) (2026-10-15)
+
+
+### Bug Fixes
+
+* **shipping:** [PCMT-1931] send optional-line shipments once per order ([#166](https://github.com/lengow/plugin-prestashop/issues/166)) ([8dc68bc](https://github.com/lengow/plugin-prestashop/commit/8dc68bc9018f127b29fa0d66095b43db1545aab3))
+
 ## [3.11.3](https://github.com/lengow/plugin-prestashop/compare/v3.11.2...v3.11.3) (2026-09-09)
 
 
