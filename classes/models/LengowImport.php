@@ -1106,13 +1106,15 @@ class LengowImport
     {
         try {
             $orderIds = LengowOrder::getAllOrderIdsFromLengowOrder($marketplaceSku, $marketplaceName);
-            if (empty($orderIds)) {
+            // a row can be finished without any PrestaShop order (canceled or refunded order never imported)
+            $idOrders = array_filter(array_column($orderIds, LengowOrder::FIELD_ORDER_ID));
+            if (empty($idOrders)) {
                 return;
             }
             $this->synchronizeMerchantOrderId(
                 [
                     LengowImportOrder::RESULT_TYPE => LengowImportOrder::RESULT_CREATED,
-                    LengowImportOrder::MERCHANT_ORDER_ID => (int) $orderIds[0][LengowOrder::FIELD_ORDER_ID],
+                    LengowImportOrder::MERCHANT_ORDER_ID => (int) reset($idOrders),
                     LengowImportOrder::MARKETPLACE_SKU => $marketplaceSku,
                 ]
             );
