@@ -1,0 +1,22 @@
+classes/models/LengowImport.php
+  s_144b9ade57cb9d::t_8e5800de5e0486 1099-1112,1114-1116,1118-1124
+  s_144b9ade57cb9d::t_1639afa789599c 1113,1117
+  s_144b9ade57cb9d::t_afebf7cd384aa6 1017,1030-1032
+  s_144b9ade57cb9d::t_b0fbc8867117bc 1098
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "89a3660941c2a7f9f3ec8c81e04d33fbaf61bddc",
+  "prompts": {},
+  "sessions": {
+    "s_144b9ade57cb9d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "604ca037-aab0-4a76-9268-cc83c9eb4977",
+        "model": "claude-sonnet-5-5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
