@@ -523,13 +523,15 @@ class LengowMarketplace
                     $params[$arg] = $carrierName;
                     break;
                 case LengowAction::ARG_CARRIER_NAME:
-                    // carrier_name should only be sent when carrier code is "Other"
-                    // otherwise marketplaces like Amazon reject the feed
+                    // send the resolved carrier code, or the PrestaShop carrier name when the code is "Other"
                     if ((string) $lengowOrder->lengowCarrier !== '') {
                         $resolvedCarrier = (string) $lengowOrder->lengowCarrier;
                     } else {
                         if ((int) $deliveryAddress->id_country === 0) {
-                            break;
+                            if (isset($actions['optional_args']) && in_array($arg, $actions['optional_args'], true)) {
+                                break;
+                            }
+                            throw new LengowException(LengowMain::setLogMessage('lengow_log.exception.no_delivery_country_in_order'));
                         }
                         $idMarketplace = self::getIdMarketplace($lengowOrder->lengowMarketplaceName);
                         $resolvedCarrier = LengowCarrier::getCarrierMarketplaceCode(
@@ -546,6 +548,8 @@ class LengowMarketplace
                         );
                         $psCarrier = new Carrier($idActiveCarrier ?: (int) $lengowOrder->id_carrier);
                         $params[$arg] = $psCarrier->name;
+                    } else {
+                        $params[$arg] = $resolvedCarrier;
                     }
                     break;
                 case LengowAction::ARG_SHIPPING_METHOD:
