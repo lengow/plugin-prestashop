@@ -1,0 +1,21 @@
+classes/models/LengowOrder.php
+  s_f6bdf643d17a2b::t_58e7c30d5e29cd 753,761-770,772
+classes/models/LengowOrderError.php
+  s_f6bdf643d17a2b::t_f01327b588cacd 113
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "12d5078ac52c2f26c8976590589220517ed919c3",
+  "prompts": {},
+  "sessions": {
+    "s_f6bdf643d17a2b": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "16e70831-aa14-4340-8610-2f7bbb26689e",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
