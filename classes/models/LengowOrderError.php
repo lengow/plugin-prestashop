@@ -143,7 +143,7 @@ class LengowOrderError
     }
 
     /**
-     * Removes all order logs
+     * Finishes all unfinished order logs of a type
      *
      * @param int $idOrderLengow Lengow order id
      * @param int $type order log type (import or send)
@@ -152,27 +152,19 @@ class LengowOrderError
      */
     public static function finishOrderLogs(int $idOrderLengow, int $type = self::TYPE_ERROR_IMPORT): bool
     {
-        $query = 'SELECT `id` FROM `' . _DB_PREFIX_ . 'lengow_logs_import`
-            WHERE `id_order_lengow` = \'' . (int) $idOrderLengow . '\'
-            AND `type` = \'' . $type . '\'';
+        // one statement limited to unfinished logs: rewriting logs already finished, one row at a
+        // time, made this call grow with every log an order ever accumulated
         try {
-            $orderLogs = Db::getInstance()->executeS($query);
+            return Db::getInstance()->update(
+                self::TABLE_ORDER_ERROR,
+                [self::FIELD_IS_FINISHED => 1],
+                '`' . self::FIELD_ORDER_LENGOW_ID . '` = ' . (int) $idOrderLengow
+                . ' AND `' . self::FIELD_TYPE . '` = ' . (int) $type
+                . ' AND `' . self::FIELD_IS_FINISHED . '` = 0'
+            );
         } catch (PrestaShopDatabaseException $e) {
             return false;
         }
-        $updateSuccess = 0;
-        foreach ($orderLogs as $orderLog) {
-            $result = Db::getInstance()->update(
-                self::TABLE_ORDER_ERROR,
-                [self::FIELD_IS_FINISHED => 1],
-                '`id` = \'' . (int) $orderLog[self::FIELD_ID] . '\''
-            );
-            if ($result) {
-                ++$updateSuccess;
-            }
-        }
-
-        return count($orderLogs) === $updateSuccess;
     }
 
     /**
