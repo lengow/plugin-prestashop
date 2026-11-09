@@ -1,6 +1,16 @@
 # Changelog
 
 
+## [3.11.5](https://github.com/lengow/plugin-prestashop/compare/v3.11.4...v3.11.5) (2026-11-09)
+
+
+### Bug Fixes
+
+* **import:** [PCMT-2007] send merchant order id when a module breaks the import ([#170](https://github.com/lengow/plugin-prestashop/issues/170)) ([81502ac](https://github.com/lengow/plugin-prestashop/commit/81502aca3dd67b630e94329e09bac2e9c112a26a))
+* **orders:** [PCMT-1934] stop retrying actions with open errors ([#174](https://github.com/lengow/plugin-prestashop/issues/174)) ([dd65be2](https://github.com/lengow/plugin-prestashop/commit/dd65be24a40b98d88e49fcbaee2a4552ccfdfc17))
+* **orders:** [PCMT-2019] finish order logs in a single update ([#176](https://github.com/lengow/plugin-prestashop/issues/176)) ([0ee9a42](https://github.com/lengow/plugin-prestashop/commit/0ee9a426c5f0720c16b51eb1bf674fbb3a7740f7))
+* **shipping:** [PCMT-2019] send carrier_name for every resolved carrier ([#175](https://github.com/lengow/plugin-prestashop/issues/175)) ([a452a22](https://github.com/lengow/plugin-prestashop/commit/a452a223336eed47db6af27b5173417f5de762a0))
+
 ## [3.11.4](https://github.com/lengow/plugin-prestashop/compare/v3.11.3...v3.11.4) (2026-10-15)
 
 
