@@ -1014,7 +1014,7 @@ class LengowImport
                     $this->saveSynchronizationResult($result);
                     // clean import order process
                     unset($importOrder, $result);
-                } catch (Exception $e) {
+                } catch (Throwable $e) {
                     $errorMessage = '[PrestaShop error]: "' . $e->getMessage()
                         . '" in ' . $e->getFile() . ' on line ' . $e->getLine();
                     LengowMain::log(
@@ -1027,6 +1027,9 @@ class LengowImport
                         $marketplaceSku
                     );
                     unset($errorMessage);
+                    // a failing third-party module can interrupt the import once the PrestaShop order exists:
+                    // still send its merchant order id, the next import only updates the order
+                    $this->synchronizeMerchantOrderIdAfterError($marketplaceSku, (string) $orderData->marketplace);
                     continue;
                 }
                 // if limit is set
@@ -1089,6 +1092,35 @@ class LengowImport
                 $this->logOutput,
                 $result[LengowImportOrder::MARKETPLACE_SKU]
             );
+        }
+    }
+
+    /**
+     * Synchronize the merchant order id with Lengow when an error interrupted the import
+     * after the PrestaShop order had been created (e.g. a failing third-party module hook)
+     *
+     * @param string $marketplaceSku marketplace order reference
+     * @param string $marketplaceName marketplace code
+     */
+    private function synchronizeMerchantOrderIdAfterError($marketplaceSku, $marketplaceName)
+    {
+        try {
+            $orderIds = LengowOrder::getAllOrderIdsFromLengowOrder($marketplaceSku, $marketplaceName);
+            // a row can be finished without any PrestaShop order (canceled or refunded order never imported)
+            $idOrders = array_filter(array_column($orderIds, LengowOrder::FIELD_ORDER_ID));
+            if (empty($idOrders)) {
+                return;
+            }
+            $this->synchronizeMerchantOrderId(
+                [
+                    LengowImportOrder::RESULT_TYPE => LengowImportOrder::RESULT_CREATED,
+                    LengowImportOrder::MERCHANT_ORDER_ID => (int) reset($idOrders),
+                    LengowImportOrder::MARKETPLACE_SKU => $marketplaceSku,
+                ]
+            );
+        } catch (Throwable $e) {
+            // already handling an import error: this extra step must never abort the whole import
+            LengowMain::log(LengowLog::CODE_IMPORT, $e->getMessage(), $this->logOutput, $marketplaceSku);
         }
     }
 
