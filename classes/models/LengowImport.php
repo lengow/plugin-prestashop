@@ -962,6 +962,7 @@ class LengowImport
             }
             $nbPackage = 0;
             $marketplaceSku = (string) $orderData->marketplace_order_id;
+            $orderMarketplace = (string) $orderData->marketplace;
             if ($this->debugMode) {
                 $marketplaceSku .= '--' . time();
             }
@@ -1038,7 +1039,7 @@ class LengowImport
                     unset($errorMessage);
                     // a failing third-party module can interrupt the import once the PrestaShop order exists:
                     // still send its merchant order id, the next import only updates the order
-                    $this->synchronizeMerchantOrderIdAfterError($marketplaceSku, (string) $orderData->marketplace);
+                    $this->synchronizeMerchantOrderIdAfterError($marketplaceSku, $orderMarketplace);
                     continue;
                 }
                 // if limit is set
