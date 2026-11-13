@@ -516,9 +516,9 @@ class LengowAddress extends Address
         $this->city = preg_replace('/[!<>?=+@{}_$%]/sim', '', $data['city']);
         $this->id_country = Country::getByIso($data['common_country_iso_a2']);
         $this->id_state = $this->getIdState($this->id_country, $data);
-        $this->phone = $data['phone_home'];
-        $this->phone_mobile = $data['phone_mobile'];
-        $this->phoneOffice = $data['phone_office'];
+        $this->phone = LengowMain::cleanPhone($data['phone_home']);
+        $this->phone_mobile = LengowMain::cleanPhone($data['phone_mobile']);
+        $this->phoneOffice = LengowMain::cleanPhone($data['phone_office']);
         $this->vat_number = $data['vat_number'];
         $this->fullAddress = $data['address_full'];
         $this->alias = self::hash($this->fullAddress);
