@@ -169,6 +169,8 @@ function displayTypeOfAnonymizationEmail() {
 
 (function ($) {
     $(document).ready(function () {
+        var lengowAdminHref = null;
+
         // close stock mp div
         changeStockMP();
         //close choice of type of anonymization email
@@ -181,7 +183,12 @@ function displayTypeOfAnonymizationEmail() {
             $("#country_selector").hide();
             $('.ajax-loading').show();
             var href = $(this).attr('data-href');
-            var data = {action: 'open_marketplace_matching', idCountry: $(this).attr('data-id-country')};
+            lengowAdminHref = href;
+            var idCountry = parseInt($(this).attr('data-id-country'), 10);
+            if (!idCountry || idCountry <= 0) {
+                return;
+            }
+            var data = {action: 'open_marketplace_matching', id_country: idCountry};
             $.getJSON(href, data, function(content) {
                 $("#marketplace_matching").html(content['marketplace_matching']);
                 addScoreCarrier();
@@ -190,10 +197,26 @@ function displayTypeOfAnonymizationEmail() {
                 $('.ajax-loading').hide();
             });
         });
-        // close marketplace list
+        // close marketplace list – refresh the country list from the server so that
+        // any recategorisation that happened since the page was loaded is reflected.
         $('#lengow_form_order_setting').on('click', '.js-lengow-back-country', function () {
             $("#marketplace_matching").empty();
-            $("#country_selector").show();
+            if (lengowAdminHref) {
+                $.getJSON(lengowAdminHref, {action: 'open_country_selector'}, function(content) {
+                    if (content && content['country_selector']) {
+                        var $fresh = $(content['country_selector']);
+                        var $freshList = $fresh.filter('#country-list');
+                        if ($freshList.length) {
+                            $('#country-list').replaceWith($freshList);
+                        }
+                    }
+                    $("#country_selector").show();
+                }).fail(function() {
+                    $("#country_selector").show();
+                });
+            } else {
+                $("#country_selector").show();
+            }
         });
         // toggle countries
         $("#lengow_form_order_setting").on('click', '.js-marketplace',function() {
