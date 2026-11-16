@@ -2,7 +2,7 @@
 /fr.php|0688c5e6237bf1c4ebf4d8f7a622a794
 /index.php|be8b25f88c14bddd7711e4585ebae316
 /it.php|14e76520f64429f3436543e904e13015
-/lengow.php|b50bcdaf43b227b60c45b4a459d3170e
+/lengow.php|9cceace89f872ebac4fe0da7cb98564b
 /loader.php|b3d94d65d0a074088758bc1e50736a01
 /config/index.php|be8b25f88c14bddd7711e4585ebae316
 /translations/en.csv|18460f3f455a6ae933f7a7f6c4b8c6e9
@@ -30,7 +30,7 @@
 /classes/models/LengowFile.php|5a58b3cf03a99bfeb305abe048799206
 /classes/models/LengowPaymentModule.php|b2bf40358df612a8b5d883685b69dfc3
 /classes/models/LengowLink.php|d658ea39cfbae6deefe2069fd92ad4fa
-/classes/models/LengowImport.php|f9371bfe9a4570b5f2bbcfabf44cce2a
+/classes/models/LengowImport.php|f9dacb3d81bde766fd60ade26c93459a
 /classes/models/LengowOrderCarrier.php|593f0e1ff6bc9611739de14b8f3d192a
 /classes/models/LengowCatalog.php|48fb568b8823482ef6b1e7bc48122300
 /classes/models/LengowSync.php|68491bce2b3bab10b343065e00032dec
