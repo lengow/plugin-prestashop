@@ -23,6 +23,9 @@ if (!defined('_PS_VERSION_')) {
 }
 /**
  * class LengowOrderCarrier
+ *
+ * The return fields are filled on load from order_carrier columns. They are not in the OrderCarrier
+ * definition, so update() ignores them: LengowOrderDetail saves them.
  */
 class LengowOrderCarrier extends OrderCarrier
 {
@@ -31,18 +34,4 @@ class LengowOrderCarrier extends OrderCarrier
 
     /** @var string */
     public $return_carrier;
-
-    /**
-     * @param type $id
-     * @param type $id_lang
-     * @param type $id_shop
-     * @param type $translator
-     */
-    public function __construct($id = null, $id_lang = null, $id_shop = null, $translator = null)
-    {
-        parent::__construct($id, $id_lang, $id_shop, $translator);
-
-        self::$definition['fields']['return_tracking_number'] = ['type' => self::TYPE_STRING, 'validate' => 'isTrackingNumber'];
-        self::$definition['fields']['return_carrier'] = ['type' => self::TYPE_STRING, 'validate' => 'isString'];
-    }
 }
