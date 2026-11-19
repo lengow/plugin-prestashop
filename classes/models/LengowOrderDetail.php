@@ -57,38 +57,56 @@ class LengowOrderDetail extends OrderDetail
     }
 
     /**
+     * Save the return tracking number on the order carrier read by the ship action
+     *
      * @param string $returnTrackingNumber
-     * @param int $orderId
+     * @param int $orderId PrestaShop order id
      */
     public static function updateOrderReturnTrackingNumber($returnTrackingNumber, $orderId)
     {
-        try {
-            $returnTrackingNumber = pSQL($returnTrackingNumber);
-            $order = new Order($orderId);
-            $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
-            $orderCarrier->return_tracking_number = $returnTrackingNumber;
-            $orderCarrier->update();
-        } catch (Exception $e) {
-            LengowOrderError::addOrderLog(
-                $orderId,
-                '[PrestaShop error]: ' . $e->getMessage(),
-                LengowOrderError::TYPE_ERROR_SEND
+        if (!Validate::isTrackingNumber($returnTrackingNumber)) {
+            LengowMain::log(
+                LengowLog::CODE_ACTION,
+                'Return tracking number not saved for order ' . (int) $orderId . ': invalid value'
             );
+
+            return;
         }
+        self::updateOrderCarrierField('return_tracking_number', $returnTrackingNumber, $orderId);
     }
 
     /**
-     * @param string $returnTrackingNumber
-     * @param int $orderId
+     * Save the return carrier on the order carrier read by the ship action
+     *
+     * @param int|string $returnCarrier
+     * @param int $orderId PrestaShop order id
      */
     public static function updateOrderReturnCarrier($returnCarrier, $orderId)
     {
+        self::updateOrderCarrierField('return_carrier', (string) $returnCarrier, $orderId);
+    }
+
+    /**
+     * Write a Lengow column of order_carrier with SQL: these columns are not in the OrderCarrier
+     * definition, so ObjectModel::update() never saves them
+     *
+     * @param string $field order_carrier column
+     * @param string $value unescaped value
+     * @param int $orderId PrestaShop order id
+     */
+    private static function updateOrderCarrierField($field, $value, $orderId)
+    {
         try {
-            $returnCarrier = pSQL($returnCarrier);
-            $order = new Order($orderId);
-            $orderCarrier = new LengowOrderCarrier((int) $order->getIdOrderCarrier());
-            $orderCarrier->return_carrier = $returnCarrier;
-            $orderCarrier->update();
+            $order = new Order((int) $orderId);
+            $idOrderCarrier = (int) $order->getIdOrderCarrier();
+            if (!$idOrderCarrier) {
+                return;
+            }
+            Db::getInstance()->update(
+                'order_carrier',
+                [$field => pSQL($value)],
+                'id_order_carrier = ' . $idOrderCarrier
+            );
         } catch (Exception $e) {
             LengowOrderError::addOrderLog(
                 $orderId,
