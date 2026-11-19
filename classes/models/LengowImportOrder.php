@@ -593,7 +593,7 @@ class LengowImportOrder
     }
 
     /**
-     * Checks if an external id already exists
+     * Checks if an external id already exists, in this shop or in another one
      *
      * @return bool
      */
@@ -602,17 +602,27 @@ class LengowImportOrder
         if (empty($this->orderData->merchant_order_id) || $this->debugMode || $this->isReimported) {
             return false;
         }
+        $existingId = null;
         foreach ($this->orderData->merchant_order_id as $externalId) {
             if (LengowOrder::getIdFromLengowDeliveryAddress((int) $externalId, $this->deliveryAddressId)) {
-                $message = LengowMain::setLogMessage('log.import.external_id_exist', ['order_id' => $externalId]);
-                $this->errors[] = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
-                LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput, $this->marketplaceSku);
-
-                return true;
+                $existingId = (string) $externalId;
+                break;
             }
         }
+        // an external id without any local record means that another shop already imported the order,
+        // e.g. the shop used before a migration: creating it again would duplicate it and decrease the stock twice
+        // a single order import can still force its creation
+        if ($existingId === null && $this->importOneOrder) {
+            return false;
+        }
+        $message = LengowMain::setLogMessage(
+            'log.import.external_id_exist',
+            ['order_id' => $existingId ?? implode(', ', $this->orderData->merchant_order_id)]
+        );
+        $this->errors[] = LengowMain::decodeLogMessage($message, LengowTranslation::DEFAULT_ISO_CODE);
+        LengowMain::log(LengowLog::CODE_IMPORT, $message, $this->logOutput, $this->marketplaceSku);
 
-        return false;
+        return true;
     }
 
     /**
