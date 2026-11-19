@@ -1,0 +1,19 @@
+classes/models/LengowImportOrder.php
+  s_581d15826cfba6::t_db36133cc4dea9 596,605,608-609,612-623,625
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "11c5f23d85feaab23a9d0dfadcf8892d1170db15",
+  "prompts": {},
+  "sessions": {
+    "s_581d15826cfba6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8a247fcb-ed9a-46cb-af4f-e6c4d3b052e3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
