@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.11.6](https://github.com/lengow/plugin-prestashop/compare/v3.11.5...v3.11.6) (2026-11-16)
+
+
+### Bug Fixes
+
+* **import:** [PCMT-2055] import orders whose marketplace status is "0" ([#180](https://github.com/lengow/plugin-prestashop/issues/180)) ([6c8f473](https://github.com/lengow/plugin-prestashop/commit/6c8f47372929011c2c76c0c4decdb29d58bdde02))
+
 ## [3.11.5](https://github.com/lengow/plugin-prestashop/compare/v3.11.4...v3.11.5) (2026-11-09)
 
 
