@@ -89,6 +89,11 @@ class LengowConfiguration extends Configuration
     public const LAST_UPDATE_PLUGIN_MODAL = 'LENGOW_LAST_PLUGIN_MODAL';
     public const SEND_EMAIL_DISABLED = 'LENGOW_SEND_EMAIL_DISABLED';
     public const ORDER_CUSTOMER_GROUP = 'LENGOW_ORDER_CUSTOMER_GROUP';
+    // hidden, set by SQL: max minutes the cron waits for the tracking number after the shipped status
+    // before sending the ship action
+    // (for shipping tools that save the tracking number after the status); unset or <= 0 sends it on the status change.
+    // Keep it in minutes: the cron only looks 5 days back
+    public const SHIP_BY_CRON_DELAY = 'LENGOW_SHIP_BY_CRON_DELAY';
 
     /* Configuration parameters */
     public const PARAM_COLLECTION = 'collection';
