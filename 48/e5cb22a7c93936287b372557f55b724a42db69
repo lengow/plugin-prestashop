@@ -1,0 +1,33 @@
+classes/models/LengowOrder.php
+  s_581d15826cfba6::t_3d5afefad3aad2 803-804
+  s_581d15826cfba6::t_28f53e8cb94ffe 761,764-767,773-776
+  s_581d15826cfba6::t_4c7b21772cd4ec 743-744
+  s_581d15826cfba6::t_e75dda1206410d 768
+  s_581d15826cfba6::t_7e72cc5df1c290 745,747
+  s_581d15826cfba6::t_b911ef5142e83f 769-772
+  s_581d15826cfba6::t_f6dbe2911d3208 746
+classes/models/LengowHook.php
+  s_581d15826cfba6::t_4ba1529b4cc706 452
+  s_581d15826cfba6::t_6231bb1696f740 397,400-404
+  s_581d15826cfba6::t_f575dc24d94c4b 398-399
+classes/models/LengowConfiguration.php
+  s_581d15826cfba6::t_54043dd7105afd 94-95
+  s_581d15826cfba6::t_0812a40a62d990 92-93
+  s_581d15826cfba6::t_ac2bf84b8205ef 96
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "48e5cb22a7c93936287b372557f55b724a42db69",
+  "prompts": {},
+  "sessions": {
+    "s_581d15826cfba6": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8a247fcb-ed9a-46cb-af4f-e6c4d3b052e3",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
