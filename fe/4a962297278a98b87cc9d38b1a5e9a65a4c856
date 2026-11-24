@@ -1,0 +1,19 @@
+classes/models/LengowMarketplace.php
+  s_97e02d51cbd955::t_1ee0a0e1c0c16c 290-291
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "fe4a962297278a98b87cc9d38b1a5e9a65a4c856",
+  "prompts": {},
+  "sessions": {
+    "s_97e02d51cbd955": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "e31113e8-ea49-4f1b-8341-6c69e5161720",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
