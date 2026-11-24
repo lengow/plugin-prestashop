@@ -287,8 +287,8 @@ class LengowMarketplace
             ) {
                 return true;
             }
-            // Send shipments for the whole order when line selection is optional.
-            if ($action !== LengowAction::TYPE_SHIP
+            // Only refunds stay per line when line selection is optional: partial refunds need it.
+            if ($action === LengowAction::TYPE_REFUND
                 && isset($actions['optional_args'])
                 && is_array($actions['optional_args'])
                 && in_array(LengowAction::ARG_LINE, $actions['optional_args'], true)
