@@ -1,6 +1,14 @@
 # Changelog
 
 
+## [4.3.5](https://github.com/lengow/plugin-prestashop/compare/v4.3.4...v4.3.5) (2026-11-27)
+
+
+### Bug Fixes
+
+* **cancel:** [PCMT-2070] send optional-line cancellations once per order ([#185](https://github.com/lengow/plugin-prestashop/issues/185)) ([d1794dd](https://github.com/lengow/plugin-prestashop/commit/d1794dd9e6c712a4cd0fc8d6aae5b2cd387a4bbc))
+* **shipping:** [PCMT-2067] add an opt-in delay to send ship actions from the cron ([#184](https://github.com/lengow/plugin-prestashop/issues/184)) ([bc10828](https://github.com/lengow/plugin-prestashop/commit/bc10828cb3363bb9fca9ce621f212c2c1d72f85b))
+
 ## [4.3.4](https://github.com/lengow/plugin-prestashop/compare/v4.3.3...v4.3.4) (2026-11-09)
 
 
