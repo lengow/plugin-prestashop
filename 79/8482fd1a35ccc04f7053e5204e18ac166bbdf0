@@ -1,0 +1,40 @@
+translations/yml/log.yml
+  s_c8b7d0f293b113::t_5fd788c15b0897 128
+translations/en.csv
+  s_c8b7d0f293b113::t_70fd9912e673ad 607
+classes/models/LengowHook.php
+  s_c8b7d0f293b113::t_d19a0065982e4e 314-315,321-343,353-356
+  s_c8b7d0f293b113::t_69c894f11202fe 27-29
+  s_c8b7d0f293b113::t_77deb257c9f9fb 344-352
+  s_d933265e55ab79::t_386100361972e9 357-358
+views/templates/hook/order/admin_order_reasons.tpl
+  s_c8b7d0f293b113::t_9f058c4a4a9c06 1-174
+classes/models/LengowInstall.php
+  s_c8b7d0f293b113::t_6b614e6b46a953 129
+src/Controller/Admin/LengowOrderAdminController.php
+  s_c8b7d0f293b113::t_1a653b37b21337 71
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "798482fd1a35ccc04f7053e5204e18ac166bbdf0",
+  "prompts": {},
+  "sessions": {
+    "s_c8b7d0f293b113": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8bc705b7-8385-4814-b1ba-62e7a2f53e4e",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    },
+    "s_d933265e55ab79": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "892f751a-6c66-4d60-90a1-72e7c49ba0de",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
