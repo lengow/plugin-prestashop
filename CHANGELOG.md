@@ -1,6 +1,13 @@
 # Changelog
 
 
+## [3.11.7](https://github.com/lengow/plugin-prestashop/compare/v3.11.6...v3.11.7) (2026-11-27)
+
+
+### Bug Fixes
+
+* **cancel:** [PCMT-2070] send optional-line cancellations once per order ([#186](https://github.com/lengow/plugin-prestashop/issues/186)) ([b7c3db8](https://github.com/lengow/plugin-prestashop/commit/b7c3db893268a048642bdf88820f545b7bb09387))
+
 ## [3.11.6](https://github.com/lengow/plugin-prestashop/compare/v3.11.5...v3.11.6) (2026-11-16)
 
 
