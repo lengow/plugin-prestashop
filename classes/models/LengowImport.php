@@ -436,7 +436,8 @@ class LengowImport
      */
     public static function checkState(string $orderStateMarketplace, LengowMarketplace $marketplace): bool
     {
-        if (empty($orderStateMarketplace)) {
+        // do not use empty(): "0" is a valid marketplace status (e.g. BricoBravo waiting_shipment)
+        if ($orderStateMarketplace === '') {
             return false;
         }
 
