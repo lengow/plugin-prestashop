@@ -328,11 +328,11 @@ class LengowHook
      */
     private function displayOrderReasons(int $idOrder, string $moduleDir): string
     {
-        $container = SymfonyContainer::getInstance();
-        if ($container === null) {
-            return '';
-        }
         try {
+            $container = SymfonyContainer::getInstance();
+            if ($container === null) {
+                throw new LengowException('Symfony container not available');
+            }
             $router = $container->get('router');
             $this->context->smarty->assign([
                 'lengow_reasons_id_order' => $idOrder,
@@ -341,7 +341,7 @@ class LengowHook
                 'lengow_save_mode_url' => $router->generate('lengow_save_refund_mode'),
             ]);
         } catch (Exception $e) {
-            // e.g. routes not loaded yet (cache not cleared after install): skip the pickers, keep the order page
+            // no container, or routes not loaded yet (cache not cleared after install): skip the pickers, keep the order page
             LengowMain::log(
                 LengowLog::CODE_ACTION,
                 LengowMain::setLogMessage(
