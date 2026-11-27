@@ -125,6 +125,7 @@ en:
       call_tracking: "call tracking with parameters: %{parameters}"
       can_not_load_order: "order action failed - Can't load order"
       call_action_failed: "order action failed - %{decoded_message}"
+      reason_pickers_not_displayed: "WARNING ! cancel and refund reason pickers not displayed (ORDER ID %{order_id}): %{error_message}"
     connector:
       call_api: "call %{call_type} %{curl_url}"
       error_api: "API call failed - %{error_code} - %{error_message}"

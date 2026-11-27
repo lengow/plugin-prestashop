@@ -24,6 +24,9 @@
 if (!defined('_PS_VERSION_')) {
     exit;
 }
+
+use PrestaShop\PrestaShop\Adapter\SymfonyContainer;
+
 class LengowHook
 {
     /**
@@ -308,10 +311,49 @@ class LengowHook
 
             $moduleDir = LengowMain::getLengowFolder() . DIRECTORY_SEPARATOR;
 
-            return $this->module->display($moduleDir, 'views/templates/admin/order/info.tpl');
+            return $this->module->display($moduleDir, 'views/templates/admin/order/info.tpl')
+                . $this->displayOrderReasons((int) $args['id_order'], $moduleDir);
         }
 
         return '';
+    }
+
+    /**
+     * Cancel and refund reason pickers, moved next to the order status form by their own script
+     *
+     * @param int $idOrder PrestaShop order id
+     * @param string $moduleDir Lengow module folder
+     *
+     * @return string
+     */
+    private function displayOrderReasons(int $idOrder, string $moduleDir): string
+    {
+        try {
+            $container = SymfonyContainer::getInstance();
+            if ($container === null) {
+                throw new LengowException('Symfony container not available');
+            }
+            $router = $container->get('router');
+            $this->context->smarty->assign([
+                'lengow_reasons_id_order' => $idOrder,
+                'lengow_reasons_url' => $router->generate('lengow_order_reasons', ['orderId' => $idOrder]),
+                'lengow_save_reason_url' => $router->generate('lengow_save_refund_reason'),
+                'lengow_save_mode_url' => $router->generate('lengow_save_refund_mode'),
+            ]);
+        } catch (Exception $e) {
+            // no container, or routes not loaded yet (cache not cleared after install): skip the pickers, keep the order page
+            LengowMain::log(
+                LengowLog::CODE_ACTION,
+                LengowMain::setLogMessage(
+                    'log.order_action.reason_pickers_not_displayed',
+                    ['order_id' => $idOrder, 'error_message' => $e->getMessage()]
+                )
+            );
+
+            return '';
+        }
+
+        return $this->module->display($moduleDir, 'views/templates/hook/order/admin_order_reasons.tpl');
     }
 
     /**

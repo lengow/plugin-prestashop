@@ -604,6 +604,7 @@ log.order_action.action_saved|call tracking saved in lengow_actions table
 log.order_action.call_tracking|call tracking with parameters: %{parameters}
 log.order_action.can_not_load_order|order action failed - Can't load order
 log.order_action.call_action_failed|order action failed - %{decoded_message}
+log.order_action.reason_pickers_not_displayed|WARNING ! cancel and refund reason pickers not displayed (ORDER ID %{order_id}): %{error_message}
 log.connector.call_api|call %{call_type} %{curl_url}
 log.connector.error_api|API call failed - %{error_code} - %{error_message}
 log.connector.timeout_api|API call has been blocked by a timeout

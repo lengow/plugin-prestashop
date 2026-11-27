@@ -126,6 +126,7 @@ class LengowInstall
         'views/PrestaShop/Admin/Sell/Order/Order/Blocks/View/Modal/update_shipping_modal.html.twig',
         'views/PrestaShop/Admin/Sell/Order/Order/Blocks/View/products.html.twig',
         'views/PrestaShop/Admin/Sell/Order/Order/Blocks/View/shipping.html.twig',
+        'views/PrestaShop/',
         'views/templates/admin/footer.tpl',
         'views/templates/admin/header.tpl',
         'views/templates/admin/header_order.tpl',
