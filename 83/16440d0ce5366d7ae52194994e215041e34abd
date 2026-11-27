@@ -1,0 +1,20 @@
+classes/models/LengowHook.php
+  s_c8b7d0f293b113::t_ca48ad4e98a501 332-335
+  s_c8b7d0f293b113::t_14789e5f55f4f5 344
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "1.7.5",
+  "base_commit_sha": "8316440d0ce5366d7ae52194994e215041e34abd",
+  "prompts": {},
+  "sessions": {
+    "s_c8b7d0f293b113": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "8bc705b7-8385-4814-b1ba-62e7a2f53e4e",
+        "model": "claude-opus-5-5"
+      },
+      "human_author": "Arnaud Hours <arnaud.hours@lengow.com>"
+    }
+  }
+}
