@@ -394,8 +394,14 @@ class LengowHook
             $idOrderState = (int) $newOrderState->id;
 
             if ($idOrderState === LengowMain::getOrderState(LengowOrder::STATE_SHIPPED)) {
-                $lengowOrder->callAction(LengowAction::TYPE_SHIP);
-                $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
+                if ((int) LengowConfiguration::getGlobalValue(LengowConfiguration::SHIP_BY_CRON_DELAY) > 0) {
+                    // the cron sends it once the tracking number is saved or the delay is over: close old send errors
+                    // as callAction() would, or the cron skips it
+                    LengowOrderError::finishOrderLogs((int) $lengowOrder->lengowId, LengowOrderError::TYPE_ERROR_SEND);
+                } else {
+                    $lengowOrder->callAction(LengowAction::TYPE_SHIP);
+                    $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;
+                }
             }
 
             // Call Lengow API to send refund state order
@@ -443,6 +449,7 @@ class LengowHook
                     && LengowImport::$currentOrder !== $lengowOrder->lengowMarketplaceSku
                     && !array_key_exists($lengowOrder->lengowMarketplaceSku, $this->alreadyShipped)
                     && (int) $args['object']->current_state === LengowMain::getOrderState(LengowOrder::STATE_SHIPPED)
+                    && (int) LengowConfiguration::getGlobalValue(LengowConfiguration::SHIP_BY_CRON_DELAY) <= 0
                 ) {
                     $lengowOrder->callAction(LengowAction::TYPE_SHIP);
                     $this->alreadyShipped[$lengowOrder->lengowMarketplaceSku] = true;

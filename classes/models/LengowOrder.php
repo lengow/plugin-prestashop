@@ -740,7 +740,11 @@ class LengowOrder extends Order
     public static function getUnsentOrders(): array|false
     {
         $date = date(LengowMain::DATE_FULL, strtotime('-5 days', time()));
-        $sql = 'SELECT lo.`id`, oh.`id_order_state`, oh.`id_order`
+        // shortcut: the ship action waits for the tracking number at most the delay, a tracking number saved
+        // later still goes out missing; raise the delay if a shipping tool needs more
+        $shipDelay = (int) LengowConfiguration::getGlobalValue(LengowConfiguration::SHIP_BY_CRON_DELAY);
+        $shipCutoff = date(LengowMain::DATE_FULL, strtotime('-' . $shipDelay . ' minutes', time()));
+        $sql = 'SELECT lo.`id`, oh.`id_order_state`, oh.`id_order`, oh.`date_add`
             FROM ' . _DB_PREFIX_ . 'lengow_orders lo
             INNER JOIN ' . _DB_PREFIX_ . 'order_history oh ON (oh.id_order = lo.id_order)
             WHERE lo.`order_process_state` = ' . self::PROCESS_STATE_IMPORT
@@ -754,8 +758,22 @@ class LengowOrder extends Order
         }
         if ($results) {
             $unsentOrders = [];
+            $waitingOrders = [];
             $errorLookupFailureLogged = false;
             foreach ($results as $result) {
+                // leave the shipping tool time to save the tracking number after its latest shipped status
+                if ($shipDelay > 0
+                    && (int) $result['id_order_state'] === LengowMain::getOrderState(self::STATE_SHIPPED)
+                    && $result['date_add'] > $shipCutoff
+                    // tracking number saved: stop waiting (same WHERE as Order::getIdOrderCarrier(), same row as the action)
+                    && !Db::getInstance()->getValue(
+                        'SELECT `tracking_number` FROM `' . _DB_PREFIX_ . 'order_carrier`
+                        WHERE `id_order` = ' . (int) $result[self::FIELD_ORDER_ID]
+                    )
+                ) {
+                    $waitingOrders[$result[self::FIELD_ORDER_ID]] = true;
+                    continue;
+                }
                 $activeAction = LengowAction::getActionsByOrderId($result[self::FIELD_ORDER_ID], true);
                 $orderLogs = LengowOrderError::getOrderLogs(
                     $result[self::FIELD_ID],
@@ -782,6 +800,8 @@ class LengowOrder extends Order
                     $unsentOrders[$result[self::FIELD_ORDER_ID]] = $action;
                 }
             }
+            // an older shipped row must not bypass the delay of a newer one
+            $unsentOrders = array_diff_key($unsentOrders, $waitingOrders);
             if (!empty($unsentOrders)) {
                 return $unsentOrders;
             }
