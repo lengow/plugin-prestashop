@@ -68,7 +68,7 @@ class LengowOrderAdminController extends AbstractLengowAdminController
 
     /**
      * Returns cancel/refund reasons and state IDs for a given order as JSON.
-     * Used by the inline selector in the PS order view Twig override.
+     * Used by the reason pickers script rendered on the order page by the displayAdminOrder hook.
      */
     #[AdminSecurity("is_granted('read', 'AdminOrders')")]
     public function getOrderReasonsAction(int $orderId): JsonResponse
